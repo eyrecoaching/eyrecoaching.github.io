@@ -1,1 +1,1 @@
-# http-eyrecoaching.github.io
+#eyrecoaching.github.io
