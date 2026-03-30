@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EYRE — Finding quiet in a world that never stops.</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+background: #0a0a0a;
+color: #d4cfc8;
+font-family: Georgia, serif;
+font-weight: 300;
+overflow-x: hidden;
+}
+
+/* NAV */
+.nav {
+position: fixed;
+top: 0; left: 0; right: 0;
+z-index: 100;
+padding: 1.8rem 2.5rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: linear-gradient(to bottom, rgba(10,10,10,0.95), transparent);
+}
+.nav-logo { font-size: 0.75rem; letter-spacing: 0.45em; color: #c8a96e; }
+.nav-cta {
+font-size: 0.7rem; letter-spacing: 0.2em; color: #7a7570;
+font-style: italic; text-decoration: none;
+border-bottom: 1px solid #3a3530; padding-bottom: 2px;
+transition: color 0.3s;
+}
+.nav-cta:hover { color: #c8a96e; }
+
+/* HERO */
+.hero {
+min-height: 100vh;
+display: flex; flex-direction: column; justify-content: center;
+padding: 0 2.5rem;
+position: relative; overflow: hidden;
+border-bottom: 1px solid #2a2520;
+}
+.hero-bg {
+position: absolute; bottom: -0.1em; right: -0.02em;
+font-size: 22vw; font-weight: 300;
+color: transparent;
+-webkit-text-stroke: 1px rgba(200,169,110,0.04);
+line-height: 1; pointer-events: none; user-select: none;
+font-style: italic;
+}
+.hero-content {
+max-width: 640px; position: relative; z-index: 2;
+opacity: 0; transform: translateY(24px);
+animation: fadeUp 1.4s ease 0.2s forwards;
+}
+.eyebrow {
+font-size: 0.6rem; letter-spacing: 0.45em; color: #c8a96e;
+text-transform: uppercase; margin-bottom: 2.5rem;
+}
+.hero h1 {
+font-size: clamp(2.6rem, 5vw, 4.6rem);
+font-weight: 300; line-height: 1.12; color: #f0ece6;
+margin-bottom: 1.8rem;
+}
+.hero h1 em { color: #c8a96e; }
+.hero-sub {
+font-size: 1.1rem; line-height: 1.8; color: #7a7570;
+max-width: 420px; margin-bottom: 3.5rem;
+}
+.divider {
+width: 1px; height: 56px;
+background: linear-gradient(to bottom, #8a7148, transparent);
+margin-bottom: 3rem; opacity: 0.7;
+}
+
+/* BUTTON */
+.btn {
+display: inline-block;
+font-size: 0.65rem; letter-spacing: 0.35em;
+text-transform: uppercase; color: #0a0a0a;
+background: #c8a96e; padding: 1.1rem 2.6rem;
+text-decoration: none; font-style: italic;
+transition: background 0.3s;
+}
+.btn:hover { background: #f0ece6; }
+
+/* SECTIONS */
+.section { padding: 7rem 2.5rem; border-top: 1px solid #2a2520; }
+.section-dark { background: #0d0d0d; }
+.section-darker { background: #0f0f0f; }
+
+.section-label {
+font-size: 0.58rem; letter-spacing: 0.45em; color: #8a7148;
+text-transform: uppercase; margin-bottom: 3.5rem;
+}
+
+/* TWO COL */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 0; }
+.col-left { padding-right: 4rem; border-right: 1px solid #2a2520; }
+.col-right { padding-left: 4rem; display: flex; align-items: center; }
+
+/* THE WORK */
+.work h2 {
+font-size: clamp(1.8rem, 3vw, 3rem);
+font-weight: 300; line-height: 1.2; color: #f0ece6;
+margin-bottom: 1.8rem;
+}
+.work p { font-size: 1.05rem; line-height: 1.9; color: #7a7570; }
+.work p + p { margin-top: 1.2rem; }
+.pull-quote {
+font-size: clamp(1.5rem, 2.2vw, 2rem);
+font-weight: 300; font-style: italic; color: #d4cfc8;
+line-height: 1.45;
+border-left: 2px solid #8a7148; padding-left: 2rem;
+}
+
+/* ABOUT */
+.about-img {
+width: 100%; aspect-ratio: 3/4;
+background: #1a1a1a;
+display: flex; align-items: center; justify-content: center;
+border: 1px solid #2a2520;
+overflow: hidden;
+}
+.about-img img { width: 100%; height: 100%; object-fit: cover; }
+.about-img-placeholder {
+font-size: 0.6rem; letter-spacing: 0.3em;
+color: #8a7148; text-transform: uppercase; font-style: italic;
+}
+.about p { font-size: 1.05rem; line-height: 1.9; color: #7a7570; margin-bottom: 1.4rem; }
+.about .it-isnt {
+font-size: 1.4rem; font-weight: 300; font-style: italic;
+color: #f0ece6; margin-bottom: 1.4rem; line-height: 1.5;
+}
+.about .closer { color: #f0ece6; font-style: italic; }
+
+/* OFFERINGS */
+.offerings-header {
+display: flex; justify-content: space-between;
+align-items: flex-end; margin-bottom: 4rem;
+}
+.offerings-header h2 {
+font-size: clamp(1.6rem, 2.5vw, 2.6rem);
+font-weight: 300; color: #f0ece6;
+}
+.offerings-note {
+font-size: 0.6rem; letter-spacing: 0.3em; color: #7a7570;
+text-align: right; line-height: 1.9; font-style: italic;
+}
+.offerings-grid { display: grid; grid-template-columns: 1fr 1fr; }
+.offering {
+padding: 2.4rem 0;
+border-top: 1px solid #2a2520;
+display: grid; grid-template-columns: 1fr auto;
+align-items: start; gap: 2rem;
+}
+.offering:nth-child(odd) { padding-right: 4rem; border-right: 1px solid #2a2520; }
+.offering:nth-child(even) { padding-left: 4rem; }
+.offering-name { font-size: 1.25rem; font-weight: 300; color: #f0ece6; margin-bottom: 0.4rem; }
+.offering-meta {
+font-size: 0.6rem; letter-spacing: 0.25em; color: #7a7570;
+text-transform: uppercase; line-height: 1.9;
+}
+.offering-price {
+font-size: 0.95rem; color: #c8a96e;
+font-style: italic; white-space: nowrap; text-align: right;
+}
+
+/* PRIVATE */
+.private-section {
+padding: 8rem 2.5rem;
+border-top: 1px solid #2a2520;
+position: relative; overflow: hidden;
+}
+.private-glow {
+position: absolute; top: 50%; right: 10%;
+transform: translateY(-50%);
+width: 500px; height: 500px;
+background: radial-gradient(circle, rgba(200,169,110,0.05) 0%, transparent 65%);
+pointer-events: none;
+}
+.private-section h2 {
+font-size: clamp(2rem, 3.5vw, 3.2rem);
+font-weight: 300; line-height: 1.15; color: #f0ece6;
+margin-bottom: 1.5rem;
+}
+.private-section p {
+font-size: 1.05rem; line-height: 1.9; color: #7a7570;
+margin-bottom: 3.5rem; max-width: 400px;
+}
+
+/* BEGIN */
+.begin-section {
+padding: 10rem 2.5rem;
+background: #111;
+border-top: 1px solid #2a2520;
+text-align: center;
+position: relative; overflow: hidden;
+}
+.begin-glow {
+position: absolute; top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+width: 500px; height: 500px;
+background: radial-gradient(circle, rgba(200,169,110,0.06) 0%, transparent 65%);
+pointer-events: none;
+}
+.begin-section h2 {
+font-size: clamp(2.4rem, 5vw, 4.2rem);
+font-weight: 300; line-height: 1.15; color: #f0ece6;
+margin-bottom: 1.2rem;
+}
+.begin-section h2 em { color: #c8a96e; }
+.begin-sub {
+font-size: 1.1rem; color: #7a7570;
+margin-bottom: 4rem; line-height: 1.8; font-style: italic;
+}
+.begin-rule {
+width: 1px; height: 70px;
+background: linear-gradient(to bottom, transparent, #8a7148, transparent);
+margin: 0 auto 4rem; opacity: 0.5;
+}
+
+/* FOOTER */
+footer {
+border-top: 1px solid #2a2520;
+padding: 2.5rem;
+display: flex; justify-content: space-between; align-items: center;
+}
+.footer-logo { font-size: 0.7rem; letter-spacing: 0.45em; color: #8a7148; }
+.footer-tagline { font-size: 0.9rem; font-style: italic; color: #7a7570; }
+.footer-url { font-size: 0.58rem; letter-spacing: 0.3em; color: #7a7570; }
+
+/* REVEAL */
+.reveal {
+opacity: 0; transform: translateY(20px);
+transition: opacity 1s ease, transform 1s ease;
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+.nav { padding: 1.5rem; }
+.section { padding: 5rem 1.5rem; }
+.hero { padding: 0 1.5rem; }
+.two-col { grid-template-columns: 1fr; }
+.col-left { padding-right: 0; border-right: none; border-bottom: 1px solid #2a2520; padding-bottom: 3rem; margin-bottom: 3rem; }
+.col-right { padding-left: 0; }
+.offerings-grid { grid-template-columns: 1fr; }
+.offering:nth-child(odd) { padding-right: 0; border-right: none; }
+.offering:nth-child(even) { padding-left: 0; }
+.offerings-header { flex-direction: column; align-items: flex-start; gap: 1rem; }
+footer { flex-direction: column; gap: 1rem; text-align: center; padding: 2rem 1.5rem; }
+.hero-bg { font-size: 40vw; }
+.private-section { padding: 5rem 1.5rem; }
+.begin-section { padding: 7rem 1.5rem; }
+}
+</style>
+
+</head>
+<body>
+
+<!-- NAV -->
+
+<div class="nav">
+  <span class="nav-logo">E &nbsp; Y &nbsp; R &nbsp; E</span>
+  <a href="https://calendly.com/chris-eyrecoaching/30min" target="_blank" rel="noopener noreferrer" class="nav-cta">Book a Discovery Call</a>
+</div>
+
+<!-- HERO -->
+
+<div class="hero">
+  <div class="hero-bg">EYRE</div>
+  <div class="hero-content">
+    <p class="eyebrow">Breathwork &nbsp;·&nbsp; Nervous System &nbsp;·&nbsp; Transformation</p>
+    <h1>Finding quiet<br>in a world that<br><em>never stops.</em></h1>
+    <p class="hero-sub">The world never stops.<br>EYRE gives you somewhere it does.</p>
+    <div class="divider"></div>
+    <a href="https://calendly.com/chris-eyrecoaching/30min" target="_blank" rel="noopener noreferrer" class="btn">Begin</a>
+  </div>
+</div>
+
+<!-- THE WORK -->
+
+<div class="section work reveal">
+  <div class="section-label">The Work</div>
+  <div class="two-col">
+    <div class="col-left">
+      <h2>When did you last<br>hear yourself think.</h2>
+      <p>The meetings. The obligations. The phone. Social media. The news. All the things that distract you from your inner voice.</p>
+      <p>The noise never stops. EYRE is where it does.</p>
+    </div>
+    <div class="col-right">
+      <p class="pull-quote">"The noise never stops.<br>EYRE is where it does."</p>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+
+<div class="section section-dark about reveal">
+  <div class="two-col">
+    <div class="col-left">
+      <div class="section-label">About</div>
+      <p>I've worked in high pressure environments most of my life. Farming. Driving road trains through remote Australia. Private security contracting in Iraq. Executive operations across Australia. For a long time I thought the pressure was just the price of the work.</p>
+      <p class="it-isnt">It isn't.</p>
+      <p>EYRE was built from what I learned — not from theory, from experience. If you've spent years carrying that weight, or you can see it coming, this was built for you.</p>
+      <p class="closer">This is why EYRE exists.</p>
+    </div>
+    <div class="col-right" style="padding-left: 4rem;">
+      <div class="about-img">
+        <span class="about-img-placeholder">Image coming</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- OFFERINGS -->
+
+<div class="section section-darker reveal" style="border-bottom: 1px solid #2a2520;">
+  <div class="offerings-header">
+    <h2>Six ways in.</h2>
+    <p class="offerings-note">Private engagement<br>by conversation only</p>
+  </div>
+  <div class="offerings-grid">
+
+```
+<div class="offering reveal">
+  <div>
+    <p class="offering-name">Nervous System Assessment</p>
+    <p class="offering-meta">30 Min · Online · Know where you are.</p>
+  </div>
+  <p class="offering-price">Complimentary</p>
+</div>
+
+<div class="offering reveal">
+  <div>
+    <p class="offering-name">1:1 Session</p>
+    <p class="offering-meta">90 Min · Online · One session. One plan.</p>
+  </div>
+  <p class="offering-price">$350</p>
+</div>
+
+<div class="offering reveal">
+  <div>
+    <p class="offering-name">Group Session</p>
+    <p class="offering-meta">90 Min · Max 4 · Small group. Deep work.</p>
+  </div>
+  <p class="offering-price">By Conversation</p>
+</div>
+
+<div class="offering reveal">
+  <div>
+    <p class="offering-name">Moments</p>
+    <p class="offering-meta">12 Weeks · Online · Regulate from the inside out.</p>
+  </div>
+  <p class="offering-price">$3,500</p>
+</div>
+
+<div class="offering reveal">
+  <div>
+    <p class="offering-name">Ground</p>
+    <p class="offering-meta">1 Day · On-Site · For organisations and teams.</p>
+  </div>
+  <p class="offering-price">$5,500</p>
+</div>
+
+<div class="offering reveal">
+  <div>
+    <p class="offering-name">Expanse</p>
+    <p class="offering-meta">4–6 Days · Remote SA · By introduction only.</p>
+  </div>
+  <p class="offering-price">Enquiry Only</p>
+</div>
+```
+
+  </div>
+</div>
+
+<!-- PRIVATE -->
+
+<div class="private-section reveal">
+  <div class="private-glow"></div>
+  <div class="section-label">Private Engagement</div>
+  <h2>No pitch.<br>No pressure.<br>One conversation.</h2>
+  <p>If something here feels right, that's enough to start. Private engagement is by conversation only — reach out and we'll find out if this is the right fit.</p>
+  <a href="https://calendly.com/chris-eyrecoaching/30min" target="_blank" rel="noopener noreferrer" class="btn">Book a Discovery Call</a>
+</div>
+
+<!-- BEGIN -->
+
+<div class="begin-section reveal" id="begin">
+  <div class="begin-glow"></div>
+  <p class="eyebrow" style="margin-bottom: 2.5rem;">Begin</p>
+  <h2>If something here<br>feels <em>right.</em></h2>
+  <p class="begin-sub">One conversation. No obligation.</p>
+  <div class="begin-rule"></div>
+  <a href="https://calendly.com/chris-eyrecoaching/30min" target="_blank" rel="noopener noreferrer" class="btn">Book a Discovery Call</a>
+</div>
+
+<!-- FOOTER -->
+
+<footer>
+  <span class="footer-logo">E &nbsp; Y &nbsp; R &nbsp; E</span>
+  <span class="footer-tagline">Finding quiet in a world that never stops.</span>
+  <span class="footer-url">eyrecoaching.com</span>
+</footer>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
