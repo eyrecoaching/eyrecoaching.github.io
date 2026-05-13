@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>EYRE — Where Are You Now</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#0c0c0b;
+    --border:#2a2a27;
+    --text:#f2ede4;
+    --muted:#b0aa9f;
+    --accent:#d4a95a;
+    --ventral:#6a8f7a;
+    --ventral-dim:rgba(106,143,122,0.12);
+    --sympathetic:#9a7a50;
+    --sympathetic-dim:rgba(154,122,80,0.12);
+    --dorsal:#5a6a7a;
+    --dorsal-dim:rgba(90,106,122,0.12);
+  }
+  html { height:100%; background:#0c0c0b; }
+  body {
+    min-height:100vh; height:100dvh;
+    background:#0c0c0b !important;
+    color:var(--text);
+    font-family:'Montserrat',sans-serif;
+    font-weight:300;
+    letter-spacing:0.07em;
+    color-scheme:dark;
+    display:flex;
+    flex-direction:column;
+    position:fixed;
+    width:100%;
+    overflow:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  .header { flex:0 0 auto; text-align:center; padding:max(env(safe-area-inset-top),0.8rem) 1rem 0.3rem; position:relative; z-index:1; }
+  .header-eyre { font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+
+  .main { flex:1 1 auto; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; padding:0 1.2rem; overflow:hidden; }
+
+  .footer { flex:0 0 auto; text-align:center; padding:0.2rem 1rem max(env(safe-area-inset-bottom),0.5rem); position:relative; z-index:1; }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#6a6560; text-transform:uppercase; margin-top:0.15rem; }
+  .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2a2a26; text-transform:uppercase; }
+
+  .screen { display:none; flex-direction:column; align-items:center; width:100%; max-width:340px; gap:0.9rem; animation:fadeIn 0.5s ease; }
+  .screen.active { display:flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── INTRO ── */
+  .intro-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,6vw,2rem); font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
+  .intro-attr { font-size:0.55rem; color:#4a4845; letter-spacing:0.08em; text-align:center; line-height:1.7; max-width:280px; font-style:italic; }
+  .intro-sub { font-size:0.68rem; color:#a0998f; letter-spacing:0.08em; text-align:center; line-height:1.8; max-width:280px; }
+
+  /* ── QUESTIONS ── */
+  .q-step { font-size:0.6rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--muted); text-align:center; }
+  .q-text { font-family:'Cormorant Garamond',serif; font-size:clamp(1.2rem,5vw,1.5rem); font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.4; max-width:300px; }
+  .q-options { display:flex; flex-direction:column; gap:0.5rem; width:100%; }
+  .q-btn {
+    background:transparent;
+    border:1px solid var(--border);
+    color:#c8c2b8;
+    padding:0.8rem 1.2rem;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.68rem;
+    font-weight:300;
+    letter-spacing:0.07em;
+    cursor:pointer;
+    text-align:left;
+    transition:border-color 0.25s, background 0.25s, color 0.25s;
+    -webkit-tap-highlight-color:transparent;
+    line-height:1.5;
+  }
+  .q-btn:active { border-color:var(--accent); color:var(--accent); background:rgba(212,169,90,0.08); }
+
+  /* ── RESULT ── */
+  .result-state {
+    font-family:'Cormorant Garamond',serif;
+    font-size:clamp(1.6rem,7vw,2.2rem);
+    font-weight:400;
+    font-style:italic;
+    text-align:center;
+    line-height:1.2;
+  }
+  .result-state.ventral { color:var(--ventral); }
+  .result-state.sympathetic { color:var(--sympathetic); }
+  .result-state.dorsal { color:var(--dorsal); }
+
+  .result-tag {
+    font-size:0.6rem;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    text-align:center;
+  }
+  .result-tag.ventral { color:var(--ventral); }
+  .result-tag.sympathetic { color:var(--sympathetic); }
+  .result-tag.dorsal { color:var(--dorsal); }
+
+  .result-bar-wrap { width:100%; height:3px; background:var(--border); position:relative; overflow:hidden; }
+  .result-bar { height:100%; width:0%; transition:width 1.2s cubic-bezier(0.4,0,0.2,1); }
+  .result-bar.ventral { background:var(--ventral); }
+  .result-bar.sympathetic { background:var(--sympathetic); }
+  .result-bar.dorsal { background:var(--dorsal); }
+
+  .result-desc {
+    font-size:0.7rem;
+    color:#c0bab0;
+    letter-spacing:0.06em;
+    text-align:center;
+    line-height:1.85;
+    max-width:300px;
+  }
+
+  .result-prompt {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1rem;
+    font-style:italic;
+    color:var(--muted);
+    text-align:center;
+    line-height:1.6;
+    max-width:290px;
+    padding-top:0.2rem;
+    border-top:1px solid var(--border);
+    width:100%;
+  }
+
+  .divider { width:32px; height:1px; background:var(--border); }
+
+  .controls { display:flex; gap:0.8rem; align-items:center; }
+  .btn-primary { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.7rem 1.6rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .btn-primary:active { background:var(--accent); color:var(--bg); }
+  .btn-ghost { background:transparent; border:none; color:var(--muted); font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; padding:0.7rem 0.5rem; -webkit-tap-highlight-color:transparent; }
+
+  /* progress dots */
+  .dots { display:flex; gap:0.4rem; justify-content:center; }
+  .dot { width:4px; height:4px; border-radius:50%; background:var(--border); transition:background 0.3s; }
+  .dot.active { background:var(--accent); }
+
+  /* ── ACCEPT GATE ── */
+  #accept-gate {
+    position:fixed; inset:0; z-index:999;
+    background:#0c0c0b;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:max(env(safe-area-inset-top),1.5rem) 1.5rem max(env(safe-area-inset-bottom),1.5rem);
+    color-scheme:dark;
+  }
+  #accept-gate::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+  .gate-inner {
+    position:relative; z-index:1;
+    width:100%; max-width:320px;
+    display:flex; flex-direction:column;
+    gap:1.4rem;
+  }
+  .gate-brand {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; letter-spacing:0.55em;
+    color:#b0aa9f; text-transform:uppercase;
+    text-align:center;
+  }
+  .gate-divider { width:24px; height:1px; background:#2a2a27; margin:0 auto; }
+  .gate-scope {
+    font-size:0.63rem; color:#7a7470;
+    letter-spacing:0.07em; line-height:1.9;
+    text-align:center;
+  }
+  .gate-crisis {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.4rem 0;
+    border-top:none;
+    background:transparent;
+  }
+  .gate-crisis-label {
+    font-size:0.55rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:#8a5a5a;
+  }
+  .gate-crisis-number {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1rem; color:#c07070;
+    text-decoration:none; letter-spacing:0.05em;
+  }
+  .gate-accept {
+    background:transparent;
+    border:1px solid #d4a95a;
+    color:#d4a95a;
+    padding:0.9rem 1.6rem;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.6rem; font-weight:300;
+    letter-spacing:0.3em; text-transform:uppercase;
+    cursor:pointer; width:100%;
+    -webkit-tap-highlight-color:transparent;
+    transition:background 0.3s, color 0.3s;
+  }
+  .gate-accept:active { background:#d4a95a; color:#0c0c0b; }
+  .gate-terms {
+    font-size:0.48rem; color:#6a6460;
+    letter-spacing:0.12em; text-align:center;
+    line-height:1.8; text-transform:uppercase;
+  }
+
+
+  /* ── NAV ── */
+  .eyre-nav {
+    position:fixed; top:0; left:0; right:0; z-index:998;
+    background:rgba(12,12,11,0.95);
+    border-bottom:1px solid #1e1e1c;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.7rem 1.2rem;
+    padding-top:max(env(safe-area-inset-top),0.7rem);
+  }
+  .nav-brand {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1rem; letter-spacing:0.4em;
+    color:#b0aa9f; text-transform:uppercase;
+    text-decoration:none;
+  }
+  .nav-links {
+    display:flex; gap:1.2rem; align-items:center;
+  }
+  .nav-link {
+    font-family:'Montserrat',sans-serif;
+    font-size:0.52rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:#6a6460;
+    text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:color 0.2s;
+  }
+  .nav-link:hover, .nav-link.active { color:#d4a95a; }
+  .nav-spacer { height:3rem; }
+
+</style>
+</head>
+<body>
+
+
+
+
+<div id="accept-gate">
+  <div class="gate-inner">
+    <div class="gate-brand">EYRE</div>
+    <div class="gate-divider"></div>
+    <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
+    <button class="gate-accept" onclick="acceptGate()">Continue</button>
+    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/terms" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
+
+  </div>
+</div>
+
+
+<div class="header"><div class="header-eyre">EYRE</div></div>
+
+<div class="main">
+
+  <!-- INTRO -->
+  <div class="screen active" id="screen-intro">
+    <div class="intro-title">Where are you<br>right now?</div>
+    <div class="intro-sub">Six questions. No right answers.<br>This is about finding where you are, not where you should be.</div>
+    <div class="intro-attr">This is a self-reflection prompt, not a clinical assessment or diagnostic tool. Based on Polyvagal Theory by Dr Stephen Porges, developed for clinical practice by Deb Dana, LCSW. Polyvagal Theory is a widely used clinical framework; some aspects remain subject to ongoing scientific debate.</div>
+    <div class="intro-attr">Based on Polyvagal Theory by Dr Stephen Porges, developed for clinical practice by Deb Dana, LCSW.</div>
+    <div class="controls">
+      <button class="btn-primary" onclick="startAssessment()">Begin</button>
+    </div>
+  </div>
+
+  <!-- QUESTIONS -->
+  <div class="screen" id="screen-questions">
+    <div class="q-step" id="q-step">Question 1 of 6</div>
+    <div class="dots" id="dots"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-options" id="q-options"></div>
+  </div>
+
+  <!-- RESULT -->
+  <div class="screen" id="screen-result">
+    <div class="result-tag" id="result-tag">Ventral Vagal</div>
+    <div class="result-state" id="result-state">Safe & Connected</div>
+    <div class="result-bar-wrap"><div class="result-bar" id="result-bar"></div></div>
+    <div class="divider"></div>
+    <div class="result-desc" id="result-desc"></div>
+    <div class="result-prompt" id="result-prompt"></div>
+    <div class="controls">
+      <button class="btn-primary" onclick="restart()">Again</button>
+    </div>
+  </div>
+    
+
+</div>
+
+  <div class="footer"><div class="footer-tag">EYRE Coaching</div><div class="footer-disc">For self-regulation support only &middot; Not a substitute for professional care</div></div>
+
+<script>
+// ── QUESTIONS ──
+// Each question has 3 options: ventral (0), sympathetic (1), dorsal (2)
+const QUESTIONS = [
+  {
+    text: "How does your body feel right now?",
+    options: [
+      "Settled. Comfortable. At ease.",
+      "Tight. Restless. A low hum of tension.",
+      "Heavy. Numb. Hard to feel much at all."
+    ]
+  },
+  {
+    text: "When you think about the people around you today — how do they feel?",
+    options: [
+      "Safe. Present. Like connection is possible.",
+      "Irritating or threatening. Hard to be around.",
+      "Distant. Unreachable. You'd rather be alone."
+    ]
+  },
+  {
+    text: "What's your energy like?",
+    options: [
+      "Steady. Enough there for what's needed.",
+      "Wired. Too much going at once.",
+      "Flat. Hard to find the will to move."
+    ]
+  },
+  {
+    text: "How is your thinking right now?",
+    options: [
+      "Clear enough. You can focus when you need to.",
+      "Racing or scattered. Jumping between things.",
+      "Foggy. Slow. Hard to land on anything."
+    ]
+  },
+  {
+    text: "What does the world feel like at this moment?",
+    options: [
+      "Manageable. You have some footing.",
+      "Unpredictable. Like something might go wrong.",
+      "Far away. Like you're watching from a distance."
+    ]
+  },
+  {
+    text: "What do you most want right now?",
+    options: [
+      "To connect, create, or just be present.",
+      "To move, fix something, or get out of here.",
+      "To disappear. To rest. To stop."
+    ]
+  }
+];
+
+const RESULTS = {
+  ventral: {
+    tag: 'Ventral Vagal',
+    state: 'Safe & Connected',
+    desc: 'Your nervous system is in its regulated state. You have access to connection, clear thinking, and the capacity to respond rather than react. This is the ground state — where learning, rest, and genuine contact with others is possible.',
+    prompt: 'Notice what brought you here. These are your glimmers — the conditions worth returning to.',
+    barPct: 90
+  },
+  sympathetic: {
+    tag: 'Sympathetic Activation',
+    state: 'Mobilised',
+    desc: 'Your nervous system has moved into defence. Energy is up, threat is perceived — real or not. This state exists to protect you. It is not a problem to fix, but a signal worth listening to.',
+    prompt: 'A slow exhale tells your body the threat is passing. Start there.',
+    barPct: 60
+  },
+  dorsal: {
+    tag: 'Dorsal Vagal',
+    state: 'Shutdown',
+    desc: 'Your nervous system has moved into conservation. Flatness, distance, and disconnection are features of this state, not failures. The body chose this when mobilising felt impossible. Gentle movement and warmth are the way back.',
+    prompt: 'Small. Slow. One thing at a time. You do not need to feel better all at once.',
+    barPct: 35
+  }
+};
+
+let scores = { ventral: 0, sympathetic: 0, dorsal: 0 };
+let currentQ = 0;
+
+function startAssessment() {
+  scores = { ventral: 0, sympathetic: 0, dorsal: 0 };
+  currentQ = 0;
+  buildDots();
+  showScreen('screen-questions');
+  renderQuestion();
+}
+
+function buildDots() {
+  const el = document.getElementById('dots');
+  el.innerHTML = '';
+  QUESTIONS.forEach((_, i) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (i === 0 ? ' active' : '');
+    d.id = `dot-${i}`;
+    el.appendChild(d);
+  });
+}
+
+function renderQuestion() {
+  const q = QUESTIONS[currentQ];
+  document.getElementById('q-step').textContent = `Question ${currentQ + 1} of ${QUESTIONS.length}`;
+  document.getElementById('q-text').textContent = q.text;
+
+  // Update dots
+  document.querySelectorAll('.dot').forEach((d, i) => {
+    d.classList.toggle('active', i === currentQ);
+  });
+
+  const opts = document.getElementById('q-options');
+  opts.innerHTML = '';
+  const keys = ['ventral', 'sympathetic', 'dorsal'];
+  q.options.forEach((text, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-btn';
+    btn.textContent = text;
+    btn.onclick = () => answer(keys[i]);
+    opts.appendChild(btn);
+  });
+}
+
+function answer(state) {
+  scores[state]++;
+  currentQ++;
+  if (currentQ >= QUESTIONS.length) {
+    showResult();
+  } else {
+    // Fade transition
+    const qText = document.getElementById('q-text');
+    const qOpts = document.getElementById('q-options');
+    qText.style.opacity = '0';
+    qOpts.style.opacity = '0';
+    setTimeout(() => {
+      renderQuestion();
+      qText.style.transition = 'opacity 0.4s';
+      qOpts.style.transition = 'opacity 0.4s';
+      qText.style.opacity = '1';
+      qOpts.style.opacity = '1';
+    }, 250);
+  }
+}
+
+function showResult() {
+  // Determine dominant state
+  const winner = Object.entries(scores).sort((a, b) => b[1] - a[1])[0][0];
+  const r = RESULTS[winner];
+
+  document.getElementById('result-tag').textContent = 'Your responses suggest: ' + r.tag;
+  document.getElementById('result-tag').className = `result-tag ${winner}`;
+  document.getElementById('result-state').textContent = r.state;
+  document.getElementById('result-state').className = `result-state ${winner}`;
+  document.getElementById('result-bar').className = `result-bar ${winner}`;
+  document.getElementById('result-desc').textContent = r.desc;
+  document.getElementById('result-prompt').textContent = r.prompt;
+
+  showScreen('screen-result');
+
+  // Animate bar after paint
+  setTimeout(() => {
+    document.getElementById('result-bar').style.width = r.barPct + '%';
+  }, 100);
+}
+
+function restart() {
+  document.getElementById('result-bar').style.width = '0%';
+  showScreen('screen-intro');
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// Android viewport fix
+function setVH() { document.body.style.height = window.innerHeight + 'px'; }
+setVH();
+window.addEventListener('resize', setVH);
+
+function acceptGate() {
+  const gate = document.getElementById('accept-gate');
+  gate.style.opacity = '0';
+  gate.style.transition = 'opacity 0.4s ease';
+  setTimeout(() => { gate.style.display = 'none'; }, 400);
+}
+
+</script>
+</body>
+</html>

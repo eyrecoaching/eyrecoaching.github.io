@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="About EYRE Coaching — Chris, founder. AFP, private security, national operations. Now nervous system regulation.">
+<title>EYRE — About</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f;
+    --accent:#d4a95a; --accent-dim:rgba(212,169,90,0.07);
+  }
+  html { background:#0c0c0b; scroll-behavior:smooth; }
+  body {
+    background:#0c0c0b !important; color:var(--text);
+    font-family:'Montserrat',sans-serif; font-weight:300;
+    letter-spacing:0.07em; color-scheme:dark; overflow-x:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:1rem 2rem;
+    padding-top:max(env(safe-area-inset-top),1rem);
+    background:rgba(12,12,11,0.9);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid var(--border);
+  }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.1rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; text-decoration:none; }
+  .nav-links { display:flex; gap:1.5rem; align-items:center; }
+  .nav-link { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:#6a6460; text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--accent); }
+  .nav-cta { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); text-decoration:none; border:1px solid var(--accent); padding:0.45rem 0.9rem; transition:background 0.3s, color 0.3s; }
+  .nav-cta:hover { background:var(--accent); color:var(--bg); }
+
+  /* LAYOUT */
+  section { position:relative; z-index:1; }
+
+  .section-divider { width:40px; height:1px; background:var(--border); margin:0 auto; }
+
+  /* HERO */
+  .hero {
+    min-height:70dvh;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:max(env(safe-area-inset-top),7rem) 2rem 4rem;
+    text-align:center; gap:1.5rem;
+  }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted); }
+  .hero-headline { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,7vw,4rem); font-weight:300; line-height:1.15; color:var(--text); max-width:600px; }
+  .hero-headline em { font-style:italic; color:var(--accent); }
+  .hero-sub { font-size:0.72rem; color:#a0998f; letter-spacing:0.08em; line-height:1.9; max-width:400px; }
+
+  /* ORIGIN */
+  .origin {
+    padding:5rem 2rem;
+    max-width:640px; margin:0 auto;
+    display:flex; flex-direction:column; gap:2rem;
+  }
+  .origin-label { font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); }
+  .origin-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,4vw,2.2rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.35; }
+  .origin-body { font-size:0.72rem; color:#c0bab0; letter-spacing:0.05em; line-height:2; }
+  .origin-body p + p { margin-top:1.2rem; }
+
+  /* BACKGROUND */
+  .background {
+    padding:5rem 2rem;
+    background:#0f0f0e;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .background-inner { max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:2.5rem; }
+  .background-label { font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); }
+  .background-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,4vw,2.2rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.3; }
+  .background-items { display:flex; flex-direction:column; gap:0; }
+  .background-item { display:flex; align-items:flex-start; gap:1.2rem; padding:1.1rem 0; border-bottom:1px solid var(--border); }
+  .background-item:first-child { border-top:1px solid var(--border); }
+  .background-marker { font-family:'Cormorant Garamond',serif; font-size:0.9rem; color:var(--accent); flex-shrink:0; margin-top:0.1rem; font-style:italic; }
+  .background-text { font-size:0.7rem; color:#c0bab0; letter-spacing:0.05em; line-height:1.8; }
+  .background-note { font-size:0.68rem; color:#a0998f; letter-spacing:0.06em; line-height:1.9; font-style:italic; font-family:'Cormorant Garamond',serif; font-size:1rem; }
+
+  /* WHY */
+  .why {
+    padding:5rem 2rem;
+    max-width:640px; margin:0 auto;
+    display:flex; flex-direction:column; gap:2rem;
+  }
+  .why-label { font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); }
+  .why-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,4vw,2.2rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.3; }
+  .why-body { font-size:0.72rem; color:#c0bab0; letter-spacing:0.05em; line-height:2; }
+  .why-body p + p { margin-top:1.2rem; }
+
+  /* TRAINING */
+  .training {
+    padding:5rem 2rem;
+    background:#0f0f0e;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+  }
+  .training-inner { max-width:640px; margin:0 auto; display:flex; flex-direction:column; gap:2rem; }
+  .training-label { font-size:0.58rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); }
+  .training-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,4vw,1.9rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.3; }
+  .training-items { display:flex; flex-direction:column; gap:0; }
+  .training-item { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:0.85rem 0; border-bottom:1px solid var(--border); }
+  .training-item:first-child { border-top:1px solid var(--border); }
+  .training-name { font-size:0.68rem; color:#c0bab0; letter-spacing:0.05em; }
+  .training-status { font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:#6a6460; white-space:nowrap; }
+  .training-status.active { color:var(--accent); }
+  .training-status.certified { color:#6a8f7a; }
+  .training-note { font-size:0.62rem; color:#4a4845; letter-spacing:0.07em; line-height:1.8; font-style:italic; }
+
+  /* CTA */
+  .cta-section {
+    padding:6rem 2rem;
+    text-align:center;
+    display:flex; flex-direction:column;
+    align-items:center; gap:2rem;
+  }
+  .cta-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,5vw,2.8rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.2; max-width:440px; }
+  .cta-sub { font-size:0.68rem; color:#a0998f; letter-spacing:0.07em; line-height:1.9; max-width:360px; }
+  .btn-primary { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.85rem 2rem; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; text-decoration:none; transition:background 0.3s, color 0.3s; }
+  .btn-primary:hover { background:var(--accent); color:var(--bg); }
+  .cta-detail { font-size:0.58rem; color:#4a4845; letter-spacing:0.15em; text-transform:uppercase; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:2rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:1; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:0.9rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .footer-links { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:0.3rem; }
+  .footer-link { font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:#3a3a35; text-decoration:none; transition:color 0.2s; }
+  .footer-link:hover { color:var(--muted); }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.12em; color:#252520; text-transform:uppercase; text-align:center; margin-top:0.3rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="eyre-home.html">EYRE</a>
+  <div class="nav-links">
+    <a class="nav-link" href="eyre-home.html">Home</a>
+    <a class="nav-link" href="eyre-work-with-us.html">Work</a>
+    <a class="nav-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a call</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">About</div>
+  <h1 class="hero-headline">
+    This work came from<br><em>the places it was needed most.</em>
+  </h1>
+  <p class="hero-sub">Not a clinical background. An operational one. The difference matters.</p>
+</section>
+
+<section><div class="section-divider"></div></section>
+
+<!-- ORIGIN -->
+<section class="origin">
+  <div class="origin-label">Where this started</div>
+  <div class="origin-title">Not a moment.<br>Years.</div>
+  <div class="origin-body">
+    <p>EYRE did not begin with an insight. It began with the accumulated cost of sustained stress across decades — AFP Protective Services, counter-terrorism, private security contracting in conflict zones, national operations management. High-functioning, high-stakes, high-cost. The nervous system that served me in those environments did not switch off when the roles did.</p>
+    <p>Regulation was not something I came to through curiosity. I tracked it down because I needed it — and because the standard answers did not work for the way I was built or the life I had lived. Mindfulness. Rest. The advice people give when they have not spent years in activation.</p>
+    <p>What worked was physiological. Precise. Evidence-based. The breath, the vagus nerve, the autonomic nervous system — tools that operate below the level of thinking and willpower. EYRE is built from that search — in quiet spaces, in remote country, in the places where the noise stops and the real state of the system becomes impossible to ignore.</p>
+  </div>
+</section>
+
+<!-- BACKGROUND -->
+<section class="background">
+  <div class="background-inner">
+    <div class="background-label">Background</div>
+    <div class="background-title">The work shaped<br>the understanding.</div>
+    <div class="background-items">
+      <div class="background-item">
+        <div class="background-marker">—</div>
+        <div class="background-text">AFP Protective Services and counter-terrorism. Years operating in environments where physiological regulation was not optional — it was the difference between functional and compromised.</div>
+      </div>
+      <div class="background-item">
+        <div class="background-marker">—</div>
+        <div class="background-text">Private security contracting in conflict zones. Extended periods of elevated threat state. The body learns. The body does not automatically unlearn.</div>
+      </div>
+      <div class="background-item">
+        <div class="background-marker">—</div>
+        <div class="background-text">National operations management. The high-functioning end of chronic stress — performing at full capacity while running a dysregulated system underneath.</div>
+      </div>
+      <div class="background-item">
+        <div class="background-marker">—</div>
+        <div class="background-text">WHS and legal compliance. The instinct for defensible, evidence-based practice is not borrowed from coaching culture. It is operational habit.</div>
+      </div>
+    </div>
+    <div class="background-note">I work with high-achieving professionals, first responders, and anyone operating under sustained pressure — because I have been all three. The credibility here is not academic. It is lived.</div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section class="why">
+  <div class="why-label">Why breathwork. Why this.</div>
+  <div class="why-title">The breath is the only part of the autonomic nervous system you can control directly.</div>
+  <div class="why-body">
+    <p>Everything else — heart rate, cortisol, the threat response — operates below conscious access. The breath sits at the intersection. Change the breath deliberately and you change the physiology underneath it. Not metaphorically. Mechanically.</p>
+    <p>That is not a wellness claim. It is how the vagus nerve works. It is what the research on HRV, resonance frequency, and parasympathetic activation consistently shows. EYRE is built on that evidence — not on ideology, not on tradition, not on what sounds compelling in a brochure.</p>
+    <p>The tools are simple. The application is precise. The outcomes are real and they are yours to keep.</p>
+  </div>
+</section>
+
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="section-divider"></div>
+  <div class="cta-title">If any of this<br>sounds familiar.</div>
+  <p class="cta-sub">A discovery call is thirty minutes. No performance required. We work out together whether this is the right fit.</p>
+  <a class="btn-primary" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call</a>
+  <div class="cta-detail">Free · 30 minutes · Online or phone</div>
+  <div class="section-divider"></div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">EYRE</div>
+  <div class="footer-links">
+    <a class="footer-link" href="eyre-home.html">Home</a>
+    <a class="footer-link" href="eyre-work-with-us.html">Work with us</a>
+    <a class="footer-link" href="eyre-support.html">When to seek support</a>
+    <a class="footer-link" href="/cdn-cgi/l/email-protection#7e1d160c170d3e1b070c1b1d111f1d16171019501d1113">Contact</a>
+  </div>
+  <div class="footer-disc">EYRE Coaching · Arkana Life · ABN trading as EYRE Coaching · South Australia</div>
+  <div class="footer-disc" style="margin-top:0.2rem;">For self-regulation support only · Not a substitute for profes

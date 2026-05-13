@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="EYRE Coaching — terms of use and disclaimer for all tools and services.">
+<title>EYRE — Terms of Use</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root { --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f; --accent:#d4a95a; }
+  html { background:#0c0c0b; scroll-behavior:smooth; }
+  body { background:#0c0c0b !important; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.07em; color-scheme:dark; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; padding-top:max(env(safe-area-inset-top),1rem); background:rgba(12,12,11,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.1rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; text-decoration:none; }
+  .nav-links { display:flex; gap:1.5rem; align-items:center; }
+  .nav-link { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:#6a6460; text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--accent); }
+  .nav-cta { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); text-decoration:none; border:1px solid var(--accent); padding:0.45rem 0.9rem; transition:background 0.3s, color 0.3s; }
+  .nav-cta:hover { background:var(--accent); color:var(--bg); }
+
+  section { position:relative; z-index:1; }
+
+  /* HERO */
+  .hero { min-height:40dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:max(env(safe-area-inset-top),7rem) 2rem 3rem; text-align:center; gap:1rem; }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted); }
+  .hero-headline { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,6vw,3rem); font-weight:300; line-height:1.15; color:var(--text); }
+  .hero-date { font-size:0.6rem; letter-spacing:0.2em; color:#4a4845; text-transform:uppercase; }
+
+  /* CONTENT */
+  .content { max-width:680px; margin:0 auto; padding:3rem 2rem 6rem; display:flex; flex-direction:column; gap:0; }
+
+  .term-section { padding:2rem 0; border-bottom:1px solid var(--border); display:flex; flex-direction:column; gap:1rem; }
+  .term-section:first-child { border-top:1px solid var(--border); }
+
+  .term-number { font-size:0.52rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); }
+  .term-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.1rem,3.5vw,1.5rem); font-weight:300; color:var(--text); line-height:1.3; }
+  .term-body { font-size:0.68rem; color:#b8b2a8; letter-spacing:0.05em; line-height:1.95; }
+  .term-body p + p { margin-top:0.9rem; }
+
+  .term-list { display:flex; flex-direction:column; gap:0.5rem; padding-left:0; }
+  .term-list-item { display:flex; align-items:flex-start; gap:0.8rem; font-size:0.68rem; color:#b8b2a8; letter-spacing:0.05em; line-height:1.8; }
+  .term-list-marker { color:var(--accent); flex-shrink:0; font-family:'Cormorant Garamond',serif; font-style:italic; margin-top:0.05rem; }
+
+  .term-sub-title { font-size:0.6rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); margin-top:0.5rem; margin-bottom:0.3rem; }
+
+  /* CRISIS BLOCK */
+  .crisis-block { border:1px solid #3a2a2a; padding:1.2rem; background:#100c0c; display:flex; flex-direction:column; gap:0.6rem; }
+  .crisis-title { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:#8a5a5a; }
+  .crisis-list { display:flex; flex-direction:column; gap:0.4rem; }
+  .crisis-item { display:flex; align-items:center; justify-content:space-between; padding:0.4rem 0; border-bottom:1px solid #2a1a1a; }
+  .crisis-item:last-child { border-bottom:none; }
+  .crisis-name { font-size:0.65rem; color:var(--text); letter-spacing:0.05em; }
+  .crisis-number { font-family:'Cormorant Garamond',serif; font-size:1rem; color:#c07070; text-decoration:none; letter-spacing:0.05em; }
+
+  /* LEGAL NOTE */
+  .legal-note { padding:2rem; max-width:680px; margin:0 auto; }
+  .legal-text { font-size:0.6rem; color:#3a3a35; letter-spacing:0.07em; line-height:1.8; font-style:italic; border-top:1px solid var(--border); padding-top:1.5rem; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:2rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:1; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:0.9rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .footer-links { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:0.3rem; }
+  .footer-link { font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:#3a3a35; text-decoration:none; transition:color 0.2s; }
+  .footer-link:hover { color:var(--muted); }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.12em; color:#252520; text-transform:uppercase; text-align:center; margin-top:0.3rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="eyre-home.html">EYRE</a>
+  <div class="nav-links">
+    <a class="nav-link" href="eyre-home.html">Home</a>
+    <a class="nav-link" href="eyre-about.html">About</a>
+    <a class="nav-link" href="eyre-programmes.html">Work</a>
+    <a class="nav-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a call</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Legal</div>
+  <h1 class="hero-headline">Terms of Use & Disclaimer</h1>
+  <div class="hero-date">Effective April 2026</div>
+</section>
+
+<div class="content">
+
+  <div class="term-section">
+    <div class="term-number">1</div>
+    <div class="term-title">About These Tools</div>
+    <div class="term-body">
+      <p>EYRE Coaching provides a suite of digital self-regulation tools including breathwork guides, nervous system state identification resources, and psychoeducational exercises grounded in published research and established clinical frameworks.</p>
+      <p>These tools are designed for personal self-regulation support and psychoeducation. They draw on the following evidence bases and frameworks:</p>
+    </div>
+    <div class="term-list">
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Polyvagal Theory, developed by Dr Stephen Porges and adapted for clinical practice by Deb Dana, LCSW (Rhythm of Regulation). Polyvagal Theory is a widely used clinical framework; certain aspects remain subject to ongoing scientific debate.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Resonance and coherence breathing research, including work by Lehrer, Vaschillo, and Gevirtz on heart rate variability biofeedback.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Cyclic sighing (physiological sigh) research: Balban, Huberman et al. (2023), Cell Reports Medicine, Stanford University.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Extended exhale (4-7-8) breathing: Dr Andrew Weil, adapted from pranayama tradition.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Box breathing: established practice, adapted from military and clinical stress management protocols.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>The concept of glimmers: developed by Deb Dana, LCSW, from her published work on Polyvagal Theory.</div></div>
+    </div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">2</div>
+    <div class="term-title">Scope and Limitations</div>
+    <div class="term-body">
+      <p>These tools are for self-regulation education and support only. They are not clinical interventions, therapeutic treatments, diagnostic instruments, or medical devices.</p>
+    </div>
+    <div class="term-list">
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>The nervous system state identification tool is a self-reflection prompt. It is not a validated psychometric instrument and does not constitute a clinical assessment or diagnosis.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Breathwork duration and timing recommendations are based on published research and are provided as general guidance. Individual responses vary.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>State-to-breathwork recommendations are informed by published research and clinical frameworks. Where specific pairings are clinical inferences rather than directly tested protocols, this is noted within the tool.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>These tools do not replace the advice, assessment, or treatment provided by a registered psychologist, psychiatrist, general practitioner, or other licensed health professional.</div></div>
+    </div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">3</div>
+    <div class="term-title">Who These Tools Are For</div>
+    <div class="term-body">
+      <p>These tools are intended for adults aged 18 and over seeking general self-regulation support. They are not designed for, and should not be used as, treatment for diagnosed mental health conditions, trauma responses, or medical conditions without the oversight of a qualified health professional.</p>
+      <p>If you are currently experiencing a mental health crisis, acute trauma response, or symptoms of a serious psychological or medical condition, please seek professional support immediately.</p>
+    </div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">4</div>
+    <div class="term-title">Breathwork and Medical Clearance</div>
+    <div class="term-body"><p>Breathwork exercises involve deliberate alteration of normal breathing patterns. The following individuals should consult a medical professional before use:</p></div>
+    <div class="term-list">
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Persons with cardiovascular conditions, hypertension, or respiratory conditions including asthma or COPD.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Persons who are pregnant.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Persons with a history of seizures, fainting, or dissociative episodes.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Persons currently experiencing acute anxiety, panic disorder, or PTSD.</div></div>
+    </div>
+    <div class="term-body" style="margin-top:0.8rem;"><p>If you experience lightheadedness, dizziness, chest pain, or significant discomfort during any exercise, stop immediately and breathe normally. If symptoms persist, seek medical attention.</p></div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">5</div>
+    <div class="term-title">When to Seek Professional Support</div>
+    <div class="term-body"><p>Stop using these tools and speak with a qualified health professional if:</p></div>
+    <div class="term-list">
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Using these tools consistently increases your distress, anxiety, or discomfort rather than reducing it.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>Stress or anxiety continues without improvement despite regular use over time.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>You experience flashbacks, dissociation, or trauma responses during or after use.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>You experience panic attacks that do not resolve.</div></div>
+      <div class="term-list-item"><div class="term-list-marker">—</div><div>You are having thoughts of self-harm or suicide.</div></div>
+    </div>
+    <div class="term-body" style="margin-top:0.8rem;"><p>Your GP is a good first point of contact.</p></div>
+    <div class="term-sub-title">Crisis and support — Australia</div>
+    <div class="crisis-block">
+      <div class="crisis-title">If you need support now</div>
+      <div class="crisis-list">
+        <div class="crisis-item"><div class="crisis-name">Lifeline — 24 hours, 7 days</div><a class="crisis-number" href="tel:131114">13 11 14</a></div>
+        <div class="crisis-item"><div class="crisis-name">Beyond Blue — 24 hours, 7 days</div><a class="crisis-number" href="tel:1300224636">1300 22 4636</a></div>
+        <div class="crisis-item"><div class="crisis-name">SANE Australia</div><a class="crisis-number" href="tel:1800187263">1800 187 263</a></div>
+        <div class="crisis-item"><div class="crisis-name">Emergency</div><a class="crisis-number" href="tel:000">000</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">6</div>
+    <div class="term-title">No Professional Relationship</div>
+    <div class="term-body"><p>Use of these tools does not constitute or create a professional relationship between the user and EYRE Coaching, its operator, or any associated practitioners. No duty of care arising from a professional therapeutic or clinical relationship is established by use of these tools.</p></div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">7</div>
+    <div class="term-title">Intellectual Property and Attribution</div>
+    <div class="term-body"><p>The frameworks referenced in these tools — including Polyvagal Theory, the Autonomic Ladder, and the concept of glimmers — are the intellectual work of their respective originators and are used here with appropriate attribution. EYRE Coaching does not claim ownership of these frameworks.</p>
+    <p>The specific tool design, language, interface, and EYRE branding are the property of EYRE Coaching and may not be reproduced without permission.</p></div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">8</div>
+    <div class="term-title">Limitation of Liability</div>
+    <div class="term-body"><p>To the fullest extent permitted by applicable law, EYRE Coaching accepts no liability for any adverse outcomes arising from the use of these tools, including but not limited to physical discomfort, psychological distress, or decisions made in reliance on tool outputs. Users engage with these tools at their own discretion and assume responsibility for their own wellbeing during use.</p></div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">9</div>
+    <div class="term-title">Governing Law</div>
+    <div class="term-body"><p>These terms are governed by the laws of South Australia, Australia. Any disputes arising from use of these tools are subject to the jurisdiction of the courts of South Australia.</p></div>
+  </div>
+
+  <div class="term-section">
+    <div class="term-number">10</div>
+    <div class="term-title">Contact</div>
+    <div class="term-body">
+      <p>For questions regarding these terms or any of the tools provided by EYRE Coaching:</p>
+      <p style="margin-top:0.8rem;">EYRE Coaching<br>
+      <a href="/cdn-cgi/l/email-protection#22414a504b5162475b5047414d43414a4b4c450c414d4f" style="color:var(--accent);text-decoration:none;"><span class="__cf_email__" data-cfemail="5e3d362c372d1e3b272c3b3d313f3d36373039703d3133">[email&#160;protected]</span></a><br>
+      eyrecoaching.com<br>
+      South Australia, Australia</p>
+    </div>
+  </div>
+
+</div>
+
+<div class="legal-note">
+  <div class="legal-text">This document reflects the scope and intent of the self-regulation tools offered through eyrecoaching.com. It is not a substitute for legal advice. EYRE Coaching recommends independent legal review prior to publication. EYRE Coaching · Arkana Life ABN · Trading as EYRE Coaching · South Australia.</div>
+</div>
+
+<footer>
+  <div class="footer-brand">EYRE</div>
+  <div class="footer-links">
+    <a class="footer-link" href="eyre-home.html">Home</a>
+    <a class="footer-link" href="eyre-about.html">About</a>
+    <a class="footer-link" href="eyre-programmes.html">Programmes</a>
+    <a class="footer-link" href="eyre-tools.html">Tools</a>
+    <a class="footer-link" href="eyre-support.html">When to seek support</a>
+    <a class="footer-link" href="/cdn-cgi/l/email-protection#7d1e150f140e3d18040f181e121c1e1514131a531e1210">Contact</a>
+  </div>
+  <div class="footer-disc">EYRE Coaching · Arkana Life · ABN trading as EYRE Coaching �

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="EYRE Coaching — get in touch. Book a discovery call or send a direct enquiry.">
+<title>EYRE — Contact</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root { --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f; --accent:#d4a95a; --accent-dim:rgba(212,169,90,0.07); }
+  html { background:#0c0c0b; scroll-behavior:smooth; }
+  body { background:#0c0c0b !important; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.07em; color-scheme:dark; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; padding-top:max(env(safe-area-inset-top),1rem); background:rgba(12,12,11,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.1rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; text-decoration:none; }
+  .nav-links { display:flex; gap:1.5rem; align-items:center; }
+  .nav-link { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:#6a6460; text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--accent); }
+  .nav-cta { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); text-decoration:none; border:1px solid var(--accent); padding:0.45rem 0.9rem; transition:background 0.3s, color 0.3s; }
+  .nav-cta:hover { background:var(--accent); color:var(--bg); }
+
+  section { position:relative; z-index:1; }
+  .section-divider { width:40px; height:1px; background:var(--border); margin:0 auto; }
+
+  /* HERO */
+  .hero { min-height:45dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:max(env(safe-area-inset-top),7rem) 2rem 3rem; text-align:center; gap:1.2rem; }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted); }
+  .hero-headline { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,7vw,3.5rem); font-weight:300; line-height:1.15; color:var(--text); max-width:520px; }
+  .hero-headline em { font-style:italic; color:var(--accent); }
+  .hero-sub { font-size:0.72rem; color:#a0998f; letter-spacing:0.08em; line-height:1.9; max-width:400px; }
+
+  /* CONTENT */
+  .content { max-width:680px; margin:0 auto; padding:3rem 2rem 6rem; display:flex; flex-direction:column; gap:3rem; }
+
+  /* DISCOVERY BLOCK */
+  .discovery-block { border:1px solid var(--accent); padding:2rem; display:flex; flex-direction:column; gap:1.2rem; }
+  .discovery-label { font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); }
+  .discovery-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,4vw,1.9rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.3; }
+  .discovery-desc { font-size:0.68rem; color:#a0998f; letter-spacing:0.06em; line-height:1.85; }
+  .btn-primary { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.85rem 2rem; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; text-decoration:none; transition:background 0.3s, color 0.3s; display:inline-block; -webkit-tap-highlight-color:transparent; }
+  .btn-primary:hover { background:var(--accent); color:var(--bg); }
+  .discovery-detail { font-size:0.57rem; color:#4a4845; letter-spacing:0.15em; text-transform:uppercase; }
+
+  /* DIRECT CONTACT */
+  .direct-label { font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); padding-bottom:0.8rem; border-bottom:1px solid var(--border); }
+  .contact-items { display:flex; flex-direction:column; gap:0; margin-top:0.8rem; }
+  .contact-item { display:flex; align-items:baseline; justify-content:space-between; gap:1rem; padding:1rem 0; border-bottom:1px solid var(--border); }
+  .contact-item:first-child { border-top:1px solid var(--border); }
+  .contact-item-label { font-size:0.6rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); }
+  .contact-item-value { font-family:'Cormorant Garamond',serif; font-size:1.1rem; color:var(--text); text-decoration:none; transition:color 0.2s; }
+  .contact-item-value:hover { color:var(--accent); }
+
+  /* ENQUIRY FORM */
+  .form-label { font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--muted); padding-bottom:0.8rem; border-bottom:1px solid var(--border); }
+  .form-desc { font-size:0.68rem; color:#a0998f; letter-spacing:0.06em; line-height:1.85; margin-top:0.8rem; }
+  .form { display:flex; flex-direction:column; gap:0.8rem; margin-top:1rem; }
+  .form-row { display:flex; gap:0.8rem; }
+  .form-input {
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:300;
+    letter-spacing:0.06em; padding:0.75rem 0.9rem; outline:none; width:100%;
+    -webkit-appearance:none; border-radius:0; transition:border-color 0.25s;
+  }
+  .form-input::placeholder { color:#3a3a35; }
+  .form-input:focus { border-color:var(--accent); }
+  .form-select {
+    background:#0c0c0b; border:1px solid var(--border); color:var(--text);
+    font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:300;
+    letter-spacing:0.06em; padding:0.75rem 0.9rem; outline:none; width:100%;
+    -webkit-appearance:none; border-radius:0; transition:border-color 0.25s; cursor:pointer;
+  }
+  .form-select:focus { border-color:var(--accent); }
+  .form-textarea {
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:300;
+    letter-spacing:0.06em; padding:0.75rem 0.9rem; outline:none; resize:none;
+    width:100%; height:120px; -webkit-appearance:none; border-radius:0;
+    transition:border-color 0.25s;
+  }
+  .form-textarea::placeholder { color:#3a3a35; }
+  .form-textarea:focus { border-color:var(--accent); }
+  .form-note { font-size:0.57rem; color:#4a4845; letter-spacing:0.08em; line-height:1.7; font-style:italic; }
+  .form-submit { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.85rem 2rem; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; transition:background 0.3s, color 0.3s; width:100%; -webkit-tap-highlight-color:transparent; }
+  .form-submit:hover { background:var(--accent); color:var(--bg); }
+
+  /* CONFIRM */
+  .confirm { display:none; padding:1.5rem; border:1px solid var(--border); text-align:center; }
+  .confirm.show { display:block; }
+  .confirm-title { font-family:'Cormorant Garamond',serif; font-size:1.4rem; font-style:italic; color:var(--text); margin-bottom:0.5rem; }
+  .confirm-text { font-size:0.67rem; color:#a0998f; letter-spacing:0.06em; line-height:1.8; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:2rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:1; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:0.9rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .footer-links { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:0.3rem; }
+  .footer-link { font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:#3a3a35; text-decoration:none; transition:color 0.2s; }
+  .footer-link:hover { color:var(--muted); }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.12em; color:#252520; text-transform:uppercase; text-align:center; margin-top:0.3rem; }
+
+  @media (max-width:480px) { .form-row { flex-direction:column; } }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="eyre-home.html">EYRE</a>
+  <div class="nav-links">
+    <a class="nav-link" href="eyre-home.html">Home</a>
+    <a class="nav-link" href="eyre-about.html">About</a>
+    <a class="nav-link" href="eyre-programmes.html">Work</a>
+    <a class="nav-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a call</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Contact</div>
+  <h1 class="hero-headline">Every engagement<br><em>starts with a conversation.</em></h1>
+  <p class="hero-sub">The right first step depends on where you are. Start with a discovery call or send a direct message.</p>
+</section>
+
+<div class="content">
+
+  <!-- DISCOVERY CALL -->
+  <div class="discovery-block">
+    <div class="discovery-label">Free · 30 minutes · No obligation</div>
+    <div class="discovery-title">Book a discovery call</div>
+    <div class="discovery-desc">We talk about where you are, what you need, and whether EYRE is the right fit. No commitment required. Available online or by phone.</div>
+    <div>
+      <a class="btn-primary" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book now via Calendly</a>
+    </div>
+    <div class="discovery-detail">Opens Calendly — choose a time that suits</div>
+  </div>
+
+  <!-- DIRECT CONTACT -->
+  <div>
+    <div class="direct-label">Direct contact</div>
+    <div class="contact-items">
+      <div class="contact-item">
+        <div class="contact-item-label">Email</div>
+        <a class="contact-item-value" href="mailto:chris@eyrecoaching.com">chris@eyrecoaching.com</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-label">Location</div>
+        <div class="contact-item-value" style="cursor:default;">South Australia, Australia</div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-item-label">Delivery</div>
+        <div class="contact-item-value" style="cursor:default;">Online and in person</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ENQUIRY FORM -->
+  <div>
+    <div class="form-label">Send an enquiry</div>
+    <div class="form-desc">For corporate enquiries, private engagements, keynote requests, or anything that doesn't fit a standard booking — send a message directly. I read everything and respond personally.</div>
+
+    <div class="form" id="enquiry-form">
+      <div class="form-row">
+        <input class="form-input" id="f-name" type="text" placeholder="Your name" autocomplete="name">
+        <input class="form-input" id="f-email" type="email" placeholder="Your email" autocomplete="email">
+      </div>
+      <select class="form-select" id="f-type">
+        <option value="" disabled selected>What are you enquiring about?</option>
+        <option value="Individual session">Individual session</option>
+        <option value="90-day programme">90-day programme</option>
+        <option value="Immersion / retreat">Immersion / retreat</option>
+        <option value="Private engagement">Private engagement</option>
+        <option value="Corporate workshop">Corporate workshop</option>
+        <option value="Keynote">Keynote</option>
+        <option value="Organisational engagement">Organisational engagement</option>
+        <option value="Something else">Something else</option>
+      </select>
+      <textarea class="form-textarea" id="f-message" placeholder="Tell me a little about what you are dealing with and what you are looking for."></textarea>
+      <div class="form-note">Your information will be used only to respond to your enquiry. See our <a href="eyre-privacy.html" style="color:var(--accent);text-decoration:none;">privacy policy</a>.</div>
+      <button class="form-submit" onclick="submitEnquiry()">Send enquiry</button>
+    </div>
+
+    <div class="confirm" id="form-confirm">
+      <div class="confirm-title">Received.</div>
+      <div class="confirm-text">I will read this and come back to you personally within a few days.</div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="footer-brand">EYRE</div>
+  <div class="footer-links">
+    <a class="footer-link" href="eyre-home.html">Home</a>
+    <a class="footer-link" href="eyre-about.html">About</a>
+    <a class="footer-link" href="eyre-programmes.html">Programmes</a>
+    <a class="footer-link" href="eyre-tools.html">Tools</a>
+    <a class="footer-link" href="eyre-terms.html">Terms of use</a>
+    <a class="footer-link" href="eyre-privacy.html">Privacy</a>
+    <a class="footer-link" href="eyre-support.html">When to seek support</a>
+  </div>
+  <div class="footer-disc">EYRE Coaching · Arkana Life · ABN trading as EYRE Coaching · South Australia</div>
+  <div class="footer-disc" style="margin-top:0.2rem;">For self-regulation support only · Not a substitute for professional care</div>
+</footer>
+
+<script>
+function submitEnquiry() {
+  const name = document.getElementById('f-name').value.trim();
+  const email = document.getElementById('f-email').value.trim();
+  const type = document.getElementById('f-type').value;
+  const message = document.getElementById('f-message').value.trim();
+
+  if (!name || !email) {
+    alert('Please add your name and email.');
+    return;
+  }
+
+  const subject = encodeURIComponent('EYRE Enquiry — ' + (type || 'General') + ' — ' + name);
+  const body = encodeURIComponent(
+    'Name: ' + name + '\n' +
+    'Email: ' + email + '\n' +
+    'Enquiry type: ' + (type || 'Not specified') + '\n\n' +
+    message
+  );
+
+  window.location.href = 'mailto:chris@eyrecoaching.com?subject=' + subject + '&body=' + body;
+
+  document.getElementById('enquiry-form').style.display = 'none';
+  document.getElementById('form-confirm').classList.add('show');
+}
+</script>
+</body>
+</html>

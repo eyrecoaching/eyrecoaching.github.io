@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>EYRE — Participation Waiver</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root { --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f; --accent:#d4a95a; --accent-dim:rgba(212,169,90,0.07); --ventral:#6a8f7a; }
+  html { background:#0c0c0b; }
+  body { min-height:100vh; background:#0c0c0b !important; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.07em; color-scheme:dark; overflow-x:hidden; }
+  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+
+  .page { position:relative; z-index:1; max-width:680px; margin:0 auto; padding:max(env(safe-area-inset-top),2rem) 1.5rem max(env(safe-area-inset-bottom),3rem); display:flex; flex-direction:column; gap:2.5rem; }
+
+  /* HEADER */
+  .header { text-align:center; display:flex; flex-direction:column; gap:0.6rem; padding-bottom:1.5rem; border-bottom:1px solid var(--border); }
+  .brand { font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .doc-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,5vw,2rem); font-weight:300; color:var(--text); line-height:1.2; }
+  .doc-sub { font-size:0.65rem; color:#a0998f; letter-spacing:0.08em; line-height:1.8; }
+  .doc-date { font-size:0.55rem; letter-spacing:0.2em; color:#4a4845; text-transform:uppercase; }
+
+  /* SECTIONS */
+  .waiver-section { display:flex; flex-direction:column; gap:0.9rem; }
+  .section-title { font-size:0.58rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--accent); padding-bottom:0.6rem; border-bottom:1px solid var(--border); }
+  .section-body { font-size:0.68rem; color:#b8b2a8; letter-spacing:0.05em; line-height:1.95; }
+  .section-body p + p { margin-top:0.8rem; }
+
+  .item-list { display:flex; flex-direction:column; gap:0.5rem; }
+  .item { display:flex; align-items:flex-start; gap:0.8rem; font-size:0.68rem; color:#b8b2a8; letter-spacing:0.05em; line-height:1.8; }
+  .item-marker { color:var(--accent); flex-shrink:0; font-family:'Cormorant Garamond',serif; font-style:italic; }
+
+  /* FIELDS */
+  .fields { display:flex; flex-direction:column; gap:0.8rem; }
+  .field-row { display:flex; gap:0.8rem; }
+  .field { display:flex; flex-direction:column; gap:0.3rem; flex:1; }
+  .field-label { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
+  .field-input {
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:300;
+    letter-spacing:0.06em; padding:0.7rem 0.9rem; outline:none; width:100%;
+    -webkit-appearance:none; border-radius:0; transition:border-color 0.25s;
+  }
+  .field-input::placeholder { color:#3a3a35; }
+  .field-input:focus { border-color:var(--accent); }
+  .field-select {
+    background:#0c0c0b; border:1px solid var(--border); color:var(--text);
+    font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:300;
+    letter-spacing:0.06em; padding:0.7rem 0.9rem; outline:none; width:100%;
+    -webkit-appearance:none; border-radius:0; transition:border-color 0.25s; cursor:pointer;
+  }
+  .field-select:focus { border-color:var(--accent); }
+  .field-textarea {
+    background:transparent; border:1px solid var(--border); color:var(--text);
+    font-family:'Montserrat',sans-serif; font-size:0.7rem; font-weight:300;
+    letter-spacing:0.06em; padding:0.7rem 0.9rem; outline:none; resize:none;
+    width:100%; height:80px; -webkit-appearance:none; border-radius:0;
+    transition:border-color 0.25s;
+  }
+  .field-textarea::placeholder { color:#3a3a35; }
+  .field-textarea:focus { border-color:var(--accent); }
+
+  /* CHECKBOXES */
+  .checks { display:flex; flex-direction:column; gap:0.7rem; }
+  .check-item { display:flex; align-items:flex-start; gap:0.9rem; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .check-box {
+    width:16px; height:16px; border:1px solid var(--border);
+    flex-shrink:0; margin-top:0.1rem; display:flex; align-items:center;
+    justify-content:center; transition:border-color 0.2s, background 0.2s;
+    cursor:pointer;
+  }
+  .check-box.checked { border-color:var(--accent); background:var(--accent-dim); }
+  .check-box.checked::after { content:'✓'; font-size:0.7rem; color:var(--accent); }
+  .check-text { font-size:0.67rem; color:#b8b2a8; letter-spacing:0.05em; line-height:1.75; flex:1; }
+
+  /* SIGNATURE */
+  .sig-block { border:1px solid var(--border); padding:1.2rem; display:flex; flex-direction:column; gap:0.8rem; }
+  .sig-instruction { font-size:0.62rem; color:#a0998f; letter-spacing:0.06em; line-height:1.7; }
+  .sig-input {
+    background:transparent; border:none; border-bottom:1px solid var(--accent);
+    color:var(--text); font-family:'Cormorant Garamond',serif; font-size:1.4rem;
+    font-style:italic; letter-spacing:0.05em; padding:0.5rem 0; outline:none; width:100%;
+    -webkit-appearance:none;
+  }
+  .sig-input::placeholder { color:#3a3a35; font-size:1.1rem; }
+  .sig-label { font-size:0.52rem; letter-spacing:0.2em; text-transform:uppercase; color:#4a4845; }
+
+  /* SUBMIT */
+  .submit-btn { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.9rem 2rem; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; width:100%; transition:background 0.3s, color 0.3s; -webkit-tap-highlight-color:transparent; }
+  .submit-btn:hover { background:var(--accent); color:var(--bg); }
+  .submit-note { font-size:0.57rem; color:#3a3a35; letter-spacing:0.08em; line-height:1.7; text-align:center; font-style:italic; }
+
+  /* CONFIRM */
+  .confirm-wrap { display:none; flex-direction:column; align-items:center; gap:1.5rem; text-align:center; padding:3rem 0; }
+  .confirm-wrap.show { display:flex; }
+  .confirm-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; font-style:italic; color:var(--ventral); }
+  .confirm-text { font-size:0.7rem; color:#a0998f; letter-spacing:0.07em; line-height:1.9; max-width:400px; }
+  .divider { width:32px; height:1px; background:var(--border); }
+
+  /* ERROR */
+  .error-msg { font-size:0.62rem; color:#c07070; letter-spacing:0.08em; text-align:center; display:none; }
+  .error-msg.show { display:block; }
+
+  /* FOOTER */
+  .footer { text-align:center; padding-top:1.5rem; border-top:1px solid var(--border); display:flex; flex-direction:column; gap:0.2rem; }
+  .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2e2e2a; text-transform:uppercase; }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#2e2e2a; text-transform:uppercase; }
+
+  @media (max-width:480px) { .field-row { flex-direction:column; } }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="brand">EYRE</div>
+    <div class="doc-title">Participation Waiver &<br>Health Disclosure</div>
+    <div class="doc-sub">Please read carefully and complete all sections before your first session. This waiver covers all EYRE Coaching engagements — online and in person.</div>
+    <div class="doc-date">EYRE Coaching · Arkana Life ABN · South Australia</div>
+  </div>
+
+  <div id="waiver-form">
+
+    <!-- PERSONAL DETAILS -->
+    <div class="waiver-section">
+      <div class="section-title">Personal details</div>
+      <div class="fields">
+        <div class="field-row">
+          <div class="field">
+            <div class="field-label">Full name</div>
+            <input class="field-input" id="w-name" type="text" placeholder="Your full legal name" autocomplete="name">
+          </div>
+          <div class="field">
+            <div class="field-label">Date of birth</div>
+            <input class="field-input" id="w-dob" type="text" placeholder="DD / MM / YYYY">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <div class="field-label">Email</div>
+            <input class="field-input" id="w-email" type="email" placeholder="Your email address" autocomplete="email">
+          </div>
+          <div class="field">
+            <div class="field-label">Phone</div>
+            <input class="field-input" id="w-phone" type="tel" placeholder="Your phone number" autocomplete="tel">
+          </div>
+        </div>
+        <div class="field">
+          <div class="field-label">Emergency contact — name and phone</div>
+          <input class="field-input" id="w-emergency" type="text" placeholder="Name and phone number">
+        </div>
+        <div class="field">
+          <div class="field-label">Engagement type</div>
+          <select class="field-select" id="w-type">
+            <option value="" disabled selected>Select your engagement type</option>
+            <option>Individual session</option>
+            <option>90-day programme</option>
+            <option>Immersion / retreat</option>
+            <option>Private engagement</option>
+            <option>Corporate workshop</option>
+            <option>Online breathwork</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- HEALTH DISCLOSURE -->
+    <div class="waiver-section">
+      <div class="section-title">Health disclosure</div>
+      <div class="section-body">
+        <p>Breathwork involves deliberate alteration of normal breathing patterns. To participate safely, please disclose any relevant health conditions. This information is confidential and used only to ensure your safety.</p>
+      </div>
+      <div class="fields">
+        <div class="field">
+          <div class="field-label">Do you have any of the following? (select all that apply or write none)</div>
+          <textarea class="field-textarea" id="w-health" placeholder="Cardiovascular conditions · Hypertension · Respiratory conditions (asthma, COPD) · History of seizures or fainting · Dissociative episodes · Diagnosed mental health condition · Currently pregnant · None of the above"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-label">Are you currently under the care of a mental health professional?</div>
+          <select class="field-select" id="w-mhp">
+            <option value="" disabled selected>Select</option>
+            <option>No</option>
+            <option>Yes — I have informed them I am participating</option>
+            <option>Yes — I have not yet informed them</option>
+          </select>
+        </div>
+        <div class="field">
+          <div class="field-label">Are you currently taking any medications that may affect your breathing, heart rate, or nervous system?</div>
+          <textarea class="field-textarea" id="w-meds" placeholder="List medications or write none" style="height:60px;"></textarea>
+        </div>
+        <div class="field">
+          <div class="field-label">Anything else relevant to your health or participation that EYRE Coaching should know?</div>
+          <textarea class="field-textarea" id="w-other" placeholder="Optional — any additional context" style="height:60px;"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACKNOWLEDGEMENTS -->
+    <div class="waiver-section">
+      <div class="section-title">Acknowledgements</div>
+      <div class="section-body"><p>Please read and confirm each of the following by tapping to check.</p></div>
+      <div class="checks" id="checks">
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I confirm I am aged 18 or over.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I understand that EYRE Coaching provides self-regulation support and psychoeducation. It is not a clinical intervention, therapeutic treatment, or substitute for professional mental health care.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I understand that breathwork involves deliberate alteration of breathing patterns and may produce physical sensations including lightheadedness or tingling. I will stop if I experience significant discomfort and will not hold myself or EYRE Coaching responsible for any such experience.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I confirm that the health information I have provided is accurate and complete to the best of my knowledge. I understand it is my responsibility to disclose any relevant conditions.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I understand that EYRE Coaching accepts no liability for any adverse outcomes arising from my participation, including physical discomfort, psychological distress, or decisions made in reliance on session content. I participate voluntarily and accept responsibility for my own wellbeing.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I understand that if I am currently under the care of a mental health professional, I should consult them before participating. I confirm I have done so or accept responsibility for proceeding without doing so.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I confirm I am not currently experiencing active suicidal ideation or acute psychotic episodes. I understand these states are contraindications to participation and that I should contact crisis services immediately if I am in either of these states.</div>
+        </div>
+
+        <div class="check-item" onclick="toggleCheck(this)">
+          <div class="check-box"></div>
+          <div class="check-text">I have read and agree to the EYRE Coaching Terms of Use, Privacy Policy, and this waiver. I understand that my personal information will be used only in accordance with the EYRE Coaching privacy policy.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SIGNATURE -->
+    <div class="waiver-section">
+      <div class="section-title">Digital signature</div>
+      <div class="sig-block">
+        <div class="sig-instruction">Type your full name below as your digital signature. By signing you confirm that you have read, understood, and agree to all of the above.</div>
+        <input class="sig-input" id="w-sig" type="text" placeholder="Type your full name here">
+        <div class="sig-label">Digital signature · Typed name has the same legal standing as a handwritten signature under Australian electronic transactions law.</div>
+      </div>
+      <div class="fields">
+        <div class="field">
+          <div class="field-label">Today's date</div>
+          <input class="field-input" id="w-date" type="text" placeholder="DD / MM / YYYY">
+        </div>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="waiver-section">
+      <div class="error-msg" id="error-msg">Please complete all required fields, check all acknowledgements, and add your signature before submitting.</div>
+      <button class="submit-btn" onclick="submitWaiver()">Submit waiver</button>
+      <div class="submit-note">Submitting will open your email app with a pre-filled message to chris@eyrecoaching.com. Please send the email to complete your waiver submission. You will receive a copy.</div>
+    </div>
+
+  </div>
+
+  <!-- CONFIRMATION -->
+  <div class="confirm-wrap" id="confirm-wrap">
+    <div class="confirm-title">Waiver received.</div>
+    <div class="divider"></div>
+    <div class="confirm-text">Thank you. Your waiver has been submitted to EYRE Coaching. You will receive a confirmation from chris@eyrecoaching.com. If you do not hear back within 48 hours please contact us directly.</div>
+  </div>
+
+  <div class="footer">
+    <div class="footer-tag">EYRE Coaching</div>
+    <div class="footer-disc">Arkana Life ABN · Trading as EYRE Coaching · South Australia</div>
+    <div class="footer-disc" style="margin-top:0.15rem;">For self-regulation support only · Not a substitute for professional care</div>
+  </div>
+
+</div>
+
+<script>
+function toggleCheck(item) {
+  item.querySelector('.check-box').classList.toggle('checked');
+}
+
+function allChecked() {
+  const boxes = document.querySelectorAll('.check-box');
+  return Array.from(boxes).every(b => b.classList.contains('checked'));
+}
+
+function submitWaiver() {
+  const name = document.getElementById('w-name').value.trim();
+  const dob = document.getElementById('w-dob').value.trim();
+  const email = document.getElementById('w-email').value.trim();
+  const phone = document.getElementById('w-phone').value.trim();
+  const emergency = document.getElementById('w-emergency').value.trim();
+  const type = document.getElementById('w-type').value;
+  const health = document.getElementById('w-health').value.trim();
+  const mhp = document.getElementById('w-mhp').value;
+  const meds = document.getElementById('w-meds').value.trim();
+  const other = document.getElementById('w-other').value.trim();
+  const sig = document.getElementById('w-sig').value.trim();
+  const date = document.getElementById('w-date').value.trim();
+  const errMsg = document.getElementById('error-msg');
+
+  if (!name || !dob || !email || !phone || !emergency || !type || !health || !mhp || !sig || !date) {
+    errMsg.classList.add('show');
+    errMsg.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  if (!allChecked()) {
+    errMsg.classList.add('show');
+    errMsg.textContent = 'Please confirm all acknowledgements before submitting.';
+    errMsg.scrollIntoView({ behavior:'smooth', block:'center' });
+    return;
+  }
+
+  errMsg.classList.remove('show');
+
+  const today = new Date().toLocaleDateString('en-AU');
+
+  const subject = encodeURIComponent('EYRE Waiver — ' + name + ' — ' + today);
+  const body = encodeURIComponent(
+    'EYRE COACHING — PARTICIPATION WAIVER\n' +
+    '=====================================\n\n' +
+    'PERSONAL DETAILS\n' +
+    'Full name: ' + name + '\n' +
+    'Date of birth: ' + dob + '\n' +
+    'Email: ' + email + '\n' +
+    'Phone: ' + phone + '\n' +
+    'Emergency contact: ' + emergency + '\n' +
+    'Engagement type: ' + type + '\n\n' +
+    'HEALTH DISCLOSURE\n' +
+    'Health conditions: ' + health + '\n' +
+    'Under MHP care: ' + mhp + '\n' +
+    'Medications: ' + (meds || 'None') + '\n' +
+    'Additional notes: ' + (other || 'None') + '\n\n' +
+    'ACKNOWLEDGEMENTS\n' +
+    'All 8 acknowledgements confirmed: YES\n\n' +
+    'SIGNATURE\n' +
+    'Digital signature: ' + sig + '\n' +
+    'Date signed: ' + date + '\n\n' +
+    '=====================================\n' +
+    'Submitted via eyrecoaching.com'
+  );
+
+  window.location.href = 'mailto:chris@eyrecoaching.com?cc=' + encodeURIComponent(email) + '&subject=' + subject + '&body=' + body;
+
+  document.getElementById('waiver-form').style.display = 'none';
+  document.getElementById('confirm-wrap').classList.add('show');
+}
+</script>
+</body>
+</html>

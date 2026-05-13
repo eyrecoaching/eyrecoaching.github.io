@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>EYRE — Breathwork</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #0c0c0b;
+    --surface: #131312;
+    --border: #2a2a27;
+    --text: #f2ede4;
+    --muted: #b0aa9f;
+    --accent: #d4a95a;
+    --accent-dim: rgba(201,169,110,0.15);
+    --inhale: #a8c4b8;
+    --hold: #d4a95a;
+    --exhale: #b8a898;
+  }
+
+  html, body {
+    height: 100%;
+    background: #0c0c0b !important;
+    color: #f2ede4;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    overflow: hidden;
+    color-scheme: dark;
+  }
+
+  /* Noise texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.6;
+  }
+
+  .app {
+    position: relative;
+    z-index: 1;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    gap: 0;
+    background: #0c0c0b;
+  }
+
+  /* ── HEADER ── */
+  .brand {
+    position: fixed;
+    top: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    font-weight: 300;
+    letter-spacing: 0.35em;
+    color: var(--muted);
+    text-transform: uppercase;
+  }
+
+  /* ── SCREENS ── */
+  .screen {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 360px;
+    gap: 2rem;
+    animation: fadeIn 0.6s ease;
+  }
+  .screen.active { display: flex; }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── SELECT SCREEN ── */
+  .select-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.6rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .techniques {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    width: 100%;
+  }
+
+  .technique-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    text-align: left;
+    transition: border-color 0.3s, background 0.3s;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 200;
+    letter-spacing: 0.08em;
+  }
+
+  .technique-btn:hover {
+    border-color: var(--accent);
+    background: var(--accent-dim);
+  }
+
+  .technique-name {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  .technique-desc {
+    font-size: 0.75rem;
+    color: #c0bab2;
+    letter-spacing: 0.06em;
+    line-height: 1.5;
+  }
+
+  /* ── BREATH SCREEN ── */
+  .session-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-align: center;
+  }
+
+  /* Orb */
+  .orb-container {
+    position: relative;
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem 0;
+  }
+
+  .orb-ring {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    transition: none;
+  }
+
+  .orb-ring-1 { width: 200px; height: 200px; opacity: 0.3; }
+  .orb-ring-2 { width: 160px; height: 160px; opacity: 0.5; }
+
+  .orb {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 38% 38%, #5a7a6e, #2a3d38);
+    box-shadow: 0 0 40px rgba(143,173,160,0.15), inset 0 0 20px rgba(0,0,0,0.4);
+    transition: transform 0s linear, box-shadow 0.5s ease;
+    position: relative;
+    z-index: 2;
+  }
+
+  .orb.inhaling {
+    animation: none;
+    box-shadow: 0 0 60px rgba(143,173,160,0.3), inset 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .orb.holding {
+    box-shadow: 0 0 50px rgba(201,169,110,0.25), inset 0 0 20px rgba(0,0,0,0.3);
+  }
+
+  .orb.exhaling {
+    box-shadow: 0 0 20px rgba(143,173,160,0.08), inset 0 0 20px rgba(0,0,0,0.5);
+  }
+
+  /* Phase label */
+  .phase-label {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    min-height: 2.6rem;
+    text-align: center;
+    transition: opacity 0.4s ease;
+  }
+
+  .phase-count {
+    font-size: 1.1rem;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 400;
+    letter-spacing: 0.3em;
+    color: #e8e2d8;
+    text-align: center;
+    min-height: 1.4rem;
+  }
+
+  /* Cycle counter */
+  .cycle-info {
+    font-size: 0.75rem;
+    letter-spacing: 0.25em;
+    color: #d4cfc8;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* Progress bar */
+  .progress-bar {
+    width: 100%;
+    height: 1px;
+    background: var(--border);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s linear;
+  }
+
+  /* Controls */
+  .controls {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    margin-top: 0.5rem;
+  }
+
+  .btn-primary {
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.8rem 2rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent);
+    color: var(--bg);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    border: none;
+    color: var(--muted);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    font-weight: 300;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    cursor: pointer;
+    padding: 0.8rem 1rem;
+    transition: color 0.3s;
+  }
+
+  .btn-ghost:hover { color: var(--text); }
+
+  /* Complete screen */
+  .complete-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    font-style: italic;
+    text-align: center;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .complete-sub {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    color: #c0bab2;
+    text-align: center;
+  }
+
+  /* Thin line divider */
+  .divider {
+    width: 40px;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* Duration selector */
+  .duration-row {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .dur-btn {
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 0.5rem 0.9rem;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.25s;
+  }
+
+  .dur-btn:hover, .dur-btn.selected {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+.footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#6a6560; text-transform:uppercase; margin-top:0.15rem; }
+  
+  /* ── ACCEPT GATE ── */
+  #accept-gate {
+    position:fixed; inset:0; z-index:999;
+    background:#0c0c0b;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:max(env(safe-area-inset-top),1.5rem) 1.5rem max(env(safe-area-inset-bottom),1.5rem);
+    color-scheme:dark;
+  }
+  #accept-gate::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+  .gate-inner {
+    position:relative; z-index:1;
+    width:100%; max-width:320px;
+    display:flex; flex-direction:column;
+    gap:1.4rem;
+  }
+  .gate-brand {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; letter-spacing:0.55em;
+    color:#b0aa9f; text-transform:uppercase;
+    text-align:center;
+  }
+  .gate-divider { width:24px; height:1px; background:#2a2a27; margin:0 auto; }
+  .gate-scope {
+    font-size:0.63rem; color:#7a7470;
+    letter-spacing:0.07em; line-height:1.9;
+    text-align:center;
+  }
+  .gate-crisis {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.4rem 0;
+    border-top:none;
+    background:transparent;
+  }
+  .gate-crisis-label {
+    font-size:0.55rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:#8a5a5a;
+  }
+  .gate-crisis-number {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1rem; color:#c07070;
+    text-decoration:none; letter-spacing:0.05em;
+  }
+  .gate-accept {
+    background:transparent;
+    border:1px solid #d4a95a;
+    color:#d4a95a;
+    padding:0.9rem 1.6rem;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.6rem; font-weight:300;
+    letter-spacing:0.3em; text-transform:uppercase;
+    cursor:pointer; width:100%;
+    -webkit-tap-highlight-color:transparent;
+    transition:background 0.3s, color 0.3s;
+  }
+  .gate-accept:active { background:#d4a95a; color:#0c0c0b; }
+  .gate-terms {
+    font-size:0.48rem; color:#6a6460;
+    letter-spacing:0.12em; text-align:center;
+    line-height:1.8; text-transform:uppercase;
+  }
+
+
+  /* ── NAV ── */
+  .eyre-nav {
+    position:fixed; top:0; left:0; right:0; z-index:998;
+    background:rgba(12,12,11,0.95);
+    border-bottom:1px solid #1e1e1c;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.7rem 1.2rem;
+    padding-top:max(env(safe-area-inset-top),0.7rem);
+  }
+  .nav-brand {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1rem; letter-spacing:0.4em;
+    color:#b0aa9f; text-transform:uppercase;
+    text-decoration:none;
+  }
+  .nav-links {
+    display:flex; gap:1.2rem; align-items:center;
+  }
+  .nav-link {
+    font-family:'Montserrat',sans-serif;
+    font-size:0.52rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:#6a6460;
+    text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:color 0.2s;
+  }
+  .nav-link:hover, .nav-link.active { color:#d4a95a; }
+  .nav-spacer { height:3rem; }
+
+</style>
+</head>
+<body>
+
+
+
+
+<div id="accept-gate">
+  <div class="gate-inner">
+    <div class="gate-brand">EYRE</div>
+    <div class="gate-divider"></div>
+    <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
+    <button class="gate-accept" onclick="acceptGate()">Continue</button>
+    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/terms" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
+
+  </div>
+</div>
+
+
+<div class="brand">EYRE</div>
+
+<div class="app">
+
+  <!-- SELECT SCREEN -->
+  <div class="screen active" id="screen-select">
+    <div class="select-label">Choose your practice</div>
+    <div class="techniques">
+      <button class="technique-btn" onclick="selectTechnique('resonance')">
+        <div class="technique-name">Resonance</div>
+        <div class="technique-desc">5 sec inhale · 5 sec exhale · 6 cycles/min<br>Coherence. HRV. Calm.</div>
+      </button>
+      <button class="technique-btn" onclick="selectTechnique('box')">
+        <div class="technique-name">Box</div>
+        <div class="technique-desc">4 · 4 · 4 · 4 — inhale, hold, exhale, hold<br>Focus. Regulation. Presence.</div>
+      </button>
+      <button class="technique-btn" onclick="selectTechnique('478')">
+        <div class="technique-name">Extended Exhale</div>
+        <div class="technique-desc">4 sec inhale · 7 sec hold · 8 sec exhale<br>Downregulation. Rest. Release.</div>
+      </button>
+      <button class="technique-btn" onclick="selectTechnique('sigh')">
+        <div class="technique-name">Physiological Sigh</div>
+        <div class="technique-desc">4 sec inhale · 2 sec inhale again · 8 sec exhale<br>Acute. Fast. Effective.</div>
+      </button>
+    </div>
+  </div>
+
+  <!-- DURATION SCREEN -->
+  <div class="screen" id="screen-duration">
+    <div class="session-title" id="dur-technique-label">Resonance Breathing</div>
+    <div class="select-label" style="font-size:1.3rem">How long?</div>
+    <div class="duration-row">
+      <button class="dur-btn selected" data-mins="5" onclick="selectDuration(this, 5)">5 min</button>
+      <button class="dur-btn" data-mins="10" onclick="selectDuration(this, 10)">10 min</button>
+      <button class="dur-btn" data-mins="15" onclick="selectDuration(this, 15)">15 min</button>
+      <button class="dur-btn" data-mins="20" onclick="selectDuration(this, 20)">20 min</button>
+    </div>
+    <div class="controls">
+      <button class="btn-primary" onclick="startSession()">Begin</button>
+      <button class="btn-ghost" onclick="showScreen('screen-select')">Back</button>
+    </div>
+  </div>
+
+  <!-- BREATH SCREEN -->
+  <div class="screen" id="screen-breath">
+    <div class="session-title" id="session-label">Resonance Breathing</div>
+
+    <div class="orb-container">
+      <div class="orb-ring orb-ring-1" id="ring1"></div>
+      <div class="orb-ring orb-ring-2" id="ring2"></div>
+      <div class="orb" id="orb"></div>
+    </div>
+
+    <div class="phase-label" id="phase-label">—</div>
+    <div class="phase-count" id="phase-count"></div>
+
+    <div class="divider"></div>
+
+    <div class="cycle-info" id="cycle-info">Cycle 1</div>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn-primary" id="pause-btn" onclick="togglePause()">Pause</button>
+      <button class="btn-ghost" onclick="endSession()">End</button>
+    </div>
+  </div>
+
+  <!-- COMPLETE SCREEN -->
+  <div class="screen" id="screen-complete">
+    <div class="complete-title">Well done.</div>
+    <div class="divider"></div>
+    <div class="complete-sub" id="complete-sub">Practice complete.</div>
+    <div class="controls" style="margin-top:1rem;">
+      <button class="btn-primary" onclick="showScreen('screen-select')">Again</button>
+    </div>
+  </div>
+    
+
+</div>
+
+<script>
+// ── TECHNIQUES ──
+const TECHNIQUES = {
+  resonance: {
+    label: 'Resonance Breathing',
+    phases: [
+      { name: 'Inhale',  duration: 5, type: 'inhale' },
+      { name: 'Exhale',  duration: 5, type: 'exhale' }
+    ]
+  },
+  box: {
+    label: 'Box Breathing',
+    phases: [
+      { name: 'Inhale',  duration: 4, type: 'inhale' },
+      { name: 'Hold',    duration: 4, type: 'hold' },
+      { name: 'Exhale',  duration: 4, type: 'exhale' },
+      { name: 'Hold',    duration: 4, type: 'hold' }
+    ]
+  },
+  '478': {
+    label: 'Extended Exhale',
+    phases: [
+      { name: 'Inhale',  duration: 4,  type: 'inhale' },
+      { name: 'Hold',    duration: 7,  type: 'hold' },
+      { name: 'Exhale',  duration: 8,  type: 'exhale' }
+    ]
+  },
+  sigh: {
+    label: 'Physiological Sigh',
+    phases: [
+      { name: 'Inhale',       duration: 4, type: 'inhale' },
+      { name: 'Inhale again', duration: 2, type: 'inhale2' },
+      { name: 'Exhale',       duration: 8, type: 'exhale' }
+    ]
+  }
+};
+
+// ── STATE ──
+let currentTechnique = null;
+let sessionDuration = 5; // minutes
+let sessionTimer = null;
+let phaseTimer = null;
+let countTimer = null;
+let cycleCount = 0;
+let phaseIndex = 0;
+let isPaused = false;
+let sessionStartTime = null;
+let sessionTotalSeconds = 0;
+let elapsedSeconds = 0;
+let phaseRemaining = 0;
+let animationFrame = null;
+let lastTimestamp = null;
+let orbScale = 1;
+let targetScale = 1;
+let currentPhaseType = '';
+
+// ── NAV ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+function selectTechnique(key) {
+  currentTechnique = key;
+  document.getElementById('dur-technique-label').textContent = TECHNIQUES[key].label;
+  showScreen('screen-duration');
+}
+
+function selectDuration(btn, mins) {
+  document.querySelectorAll('.dur-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  sessionDuration = mins;
+}
+
+function startSession() {
+  const tech = TECHNIQUES[currentTechnique];
+  document.getElementById('session-label').textContent = tech.label;
+  sessionTotalSeconds = sessionDuration * 60;
+  elapsedSeconds = 0;
+  cycleCount = 0;
+  phaseIndex = 0;
+  isPaused = false;
+  document.getElementById('pause-btn').textContent = 'Pause';
+  showScreen('screen-breath');
+  updateProgress();
+  startPhase();
+  startElapsedTimer();
+}
+
+// ── PHASE ENGINE ──
+function startPhase() {
+  const tech = TECHNIQUES[currentTechnique];
+  const phase = tech.phases[phaseIndex];
+  phaseRemaining = phase.duration;
+  currentPhaseType = phase.type;
+
+  setPhaseLabel(phase.name, phase.type);
+  setPhaseCount(phaseRemaining);
+  animateOrb(phase.type, phase.duration);
+
+  if (phaseIndex === 0) {
+    cycleCount++;
+    document.getElementById('cycle-info').textContent = `Cycle ${cycleCount}`;
+  }
+
+  countDown();
+}
+
+function countDown() {
+  clearTimeout(phaseTimer);
+  if (isPaused) return;
+
+  if (phaseRemaining <= 0) {
+    nextPhase();
+    return;
+  }
+
+  setPhaseCount(phaseRemaining);
+  phaseRemaining--;
+  phaseTimer = setTimeout(countDown, 1000);
+}
+
+function nextPhase() {
+  const tech = TECHNIQUES[currentTechnique];
+  phaseIndex = (phaseIndex + 1) % tech.phases.length;
+  startPhase();
+}
+
+// ── ELAPSED ──
+function startElapsedTimer() {
+  clearInterval(sessionTimer);
+  sessionTimer = setInterval(() => {
+    if (isPaused) return;
+    elapsedSeconds++;
+    updateProgress();
+    if (elapsedSeconds >= sessionTotalSeconds) {
+      clearInterval(sessionTimer);
+      finishSession();
+    }
+  }, 1000);
+}
+
+function updateProgress() {
+  const pct = Math.min(100, (elapsedSeconds / sessionTotalSeconds) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+}
+
+// ── ORB ANIMATION ──
+function animateOrb(type, duration) {
+  const orb = document.getElementById('orb');
+  orb.style.transition = '';
+  orb.className = 'orb';
+
+  if (type === 'inhale') {
+    orb.style.transition = `transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;
+    orb.style.transform = 'scale(1.9)';
+    orb.classList.add('inhaling');
+  } else if (type === 'inhale2') {
+    orb.style.transition = `transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;
+    orb.style.transform = 'scale(2.2)';
+    orb.classList.add('inhaling');
+  } else if (type === 'exhale') {
+    orb.style.transition = `transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;
+    orb.style.transform = 'scale(1)';
+    orb.classList.add('exhaling');
+  } else {
+    // hold — keep current size
+    orb.classList.add('holding');
+  }
+}
+
+// ── LABELS ──
+function setPhaseLabel(name, type) {
+  const el = document.getElementById('phase-label');
+  el.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = name;
+    if (type === 'inhale' || type === 'inhale2') el.style.color = '#8fada0';
+    else if (type === 'hold') el.style.color = '#c9a96e';
+    else el.style.color = '#a09080';
+    el.style.opacity = '1';
+  }, 200);
+}
+
+function setPhaseCount(n) {
+  document.getElementById('phase-count').textContent = n > 0 ? n : '';
+}
+
+// ── PAUSE ──
+function togglePause() {
+  isPaused = !isPaused;
+  document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause';
+  if (!isPaused) {
+    countDown();
+    // re-trigger orb for remaining
+    const tech = TECHNIQUES[currentTechnique];
+    const phase = tech.phases[phaseIndex];
+    animateOrb(phase.type, phaseRemaining);
+  } else {
+    clearTimeout(phaseTimer);
+    // freeze orb
+    const orb = document.getElementById('orb');
+    const computed = getComputedStyle(orb).transform;
+    orb.style.transition = 'none';
+    orb.style.transform = computed;
+  }
+}
+
+// ── END / COMPLETE ──
+function endSession() {
+  clearInterval(sessionTimer);
+  clearTimeout(phaseTimer);
+  resetOrb();
+  showScreen('screen-select');
+}
+
+function finishSession() {
+  clearTimeout(phaseTimer);
+  resetOrb();
+  const mins = sessionDuration;
+  const cycles = cycleCount;
+  document.getElementById('complete-sub').textContent =
+    `${mins} minutes · ${cycles} cycles · ${TECHNIQUES[currentTechnique].label}`;
+  showScreen('screen-complete');
+}
+
+function resetOrb() {
+  const orb = document.getElementById('orb');
+  orb.style.transition = 'transform 1s ease';
+  orb.style.transform = 'scale(1)';
+  orb.className = 'orb';
+}
+
+function acceptGate() {
+  const gate = document.getElementById('accept-gate');
+  gate.style.opacity = '0';
+  gate.style.transition = 'opacity 0.4s ease';
+  setTimeout(() => { gate.style.display = 'none'; }, 400);
+}
+
+</script>
+<div style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:0.4rem 1rem 0.8rem;z-index:10;"><div style="font-size:0.48rem;letter-spacing:0.15em;color:#6a6560;text-transform:uppercase;">For self-regulation support only &middot; Not a substitute for professional care</div></div>
+</body>
+</html>

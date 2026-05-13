@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>EYRE — The Ladder</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f; --accent:#d4a95a;
+    --ventral:#6a8f7a; --sympathetic:#c4a45a; --dorsal:#5a6a7a;
+  }
+  html { height:100%; background:#0c0c0b; }
+  body { min-height:100vh; height:100dvh; background:#0c0c0b !important; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.07em; color-scheme:dark; display:flex; flex-direction:column; position:fixed; width:100%; overflow:hidden; }
+  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+
+  .header { flex:0 0 auto; text-align:center; padding:max(env(safe-area-inset-top),0.8rem) 1rem 0.3rem; position:relative; z-index:1; }
+  .header-eyre { font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .main { flex:1 1 auto; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; padding:0 1.5rem; overflow:hidden; }
+  .footer { flex:0 0 auto; text-align:center; padding:0.2rem 1rem max(env(safe-area-inset-bottom),0.5rem); position:relative; z-index:1; }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#6a6560; text-transform:uppercase; margin-top:0.15rem; }
+  .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2a2a26; text-transform:uppercase; }
+
+  .screen { display:none; flex-direction:column; align-items:center; width:100%; max-width:340px; gap:0.7rem; animation:fadeIn 0.4s ease; }
+  .screen.active { display:flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  /* ── LADDER ── */
+  .ladder-prompt { font-family:'Cormorant Garamond',serif; font-size:clamp(1.4rem,5.5vw,1.8rem); font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.3; }
+  .ladder-sub { font-size:0.63rem; color:var(--muted); letter-spacing:0.08em; text-align:center; }
+  .ladder-attr { font-size:0.52rem; color:#4a4845; letter-spacing:0.07em; text-align:center; line-height:1.7; max-width:300px; font-style:italic; }
+  .ladder { display:flex; flex-direction:column; width:100%; position:relative; }
+  .ladder::before { content:''; position:absolute; left:15px; top:10px; bottom:10px; width:1px; background:var(--border); z-index:0; }
+  .rung { display:flex; align-items:flex-start; gap:0.9rem; padding:0.5rem 0.6rem; cursor:pointer; position:relative; z-index:1; transition:background 0.2s; -webkit-tap-highlight-color:transparent; }
+  .rung:not(:last-child) { border-bottom:1px solid #161614; }
+  .rung:active { background:rgba(255,255,255,0.03); }
+  .rung-marker { width:10px; height:10px; border-radius:50%; flex-shrink:0; margin-top:4px; }
+  .rung-marker.v  { background:var(--ventral); box-shadow:0 0 6px rgba(106,143,122,0.5); }
+  .rung-marker.s1 { background:#b07840; }
+  .rung-marker.s2 { background:var(--sympathetic); }
+  .rung-marker.s3 { background:#a09050; }
+  .rung-marker.d1 { background:#6a7a8a; }
+  .rung-marker.d2 { background:var(--dorsal); }
+  .rung-content { flex:1; }
+  .rung-state { font-size:0.52rem; letter-spacing:0.18em; text-transform:uppercase; margin-bottom:0.08rem; }
+  .rung-state.v { color:var(--ventral); }
+  .rung-state.s { color:var(--sympathetic); }
+  .rung-state.d { color:var(--dorsal); }
+  .rung-title { font-family:'Cormorant Garamond',serif; font-size:0.88rem; font-weight:300; color:var(--text); margin-bottom:0.08rem; }
+  .rung-words { font-size:0.56rem; color:#6a6460; letter-spacing:0.04em; line-height:1.4; }
+  .rung-arrow { font-size:0.75rem; color:#3a3a35; margin-top:3px; flex-shrink:0; }
+
+  /* ── RESULT ── */
+  .result-state-tag { font-size:0.58rem; letter-spacing:0.28em; text-transform:uppercase; text-align:center; }
+  .result-state-tag.v { color:var(--ventral); }
+  .result-state-tag.s { color:var(--sympathetic); }
+  .result-state-tag.d { color:var(--dorsal); }
+  .result-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,6vw,2rem); font-weight:400; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
+  .result-bar-wrap { width:100%; height:2px; background:var(--border); overflow:hidden; }
+  .result-bar { height:100%; width:0%; transition:width 1s cubic-bezier(0.4,0,0.2,1); }
+  .result-bar.v { background:var(--ventral); }
+  .result-bar.s { background:var(--sympathetic); }
+  .result-bar.d { background:var(--dorsal); }
+  .result-biology { font-size:0.67rem; color:#c0bab0; letter-spacing:0.05em; line-height:1.85; text-align:center; max-width:300px; }
+
+  /* Breath recommendation card */
+  .breath-card { width:100%; border:1px solid var(--border); padding:1rem 1.1rem; display:flex; flex-direction:column; gap:0.5rem; }
+  .breath-card-pre { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--muted); }
+  .breath-card-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-style:italic; color:var(--text); }
+  .breath-card-pattern { font-size:0.6rem; color:#a0998f; letter-spacing:0.1em; text-transform:uppercase; }
+  .breath-card-why { font-size:0.64rem; color:#888078; letter-spacing:0.04em; line-height:1.65; }
+
+  .divider { width:32px; height:1px; background:var(--border); }
+  .controls { display:flex; gap:0.8rem; align-items:center; }
+  .btn-primary { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.7rem 1.6rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .btn-primary:active { background:var(--accent); color:var(--bg); }
+  .btn-ghost { background:transparent; border:none; color:var(--muted); font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; padding:0.7rem 0.5rem; -webkit-tap-highlight-color:transparent; }
+
+  /* ── BREATHWORK ── */
+  .breath-session-label { font-size:0.58rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--muted); text-align:center; }
+  .orb-container { position:relative; width:clamp(130px,42vw,160px); height:clamp(130px,42vw,160px); display:flex; align-items:center; justify-content:center; }
+  .orb-ring { position:absolute; border-radius:50%; border:1px solid var(--border); }
+  .orb-ring-1 { inset:0; opacity:0.25; }
+  .orb-ring-2 { inset:14%; opacity:0.4; }
+  .orb { width:36%; height:36%; border-radius:50%; background:radial-gradient(circle at 38% 38%,#5a7a6e,#2a3d38); box-shadow:0 0 30px rgba(143,173,160,0.15),inset 0 0 15px rgba(0,0,0,0.4); position:relative; z-index:2; }
+  .orb.inhaling,.orb.inhale1 { box-shadow:0 0 50px rgba(143,173,160,0.3),inset 0 0 15px rgba(0,0,0,0.3); }
+  .orb.holding { box-shadow:0 0 40px rgba(212,169,90,0.2),inset 0 0 15px rgba(0,0,0,0.3); }
+  .orb.exhaling { box-shadow:0 0 10px rgba(143,173,160,0.05),inset 0 0 15px rgba(0,0,0,0.5); }
+  .orb.inhale2 { box-shadow:0 0 55px rgba(143,173,160,0.4),inset 0 0 15px rgba(0,0,0,0.2); }
+
+  /* Box visual */
+  .box-wrapper { position:relative; width:clamp(130px,40vw,155px); height:clamp(130px,40vw,155px); display:flex; align-items:center; justify-content:center; }
+  .box-outline { position:absolute; inset:0; border:1px solid var(--border); }
+  .box-dot { width:11px; height:11px; border-radius:50%; background:var(--accent); position:absolute; top:-5.5px; left:-5.5px; box-shadow:0 0 8px rgba(212,169,90,0.5); }
+
+  /* Arc visual */
+  .arc-wrapper { position:relative; width:clamp(130px,42vw,160px); height:clamp(130px,42vw,160px); display:flex; align-items:center; justify-content:center; }
+  .arc-svg { position:absolute; top:0; left:0; width:100%; height:100%; transform:rotate(-90deg); }
+  .arc-track { fill:none; stroke:#2a2a27; stroke-width:1.5; }
+  .arc-fill { fill:none; stroke:#8a9a8a; stroke-width:1.5; stroke-linecap:round; stroke-dasharray:565; stroke-dashoffset:565; }
+  .orb-arc { width:36%; height:36%; border-radius:50%; background:radial-gradient(circle at 38% 38%,#5a7a6e,#2a3d38); box-shadow:0 0 30px rgba(143,173,160,0.15),inset 0 0 15px rgba(0,0,0,0.4); position:relative; z-index:2; }
+
+  .phase-label { font-family:'Cormorant Garamond',serif; font-size:clamp(1.7rem,7vw,2.2rem); font-weight:400; font-style:italic; color:var(--text); min-height:2.4rem; text-align:center; transition:opacity 0.4s ease; }
+  .phase-sub { font-size:0.58rem; letter-spacing:0.18em; color:var(--muted); text-align:center; text-transform:uppercase; min-height:0.8rem; transition:opacity 0.3s; }
+  .phase-count { font-size:1rem; font-weight:400; letter-spacing:0.3em; color:#e8e2d8; text-align:center; min-height:1.2rem; }
+  .cycle-info { font-size:0.6rem; letter-spacing:0.25em; color:#d4cfc8; text-transform:uppercase; text-align:center; }
+  .progress-bar { width:100%; height:1px; background:var(--border); overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); width:0%; transition:width 0.5s linear; }
+
+  .dur-row { display:flex; gap:0.4rem; justify-content:center; }
+  .dur-btn { background:transparent; border:1px solid var(--border); color:var(--muted); padding:0.45rem 0.8rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; letter-spacing:0.14em; cursor:pointer; transition:all 0.25s; -webkit-tap-highlight-color:transparent; }
+  .dur-btn.selected { border-color:var(--accent); color:var(--accent); }
+  .dur-label { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-style:italic; color:var(--text); text-align:center; }
+  .intro-safety { font-size:0.6rem; color:#8a8480; letter-spacing:0.08em; text-align:center; line-height:1.7; border-top:1px solid #2a2a27; padding-top:0.8rem; width:100%; }
+
+  .complete-title { font-family:'Cormorant Garamond',serif; font-size:1.9rem; font-weight:300; font-style:italic; text-align:center; color:var(--text); }
+  .complete-sub { font-size:0.67rem; letter-spacing:0.15em; color:#c0bab2; text-align:center; line-height:1.9; }
+
+  /* ── ACCEPT GATE ── */
+  #accept-gate {
+    position:fixed; inset:0; z-index:999;
+    background:#0c0c0b;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    padding:max(env(safe-area-inset-top),1.5rem) 1.5rem max(env(safe-area-inset-bottom),1.5rem);
+    color-scheme:dark;
+  }
+  #accept-gate::before {
+    content:''; position:absolute; inset:0; pointer-events:none;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+  .gate-inner {
+    position:relative; z-index:1;
+    width:100%; max-width:320px;
+    display:flex; flex-direction:column;
+    gap:1.4rem;
+  }
+  .gate-brand {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.2rem; letter-spacing:0.55em;
+    color:#b0aa9f; text-transform:uppercase;
+    text-align:center;
+  }
+  .gate-divider { width:24px; height:1px; background:#2a2a27; margin:0 auto; }
+  .gate-scope {
+    font-size:0.63rem; color:#7a7470;
+    letter-spacing:0.07em; line-height:1.9;
+    text-align:center;
+  }
+  .gate-crisis {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.4rem 0;
+    border-top:none;
+    background:transparent;
+  }
+  .gate-crisis-label {
+    font-size:0.55rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:#8a5a5a;
+  }
+  .gate-crisis-number {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1.1rem; color:#c07070;
+    text-decoration:none; letter-spacing:0.05em;
+  }
+  .gate-accept {
+    background:transparent;
+    border:1px solid #d4a95a;
+    color:#d4a95a;
+    padding:0.9rem 1.6rem;
+    font-family:'Montserrat',sans-serif;
+    font-size:0.6rem; font-weight:300;
+    letter-spacing:0.3em; text-transform:uppercase;
+    cursor:pointer; width:100%;
+    -webkit-tap-highlight-color:transparent;
+    transition:background 0.3s, color 0.3s;
+  }
+  .gate-accept:active { background:#d4a95a; color:#0c0c0b; }
+  .gate-terms {
+    font-size:0.48rem; color:#6a6460;
+    letter-spacing:0.12em; text-align:center;
+    line-height:1.8; text-transform:uppercase;
+  }
+
+
+  /* ── NAV ── */
+  .eyre-nav {
+    position:fixed; top:0; left:0; right:0; z-index:998;
+    background:rgba(12,12,11,0.95);
+    border-bottom:1px solid #1e1e1c;
+    backdrop-filter:blur(8px);
+    -webkit-backdrop-filter:blur(8px);
+    display:flex; align-items:center; justify-content:space-between;
+    padding:0.7rem 1.2rem;
+    padding-top:max(env(safe-area-inset-top),0.7rem);
+  }
+  .nav-brand {
+    font-family:'Cormorant Garamond',serif;
+    font-size:1rem; letter-spacing:0.4em;
+    color:#b0aa9f; text-transform:uppercase;
+    text-decoration:none;
+  }
+  .nav-links {
+    display:flex; gap:1.2rem; align-items:center;
+  }
+  .nav-link {
+    font-family:'Montserrat',sans-serif;
+    font-size:0.52rem; letter-spacing:0.18em;
+    text-transform:uppercase; color:#6a6460;
+    text-decoration:none;
+    -webkit-tap-highlight-color:transparent;
+    transition:color 0.2s;
+  }
+  .nav-link:hover, .nav-link.active { color:#d4a95a; }
+  .nav-spacer { height:3rem; }
+
+</style>
+</head>
+<body>
+
+
+
+
+<div id="accept-gate">
+  <div class="gate-inner">
+    <div class="gate-brand">EYRE</div>
+    <div class="gate-divider"></div>
+    <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
+    <button class="gate-accept" onclick="acceptGate()">Continue</button>
+    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/terms" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
+
+  </div>
+</div>
+
+<div class="header"><div class="header-eyre">EYRE</div></div>
+<div class="main">
+
+  <!-- LADDER -->
+  <div class="screen active" id="screen-ladder">
+    <div class="ladder-prompt">Where are you<br>right now?</div>
+    <div class="ladder-sub">Tap the rung that reflects how you are feeling now</div>
+    <div class="ladder-attr">Based on the Autonomic Ladder developed by Deb Dana, LCSW, from Polyvagal Theory by Dr Stephen Porges. Polyvagal Theory is a widely used clinical framework; some aspects remain subject to ongoing scientific debate.</div>
+    <div class="ladder">
+      <div class="rung" onclick="showResult('v')">
+        <div class="rung-marker v"></div>
+        <div class="rung-content">
+          <div class="rung-state v">Ventral Vagal</div>
+          <div class="rung-title">Safe & Connected</div>
+          <div class="rung-words">Calm · present · open · engaged</div>
+        </div>
+        <div class="rung-arrow">›</div>
+      </div>
+      <div class="rung" onclick="showResult('s1')">
+        <div class="rung-marker s1"></div>
+        <div class="rung-content">
+          <div class="rung-state s">Sympathetic</div>
+          <div class="rung-title">Fight — Reactive</div>
+          <div class="rung-words">Angry · confrontational · defensive</div>
+        </div>
+        <div class="rung-arrow">›</div>
+      </div>
+      <div class="rung" onclick="showResult('s2')">
+        <div class="rung-marker s2"></div>
+        <div class="rung-content">
+          <div class="rung-state s">Sympathetic</div>
+          <div class="rung-title">Anxious — Wired</div>
+          <div class="rung-words">Worried · restless · scattered · on edge</div>
+        </div>
+        <div class="rung-arrow">›</div>
+      </div>
+      <div class="rung" onclick="showResult('s3')">
+        <div class="rung-marker s3"></div>
+        <div class="rung-content">
+          <div class="rung-state s">Sympathetic</div>
+          <div class="rung-title">Flight — Avoidant</div>
+          <div class="rung-words">Want to escape · withdrawing · avoiding</div>
+        </div>
+        <div class="rung-arrow">›</div>
+      </div>
+      <div class="rung" onclick="showResult('d1')">
+        <div class="rung-marker d1"></div>
+        <div class="rung-content">
+          <div class="rung-state d">Dorsal Vagal</div>
+          <div class="rung-title">Shutdown — Flat</div>
+          <div class="rung-words">Disengaged · going through motions</div>
+        </div>
+        <div class="rung-arrow">›</div>
+      </div>
+      <div class="rung" onclick="showResult('d2')">
+        <div class="rung-marker d2"></div>
+        <div class="rung-content">
+          <div class="rung-state d">Dorsal Vagal</div>
+          <div class="rung-title">Shutdown — Collapsed</div>
+          <div class="rung-words">Numb · hopeless · unreachable · frozen</div>
+        </div>
+        <div class="rung-arrow">›</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RESULT + BREATH RECOMMENDATION -->
+  <div class="screen" id="screen-result">
+    <div class="result-state-tag" id="r-tag"></div>
+    <div class="result-title" id="r-title"></div>
+    <div class="result-bar-wrap"><div class="result-bar" id="r-bar"></div></div>
+    <div class="result-biology" id="r-biology"></div>
+    <div class="breath-card">
+      <div class="breath-card-pre">Recommended practice</div>
+      <div class="breath-card-name" id="r-breath-name"></div>
+      <div class="breath-card-pattern" id="r-breath-pattern"></div>
+      <div class="breath-card-why" id="r-breath-why"></div>
+    </div>
+    <div class="controls">
+      <button class="btn-primary" onclick="goToDuration()">Begin breathwork</button>
+      <button class="btn-ghost" onclick="showScreen('screen-ladder')">Back</button>
+    </div>
+  </div>
+
+  <!-- DURATION -->
+  <div class="screen" id="screen-duration">
+    <div class="dur-label">How long?</div>
+    <div class="dur-row" id="dur-row"></div>
+    <div class="intro-safety">Find a quiet place to sit or lie down. Do not practise while driving or operating machinery.</div>
+    <div class="controls">
+      <button class="btn-primary" onclick="startBreath()">Start</button>
+      <button class="btn-ghost" onclick="showScreen('screen-result')">Back</button>
+    </div>
+  </div>
+
+  <!-- BREATHWORK SESSION -->
+  <div class="screen" id="screen-breath">
+    <div class="breath-session-label" id="breath-session-label"></div>
+    <div id="breath-visual"></div>
+    <div class="phase-label" id="phase-label">—</div>
+    <div class="phase-sub" id="phase-sub"></div>
+    <div class="phase-count" id="phase-count"></div>
+    <div class="divider"></div>
+    <div class="cycle-info" id="cycle-info">Cycle 1</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="controls">
+      <button class="btn-primary" id="pause-btn" onclick="togglePause()">Pause</button>
+      <button class="btn-ghost" onclick="endBreath()">End</button>
+    </div>
+  </div>
+
+  <!-- COMPLETE -->
+  <div class="screen" id="screen-complete">
+    <div class="complete-title">Well done.</div>
+    <div class="divider"></div>
+    <div class="complete-sub" id="complete-sub"></div>
+    <div class="controls" style="margin-top:0.3rem;">
+      <button class="btn-primary" onclick="showScreen('screen-ladder')">Back to ladder</button>
+    </div>
+  </div>
+
+</div>
+  <div class="footer"><div class="footer-tag">EYRE Coaching</div><div class="footer-disc">For self-regulation support only &middot; Not a substitute for professional care</div></div>
+
+<script>
+// ── STATE DATA ──
+const STATES = {
+  v:  { tag:'Ventral Vagal', cls:'v', title:'Safe & Connected', bar:92,
+        biology:'Your social engagement system is online. You have access to clear thinking, genuine connection, and the capacity to respond rather than react.',
+        breath:'resonance' },
+  s1: { tag:'Sympathetic', cls:'s', title:'Fight — Reactive', bar:68,
+        biology:'Your nervous system has detected threat and is preparing to confront it. Anger and reactivity are features of this state, not character flaws.',
+        breath:'sigh' },
+  s2: { tag:'Sympathetic', cls:'s', title:'Anxious — Wired', bar:58,
+        biology:'Your system is running a low-level threat scan. Worry and restlessness are the output of a nervous system that senses something is unresolved.',
+        breath:'extended' },
+  s3: { tag:'Sympathetic', cls:'s', title:'Flight — Avoidant', bar:50,
+        biology:'The urge to escape is your system creating distance from what it perceives as unsafe. The impulse to withdraw is biology, not weakness.',
+        breath:'extended' },
+  d1: { tag:'Dorsal Vagal', cls:'d', title:'Shutdown — Flat', bar:28,
+        biology:'Your system is beginning to conserve. Flatness and disengagement are early protective responses — your nervous system pulling back from too much.',
+        breath:'box' },
+  d2: { tag:'Dorsal Vagal', cls:'d', title:'Shutdown — Collapsed', bar:10,
+        biology:'Your system has moved into its oldest protective state. Numbness and collapse are not failure — they are the body\'s last line of defence.',
+        breath:'box' }
+};
+
+// ── BREATH TECHNIQUES ──
+const BREATHS = {
+  resonance: {
+    name:'Resonance Breathing',
+    pattern:'5 sec inhale · 5 sec exhale',
+    why:'At six cycles per minute, resonance breathing creates coherence between heart rhythm and nervous system. The strongest evidence-based practice for maintaining and deepening a regulated ventral state.',
+    label:'Resonance Breathing',
+    durations:[5,10,15,20],
+    defaultDur:5,
+    phases:[
+      {name:'Inhale',sub:'',duration:5,type:'inhale'},
+      {name:'Exhale',sub:'',duration:5,type:'exhale'}
+    ],
+    visual:'orb'
+  },
+  box: {
+    name:'Box Breathing',
+    pattern:'4 · 4 · 4 · 4',
+    why:'Research suggests shutdown states may benefit from mild structured activation before the system can return to regulated. Box breathing offers a gentle scaffold — equal phases of breath that provide rhythm and mild engagement without overwhelm. This is an informed clinical inference, not a directly tested protocol for this state.',
+    label:'Box Breathing',
+    durations:[5,10,15,20],
+    defaultDur:5,
+    phases:[
+      {name:'Inhale',sub:'',duration:4,type:'inhale'},
+      {name:'Hold',sub:'',duration:4,type:'hold'},
+      {name:'Exhale',sub:'',duration:4,type:'exhale'},
+      {name:'Hold',sub:'',duration:4,type:'hold'}
+    ],
+    visual:'box'
+  },
+  extended: {
+    name:'Extended Exhale',
+    pattern:'4 sec inhale · 7 sec hold · 8 sec exhale',
+    why:'The long exhale directly activates the vagal brake. Research consistently shows extended exhalation reduces fight-or-flight arousal faster than any other single technique — the right tool for anxiety and the urge to flee.',
+    label:'Extended Exhale',
+    durations:[2,4,6,8],
+    defaultDur:2,
+    phases:[
+      {name:'Inhale',sub:'',duration:4,type:'inhale'},
+      {name:'Hold',sub:'',duration:7,type:'hold'},
+      {name:'Exhale',sub:'',duration:8,type:'exhale'}
+    ],
+    visual:'arc'
+  },
+  sigh: {
+    name:'Physiological Sigh',
+    pattern:'Inhale 4 · Inhale 2 · Exhale 8',
+    why:'The strongest evidence for acute fight activation. A 2023 Stanford RCT found cyclic sighing outperformed box breathing, extended exhale, and mindfulness for reducing physiological arousal and improving mood. The double inhale deflates the alveoli; the long exhale triggers rapid parasympathetic recovery.',
+    label:'Physiological Sigh',
+    durations:[1,2,3,5],
+    defaultDur:2,
+    phases:[
+      {name:'Inhale',sub:'through the nose',duration:4,type:'inhale'},
+      {name:'Inhale',sub:'top-up breath',duration:2,type:'inhale2'},
+      {name:'Exhale',sub:'slow release',duration:8,type:'exhale'}
+    ],
+    visual:'orb'
+  }
+};
+
+// ── SESSION STATE ──
+let currentStateKey = null;
+let currentBreath = null;
+let sessionDuration = 5;
+let sessionTimer = null;
+let phaseTimer = null;
+let cycleCount = 0;
+let phaseIndex = 0;
+let isPaused = false;
+let sessionTotalSeconds = 0;
+let elapsedSeconds = 0;
+let phaseRemaining = 0;
+let dotCorner = 0;
+const CIRC = 2 * Math.PI * 90;
+
+// ── NAV ──
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── RESULT ──
+function showResult(key) {
+  currentStateKey = key;
+  const s = STATES[key];
+  const b = BREATHS[s.breath];
+  currentBreath = b;
+
+  document.getElementById('r-tag').textContent = s.tag;
+  document.getElementById('r-tag').className = 'result-state-tag ' + s.cls;
+  document.getElementById('r-title').textContent = s.title;
+  document.getElementById('r-bar').className = 'result-bar ' + s.cls;
+  document.getElementById('r-bar').style.width = '0%';
+  document.getElementById('r-biology').textContent = s.biology;
+  document.getElementById('r-breath-name').textContent = b.name;
+  document.getElementById('r-breath-pattern').textContent = b.pattern;
+  document.getElementById('r-breath-why').textContent = b.why;
+
+  showScreen('screen-result');
+  setTimeout(() => { document.getElementById('r-bar').style.width = s.bar + '%'; }, 100);
+}
+
+// ── DURATION ──
+function goToDuration() {
+  const b = currentBreath;
+  sessionDuration = b.defaultDur;
+  const row = document.getElementById('dur-row');
+  row.innerHTML = '';
+  b.durations.forEach(d => {
+    const btn = document.createElement('button');
+    btn.className = 'dur-btn' + (d === b.defaultDur ? ' selected' : '');
+    btn.textContent = d + ' min';
+    btn.onclick = () => {
+      document.querySelectorAll('.dur-btn').forEach(x => x.classList.remove('selected'));
+      btn.classList.add('selected');
+      sessionDuration = d;
+    };
+    row.appendChild(btn);
+  });
+  showScreen('screen-duration');
+}
+
+// ── START BREATH ──
+function startBreath() {
+  const b = currentBreath;
+  document.getElementById('breath-session-label').textContent = b.label;
+  sessionTotalSeconds = sessionDuration * 60;
+  elapsedSeconds = 0; cycleCount = 0; phaseIndex = 0; isPaused = false; dotCorner = 0;
+  document.getElementById('pause-btn').textContent = 'Pause';
+
+  // Build visual
+  buildVisual(b.visual);
+  showScreen('screen-breath');
+  updateProgress();
+  setTimeout(() => { startPhase(); startElapsedTimer(); }, 100);
+}
+
+function buildVisual(type) {
+  const el = document.getElementById('breath-visual');
+  if (type === 'orb') {
+    el.innerHTML = `<div class="orb-container"><svg class="arc-svg" viewBox="0 0 200 200"><circle class="arc-track" cx="100" cy="100" r="90"/><circle class="arc-fill" id="arc-fill" cx="100" cy="100" r="90"/></svg><div class="orb" id="orb"></div></div>`;
+    setTimeout(() => { const a = document.getElementById('arc-fill'); if(a){a.style.transition='none';a.style.strokeDashoffset=CIRC;} }, 50);
+  } else if (type === 'box') {
+    const s = Math.min(155, Math.floor(window.innerWidth * 0.4));
+    el.innerHTML = `<div class="box-wrapper" style="width:${s}px;height:${s}px"><div class="box-outline"></div><div class="box-dot" id="box-dot"></div></div>`;
+  } else if (type === 'arc') {
+    el.innerHTML = `<div class="arc-wrapper"><svg class="arc-svg" viewBox="0 0 200 200"><circle class="arc-track" cx="100" cy="100" r="90"/><circle class="arc-fill" id="arc-fill" cx="100" cy="100" r="90"/></svg><div class="orb-arc" id="orb"></div></div>`;
+    setTimeout(() => { const a = document.getElementById('arc-fill'); if(a){a.style.transition='none';a.style.strokeDashoffset=CIRC;} }, 50);
+  }
+}
+
+// ── PHASE ENGINE ──
+function startPhase() {
+  const phases = currentBreath.phases;
+  const phase = phases[phaseIndex];
+  phaseRemaining = phase.duration;
+  setPhaseLabel(phase.name, phase.sub || '', phase.type);
+  animateVisual(phase.type, phase.duration);
+  if (phaseIndex === 0) { cycleCount++; document.getElementById('cycle-info').textContent = `Cycle ${cycleCount}`; }
+  countDown();
+}
+
+function countDown() {
+  clearTimeout(phaseTimer);
+  if (isPaused) return;
+  if (phaseRemaining <= 0) { phaseIndex = (phaseIndex + 1) % currentBreath.phases.length; startPhase(); return; }
+  document.getElementById('phase-count').textContent = phaseRemaining;
+  phaseRemaining--;
+  phaseTimer = setTimeout(countDown, 1000);
+}
+
+function startElapsedTimer() {
+  clearInterval(sessionTimer);
+  sessionTimer = setInterval(() => {
+    if (isPaused) return;
+    elapsedSeconds++;
+    updateProgress();
+    if (elapsedSeconds >= sessionTotalSeconds) { clearInterval(sessionTimer); finishBreath(); }
+  }, 1000);
+}
+
+function updateProgress() {
+  document.getElementById('progress-fill').style.width = Math.min(100, (elapsedSeconds / sessionTotalSeconds) * 100) + '%';
+}
+
+// ── VISUAL ANIMATION ──
+function animateVisual(type, duration) {
+  const v = currentBreath.visual;
+  if (v === 'orb' || v === 'arc') animateOrb(type, duration);
+  if (v === 'box') animateBox(type, duration);
+  if (v === 'orb' || v === 'arc') animateArc(type, duration);
+}
+
+function animateOrb(type, duration) {
+  const o = document.getElementById('orb');
+  if (!o) return;
+  o.className = o.className.replace(/\s*(inhaling|inhale1|inhale2|holding|exhaling)\s*/g, ' ').trim();
+  if (type === 'inhale') {
+    o.style.transition = `transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;
+    o.style.transform = 'scale(2.1)';
+    setTimeout(() => { if(o) o.classList.add('inhaling'); }, 0);
+  } else if (type === 'inhale2') {
+    o.style.transition = `transform ${duration}s cubic-bezier(0.2,0,0.1,1)`;
+    o.style.transform = 'scale(2.4)';
+    setTimeout(() => { if(o) o.classList.add('inhale2'); }, 0);
+  } else if (type === 'exhale') {
+    o.style.transition = `transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;
+    o.style.transform = 'scale(1)';
+    setTimeout(() => { if(o) o.classList.add('exhaling'); }, 0);
+  } else {
+    setTimeout(() => { if(o) o.classList.add('holding'); }, 0);
+  }
+}
+
+function animateBox(type, duration) {
+  const dot = document.getElementById('box-dot');
+  if (!dot) return;
+  const w = document.querySelector('.box-wrapper');
+  if (!w) return;
+  const s = w.offsetWidth;
+  const CORNERS = [{top:-5.5,left:-5.5},{top:-5.5,left:s-5.5},{top:s-5.5,left:s-5.5},{top:s-5.5,left:-5.5}];
+  const next = (dotCorner + 1) % 4;
+  const c = CORNERS[next];
+  dot.style.transition = `top ${duration}s linear,left ${duration}s linear`;
+  dot.style.top = c.top + 'px';
+  dot.style.left = c.left + 'px';
+  dotCorner = next;
+}
+
+function animateArc(type, duration) {
+  const a = document.getElementById('arc-fill');
+  if (!a) return;
+  a.style.transition = 'none';
+  if (type === 'inhale') {
+    a.style.strokeDashoffset = CIRC;
+    a.style.stroke = '#a8c4b8';
+    requestAnimationFrame(() => { a.style.transition = `stroke-dashoffset ${duration}s linear`; a.style.strokeDashoffset = 0; });
+  } else if (type === 'hold') {
+    a.style.stroke = '#d4a95a';
+    a.style.strokeDashoffset = 0;
+  } else {
+    a.style.strokeDashoffset = 0;
+    a.style.stroke = '#b8a898';
+    requestAnimationFrame(() => { a.style.transition = `stroke-dashoffset ${duration}s linear`; a.style.strokeDashoffset = CIRC; });
+  }
+}
+
+function setPhaseLabel(name, sub, type) {
+  const el = document.getElementById('phase-label');
+  const subEl = document.getElementById('phase-sub');
+  el.style.opacity = '0'; subEl.style.opacity = '0';
+  setTimeout(() => {
+    el.textContent = name;
+    subEl.textContent = sub;
+    if (type === 'inhale' || type === 'inhale1') el.style.color = '#a8c4b8';
+    else if (type === 'inhale2') el.style.color = '#b0b0d8';
+    else if (type === 'hold') el.style.color = '#d4a95a';
+    else el.style.color = '#b8a898';
+    el.style.opacity = '1'; subEl.style.opacity = '1';
+  }, 180);
+}
+
+function togglePause() {
+  isPaused = !isPaused;
+  document.getElementById('pause-btn').textContent = isPaused ? 'Resume' : 'Pause';
+  if (!isPaused) {
+    countDown();
+    const phase = currentBreath.phases[phaseIndex];
+    animateVisual(phase.type, phaseRemaining);
+  } else {
+    clearTimeout(phaseTimer);
+    const o = document.getElementById('orb');
+    if (o) { o.style.transform = getComputedStyle(o).transform; o.style.transition = 'none'; }
+    const a = document.getElementById('arc-fill');
+    if (a) { a.style.strokeDashoffset = getComputedStyle(a).strokeDashoffset; a.style.transition = 'none'; }
+    const dot = document.getElementById('box-dot');
+    if (dot) { const cs = getComputedStyle(dot); dot.style.top = cs.top; dot.style.left = cs.left; dot.style.transition = 'none'; }
+  }
+}
+
+function endBreath() {
+  clearInterval(sessionTimer); clearTimeout(phaseTimer);
+  showScreen('screen-ladder');
+}
+
+function finishBreath() {
+  clearTimeout(phaseTimer);
+  document.getElementById('complete-sub').textContent = `${sessionDuration} min · ${cycleCount} cycles · ${currentBreath.label}`;
+  showScreen('screen-complete');
+}
+
+function setVH() { document.body.style.height = window.innerHeight + 'px'; }
+setVH();
+window.addEventListener('resize', setVH);
+
+function acceptGate() {
+  const gate = document.getElementById('accept-gate');
+  gate.style.opacity = '0';
+  gate.style.transition = 'opacity 0.4s ease';
+  setTimeout(() => { gate.style.display = 'none'; }, 400);
+}
+
+</script>
+</body>
+</html>

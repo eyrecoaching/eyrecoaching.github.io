@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="description" content="EYRE Coaching — the philosophy. Nervous system regulation, breathwork, nature, movement, sauna, nutrition, and meaning.">
+<title>EYRE — The Philosophy</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f;
+    --accent:#d4a95a; --accent-dim:rgba(212,169,90,0.07);
+  }
+  html { background:#0c0c0b; scroll-behavior:smooth; }
+  body {
+    background:#0c0c0b !important; color:var(--text);
+    font-family:'Montserrat',sans-serif; font-weight:300;
+    letter-spacing:0.07em; color-scheme:dark; overflow-x:hidden;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; display:flex; align-items:center; justify-content:space-between; padding:1rem 2rem; padding-top:max(env(safe-area-inset-top),1rem); background:rgba(12,12,11,0.9); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .nav-brand { font-family:'Cormorant Garamond',serif; font-size:1.1rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; text-decoration:none; }
+  .nav-links { display:flex; gap:1.5rem; align-items:center; }
+  .nav-link { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:#6a6460; text-decoration:none; transition:color 0.2s; }
+  .nav-link:hover { color:var(--accent); }
+  .nav-cta { font-size:0.55rem; letter-spacing:0.2em; text-transform:uppercase; color:var(--accent); text-decoration:none; border:1px solid var(--accent); padding:0.45rem 0.9rem; transition:background 0.3s, color 0.3s; }
+  .nav-cta:hover { background:var(--accent); color:var(--bg); }
+
+  section { position:relative; z-index:1; }
+  .section-divider { width:40px; height:1px; background:var(--border); margin:0 auto; }
+
+  /* HERO */
+  .hero { min-height:60dvh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:max(env(safe-area-inset-top),7rem) 2rem 4rem; text-align:center; gap:1.5rem; }
+  .hero-eyebrow { font-size:0.6rem; letter-spacing:0.35em; text-transform:uppercase; color:var(--muted); }
+  .hero-headline { font-family:'Cormorant Garamond',serif; font-size:clamp(2rem,7vw,4rem); font-weight:300; line-height:1.15; color:var(--text); max-width:640px; }
+  .hero-headline em { font-style:italic; color:var(--accent); }
+  .hero-sub { font-size:0.72rem; color:#a0998f; letter-spacing:0.08em; line-height:1.9; max-width:480px; }
+
+  /* PILLARS */
+  .pillar {
+    padding:5rem 2rem;
+    max-width:680px; margin:0 auto;
+    display:flex; flex-direction:column; gap:2rem;
+  }
+  .pillar.dark {
+    max-width:100%;
+    background:#0f0f0e;
+    border-top:1px solid var(--border);
+    border-bottom:1px solid var(--border);
+    padding:5rem 2rem;
+  }
+  .pillar.dark .pillar-inner {
+    max-width:680px; margin:0 auto;
+    display:flex; flex-direction:column; gap:2rem;
+  }
+
+  .pillar-number { font-size:0.52rem; letter-spacing:0.3em; text-transform:uppercase; color:var(--accent); }
+  .pillar-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.5rem,5vw,2.4rem); font-weight:300; line-height:1.2; color:var(--text); }
+  .pillar-title em { font-style:italic; color:var(--accent); }
+  .pillar-body { font-size:0.72rem; color:#c0bab0; letter-spacing:0.05em; line-height:2; }
+  .pillar-body p + p { margin-top:1.2rem; }
+  .pillar-body strong { font-weight:400; color:var(--text); }
+
+  .pillar-outcomes { display:flex; flex-direction:column; gap:0; margin-top:0.5rem; }
+  .outcome { display:flex; align-items:flex-start; gap:1rem; padding:0.85rem 0; border-bottom:1px solid var(--border); }
+  .outcome:first-child { border-top:1px solid var(--border); }
+  .outcome-marker { font-family:'Cormorant Garamond',serif; font-size:0.9rem; color:var(--accent); flex-shrink:0; margin-top:0.1rem; font-style:italic; }
+  .outcome-text { font-size:0.68rem; color:#c0bab0; letter-spacing:0.05em; line-height:1.75; }
+
+  /* STATEMENT */
+  .statement { padding:5rem 2rem; max-width:680px; margin:0 auto; text-align:center; display:flex; flex-direction:column; gap:1.5rem; }
+  .statement-body { font-family:'Cormorant Garamond',serif; font-size:clamp(1.3rem,4vw,2rem); font-weight:300; line-height:1.6; color:var(--text); }
+  .statement-body em { font-style:italic; color:var(--accent); }
+  .statement-note { font-size:0.68rem; color:#a0998f; letter-spacing:0.07em; line-height:1.9; max-width:480px; margin:0 auto; }
+
+  /* CTA */
+  .cta-section { padding:6rem 2rem; text-align:center; display:flex; flex-direction:column; align-items:center; gap:2rem; }
+  .cta-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.8rem,5vw,2.8rem); font-weight:300; font-style:italic; color:var(--text); line-height:1.2; max-width:440px; }
+  .cta-sub { font-size:0.68rem; color:#a0998f; letter-spacing:0.07em; line-height:1.9; max-width:360px; }
+  .btn-primary { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.85rem 2rem; font-family:'Montserrat',sans-serif; font-size:0.62rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; text-decoration:none; transition:background 0.3s, color 0.3s; display:inline-block; }
+  .btn-primary:hover { background:var(--accent); color:var(--bg); }
+  .cta-detail { font-size:0.58rem; color:#4a4845; letter-spacing:0.15em; text-transform:uppercase; }
+
+  /* FOOTER */
+  footer { border-top:1px solid var(--border); padding:2rem; display:flex; flex-direction:column; align-items:center; gap:0.5rem; position:relative; z-index:1; }
+  .footer-brand { font-family:'Cormorant Garamond',serif; font-size:0.9rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .footer-links { display:flex; gap:1.5rem; flex-wrap:wrap; justify-content:center; margin-top:0.3rem; }
+  .footer-link { font-size:0.52rem; letter-spacing:0.15em; text-transform:uppercase; color:#3a3a35; text-decoration:none; transition:color 0.2s; }
+  .footer-link:hover { color:var(--muted); }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.12em; color:#252520; text-transform:uppercase; text-align:center; margin-top:0.3rem; }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="eyre-home.html">EYRE</a>
+  <div class="nav-links">
+    <a class="nav-link" href="eyre-home.html">Home</a>
+    <a class="nav-link" href="eyre-about.html">About</a>
+    <a class="nav-link" href="eyre-programmes.html">Work</a>
+    <a class="nav-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a call</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">The Philosophy</div>
+  <h1 class="hero-headline">
+    Performance is not the problem.<br><em>What it costs you is.</em>
+  </h1>
+  <p class="hero-sub">EYRE is built on a single premise — that the body keeps the score of everything you have asked it to carry, and that regulation is not rest. It is a return to capacity.</p>
+</section>
+
+<section><div class="section-divider"></div></section>
+
+<!-- 1. THE NERVOUS SYSTEM -->
+<section class="pillar">
+  <div class="pillar-number">01</div>
+  <div class="pillar-title">The nervous system<br><em>is the foundation.</em></div>
+  <div class="pillar-body">
+    <p>Everything EYRE does begins here. The autonomic nervous system governs how the body responds to threat, how it recovers, how it connects, and how it functions under pressure. It operates below conscious control — below thinking, below willpower, below intention.</p>
+    <p>Polyvagal Theory, developed by Dr Stephen Porges and brought into clinical practice by Deb Dana, describes three predictable states: ventral vagal — safe, connected, and capable; sympathetic — mobilised, defended, and activated; dorsal vagal — shutdown, withdrawn, and conserving. Most high-performing people live in chronic sympathetic activation without knowing it. The system that protects them at work follows them everywhere.</p>
+    <p>EYRE works at this level. Not at the level of behaviour or mindset — at the level of the physiology that drives both. <strong>When the nervous system regulates, everything downstream changes.</strong></p>
+  </div>
+</section>
+
+<!-- 2. BREATH -->
+<section class="pillar dark">
+  <div class="pillar-inner">
+    <div class="pillar-number">02</div>
+    <div class="pillar-title">The breath is the<br><em>only lever you can pull directly.</em></div>
+    <div class="pillar-body">
+      <p>Every other function of the autonomic nervous system operates outside conscious control. Heart rate, cortisol, the threat response — these happen to you. The breath sits at the intersection. It runs automatically and it can be taken over deliberately. When you change it with precision, you change the physiology beneath it.</p>
+      <p>This is not metaphor. The vagus nerve — the primary pathway of the parasympathetic nervous system — is directly stimulated by slow, controlled exhalation. Resonance breathing at six cycles per minute creates measurable coherence between cardiac and respiratory rhythms. The physiological sigh, a double inhale followed by a long exhale, produces the fastest known reduction in acute stress of any volitional breathing pattern. These are mechanisms, not practices.</p>
+      <p>EYRE teaches breathwork as an operational tool. Something you use in a boardroom, a vehicle, a hotel room at midnight. No equipment. No performance. Just the breath, used with precision.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. NATURE AND LANDSCAPE -->
+<section class="pillar">
+  <div class="pillar-number">03</div>
+  <div class="pillar-title">Nature is not a backdrop.<br><em>It is a biological signal.</em></div>
+  <div class="pillar-body">
+    <p>The human nervous system evolved in landscape. Natural light cycles regulate the circadian rhythm — the internal clock that governs sleep architecture, cortisol patterns, hormonal function, and immune response. Chronic exposure to artificial light, indoor environments, and the relentless pace of urban and professional life disrupts this rhythm at a physiological level. The body is not designed for what it is being asked to do.</p>
+    <p>Exposure to natural environments — particularly remote, quiet, and visually expansive ones — activates the parasympathetic nervous system through multiple pathways simultaneously. Reduced auditory threat cues. Natural fractal patterns in the visual field. Changes in air quality. Reduced cognitive load. The effect is not psychological comfort. It is measurable physiological shift.</p>
+    <p>EYRE immersions take place in remote South Australian landscape for this reason. The environment does work the session cannot do alone.</p>
+  </div>
+</section>
+
+<!-- 4. MOVEMENT -->
+<section class="pillar dark">
+  <div class="pillar-inner">
+    <div class="pillar-number">04</div>
+    <div class="pillar-title">Movement discharges<br><em>what the nervous system accumulates.</em></div>
+    <div class="pillar-body">
+      <p>The stress response is a preparation for physical action. Cortisol and adrenaline mobilise energy for fight or flight. When that action never comes — when the threat is a deadline, a conversation, a relationship — the activation remains in the body. Over time it accumulates. It changes posture, disrupts sleep, alters body composition, and accelerates the visible markers of chronic stress.</p>
+      <p>Structured physical training is not separate from nervous system regulation. It is part of it. Resistance training increases neuroplasticity, improves insulin sensitivity, and creates a controlled sympathetic activation that the body can complete and recover from — which is the opposite of chronic low-grade activation. Done well, it teaches the nervous system the difference between productive stress and sustained threat.</p>
+      <p>EYRE incorporates evidence-informed movement guidance as part of extended programmes. Not as fitness coaching — as physiological regulation through the body.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5. INFRARED SAUNA -->
+<section class="pillar">
+  <div class="pillar-number">05</div>
+  <div class="pillar-title">Heat activates recovery<br><em>the nervous system cannot reach alone.</em></div>
+  <div class="pillar-body">
+    <p>Infrared sauna use produces a deliberate, controlled hyperthermic stress on the body. The physiological response — increased heart rate, vasodilation, sweating — mimics the cardiovascular effects of moderate exercise and triggers a robust parasympathetic rebound on exit. Regular use is associated with improved HRV, reduced inflammatory markers, better sleep onset and architecture, and measurable improvements in mood via endorphin and dynorphin release.</p>
+    <p>For high-performing individuals carrying chronic activation, infrared sauna represents one of the most accessible and evidence-supported tools for accelerating parasympathetic recovery. It also produces heat shock proteins that support cellular repair — relevant for anyone whose body has been running on cortisol for an extended period.</p>
+    <p>EYRE incorporates sauna protocol as part of extended programmes and immersive retreats, paired with breathwork for compounded effect.</p>
+  </div>
+</section>
+
+<!-- 6. NUTRITION -->
+<section class="pillar dark">
+  <div class="pillar-inner">
+    <div class="pillar-number">06</div>
+    <div class="pillar-title">What you eat either<br><em>fuels regulation or fights it.</em></div>
+    <div class="pillar-body">
+      <p>Chronic stress disrupts the gut-brain axis — the bidirectional communication pathway between the enteric nervous system and the brain via the vagus nerve. It alters cortisol patterns that govern appetite, insulin sensitivity, and fat distribution. It degrades sleep quality, which in turn impairs glucose metabolism and increases inflammatory markers. The nutritional choices made under chronic stress typically compound the problem.</p>
+      <p>Nutritional guidance within EYRE programmes is not about diet culture or aesthetic goals. It is about providing the nervous system and body with what they need to regulate, recover, and rebuild. Adequate protein for neurotransmitter synthesis and body composition. Anti-inflammatory food choices that support vagal tone. Eating patterns aligned with circadian rhythms that restore rather than disrupt hormonal function.</p>
+      <p>The outcome is physiological. How the body looks and feels when chronic stress lifts and the system regulates is a natural consequence — not a separate goal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. MEANING -->
+<section class="pillar">
+  <div class="pillar-number">07</div>
+  <div class="pillar-title">Meaning is not philosophy.<br><em>It is physiology.</em></div>
+  <div class="pillar-body">
+    <p>Viktor Frankl, writing from the experience of surviving four concentration camps, observed that those who maintained a sense of meaning and purpose under extreme conditions showed markedly greater physiological and psychological resilience than those who did not. This was not an abstraction. It was a consistent, observable pattern in the most extreme conditions human beings have faced.</p>
+    <p>The neuroscience supports it. A sense of meaning and purpose is associated with lower cortisol reactivity, stronger immune function, better sleep, and improved cardiovascular outcomes. The absence of meaning — the sense that effort serves no larger purpose — produces a sustained low-grade stress response that no amount of breathwork fully resolves.</p>
+    <p>The Stoic tradition understood this long before neuroscience confirmed it. Marcus Aurelius, writing as emperor of Rome under conditions of sustained pressure that would collapse most people, returned again and again to the same discipline — the distinction between what is within your control and what is not, and the practice of responding from reason rather than reacting from impulse. Epictetus, who began life as a slave, built an entire philosophy on the same ground. They did not call it nervous system regulation. The mechanism is identical.</p>
+    <p>EYRE does not prescribe meaning. It creates the conditions in which it can be heard. When the nervous system is regulated, when the body is not running on cortisol, when the noise stops — what matters becomes audible again. <strong>That is the return EYRE is named for.</strong></p>
+  </div>
+</section>
+
+<!-- STATEMENT -->
+<section>
+  <div class="section-divider"></div>
+  <div class="statement">
+    <div class="statement-body">
+      None of this works in isolation.<br>
+      <em>All of it works together.</em>
+    </div>
+    <div class="statement-note">The breath regulates the nervous system. Movement discharges what accumulates. Nature resets what artificial environments disrupt. Sauna accelerates the recovery the body needs. Nutrition provides the substrate regulation requires. Meaning gives the system a reason to return to safe. EYRE holds all of it — not as a wellness programme, but as a whole-system approach to what it costs to perform at the level you perform at.</div>
+  </div>
+  <div class="section-divider" style="margin-top:3rem;"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-title">This is where<br>the work begins.</div>
+  <p class="cta-sub">A discovery call is thirty minutes. No obligation. We talk about where you are and whether EYRE is the right fit.</p>
+  <a class="btn-primary" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call</a>
+  <div class="cta-detail">Free · 30 minutes · Online or phone</div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-brand">EYRE</div>
+  <div class="footer-links">
+    <a class="footer-link" href="eyre-home.html">Home</a>
+    <a class="footer-link" href="eyre-about.html">About</a>
+    <a class="footer-link" href="eyre-programmes.html">Programmes</a>
+    <a class="footer-link" href="eyre-tools.html">Tools</a>
+    <a class="footer-link" href="eyre-terms.html">Terms of use</a>
+    <a class="footer-link" href="eyre-privacy.html">Privacy</a>
+    <a class="footer-link" href="eyre-support.html">When to seek support</a>
+    <a class="footer-link" href="/cdn-cgi/l/email-protection#a8cbc0dac1dbe8cdd1dacdcbc7c9cbc0c1c6cf86cbc7c5">Contact</a>
+  </div>
+  <div class="footer-disc">EYRE Coaching · Arkana Life · ABN trading as EYRE Coaching · South Australia</div>
+  <div class="footer-disc" style="margin-top:0.2rem;">For self-regulation support only · Not a substitute for profes

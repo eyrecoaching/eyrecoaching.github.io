@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>EYRE — Work With Us</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root {
+    --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f;
+    --accent:#d4a95a; --accent-dim:rgba(212,169,90,0.07);
+  }
+  html { background:#0c0c0b; }
+  body {
+    min-height:100vh; background:#0c0c0b !important; color:var(--text);
+    font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.07em;
+    color-scheme:dark; overflow-y:auto;
+  }
+  body::before {
+    content:''; position:fixed; inset:0; pointer-events:none; z-index:0;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  }
+
+  .page {
+    position:relative; z-index:1;
+    max-width:420px; margin:0 auto;
+    padding:max(env(safe-area-inset-top),2rem) 1.5rem max(env(safe-area-inset-bottom),3rem);
+    display:flex; flex-direction:column; gap:2rem;
+  }
+
+  /* Header */
+  .brand { font-family:'Cormorant Garamond',serif; font-size:1.3rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; text-align:center; }
+  .page-title { font-family:'Cormorant Garamond',serif; font-size:clamp(1.7rem,6vw,2.3rem); font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
+  .page-sub { font-size:0.68rem; color:#a0998f; letter-spacing:0.07em; line-height:1.9; text-align:center; }
+  .divider { width:32px; height:1px; background:var(--border); margin:0 auto; }
+
+  /* Discovery CTA — primary action */
+  .discovery-block {
+    border:1px solid var(--accent);
+    padding:1.5rem;
+    display:flex; flex-direction:column; gap:1rem;
+    text-align:center;
+  }
+  .discovery-label { font-size:0.55rem; letter-spacing:0.25em; text-transform:uppercase; color:var(--accent); }
+  .discovery-title { font-family:'Cormorant Garamond',serif; font-size:1.5rem; font-weight:300; font-style:italic; color:var(--text); line-height:1.3; }
+  .discovery-desc { font-size:0.65rem; color:#a0998f; letter-spacing:0.06em; line-height:1.8; }
+  .btn-primary {
+    background:transparent; border:1px solid var(--accent); color:var(--accent);
+    padding:0.85rem 1.6rem; font-family:'Montserrat',sans-serif;
+    font-size:0.62rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase;
+    cursor:pointer; text-decoration:none; display:block;
+    -webkit-tap-highlight-color:transparent; transition:background 0.3s, color 0.3s;
+  }
+  .btn-primary:active { background:var(--accent); color:var(--bg); }
+
+  /* See what's available toggle */
+  .toggle-btn {
+    background:transparent; border:1px solid var(--border);
+    color:var(--muted); padding:0.85rem 1.6rem;
+    font-family:'Montserrat',sans-serif; font-size:0.62rem;
+    font-weight:300; letter-spacing:0.25em; text-transform:uppercase;
+    cursor:pointer; width:100%; text-align:center;
+    -webkit-tap-highlight-color:transparent; transition:border-color 0.3s, color 0.3s;
+  }
+  .toggle-btn:active { border-color:var(--accent); color:var(--accent); }
+
+  /* Offerings */
+  .offerings-wrap {
+    display:none; flex-direction:column; gap:0;
+    animation:fadeIn 0.4s ease;
+  }
+  .offerings-wrap.open { display:flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+  .section-label {
+    font-size:0.55rem; letter-spacing:0.3em; text-transform:uppercase;
+    color:var(--muted); padding-bottom:0.7rem; border-bottom:1px solid var(--border);
+    margin-bottom:0;
+  }
+
+  .offering {
+    border-bottom:1px solid var(--border);
+    padding:1.1rem 0;
+    display:flex; flex-direction:column; gap:0.5rem;
+  }
+  .offering:first-of-type { border-top:1px solid var(--border); margin-top:0.8rem; }
+
+  .offering-header { display:flex; align-items:flex-start; justify-content:space-between; gap:0.8rem; }
+  .offering-name { font-family:'Cormorant Garamond',serif; font-size:1.2rem; font-weight:300; color:var(--text); }
+  .offering-tag { font-size:0.5rem; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); white-space:nowrap; margin-top:0.3rem; flex-shrink:0; }
+  .offering-desc { font-size:0.65rem; color:#b0a898; letter-spacing:0.05em; line-height:1.75; }
+  .offering-cta {
+    font-size:0.55rem; letter-spacing:0.18em; text-transform:uppercase;
+    color:var(--accent); text-decoration:none; display:inline-block;
+    -webkit-tap-highlight-color:transparent; margin-top:0.2rem;
+  }
+
+  /* Footer */
+  .footer { text-align:center; display:flex; flex-direction:column; gap:0.2rem; padding-top:1rem; border-top:1px solid var(--border); }
+  .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2e2e2a; text-transform:uppercase; }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#2e2e2a; text-transform:uppercase; margin-top:0.15rem; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="brand">EYRE</div>
+
+  <div>
+    <div class="page-title">Want to know more?</div>
+  </div>
+
+  <div class="page-sub">EYRE works with individuals and organisations on nervous system regulation, breathwork, and performance under pressure. Every engagement starts with a conversation.</div>
+
+  <div class="divider"></div>
+
+  <!-- PRIMARY ACTION -->
+  <div class="discovery-block">
+    <div class="discovery-label">Free · 30 minutes · No obligation</div>
+    <div class="discovery-title">Book a discovery call</div>
+    <div class="discovery-desc">We talk about where you are, what you need, and whether EYRE is the right fit. No commitment required.</div>
+    <a class="btn-primary" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book now</a>
+  </div>
+
+  <!-- SEE OFFERINGS -->
+  <button class="toggle-btn" id="toggle-btn" onclick="toggleOfferings()">See what's available ↓</button>
+
+  <!-- OFFERINGS — hidden until toggled -->
+  <div class="offerings-wrap" id="offerings-wrap">
+
+    <div class="section-label">Individual</div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Session</div>
+        <div class="offering-tag">One to one</div>
+      </div>
+      <div class="offering-desc">A single focused session built around where you are right now. Breathwork, nervous system regulation, and tools to carry forward. Online or in person.</div>
+      <a class="offering-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call →</a>
+    </div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Programme</div>
+        <div class="offering-tag">90 days</div>
+      </div>
+      <div class="offering-desc">Structured engagement over ninety days. Built around your nervous system, your context, and the outcomes you are working toward. Progressive and accountable.</div>
+      <a class="offering-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call →</a>
+    </div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Immersion</div>
+        <div class="offering-tag">Retreat · In landscape</div>
+      </div>
+      <div class="offering-desc">Multi-day immersive experience in remote South Australian landscape. For those who need more than a session can hold.</div>
+      <a class="offering-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call →</a>
+    </div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Private</div>
+        <div class="offering-tag">Bespoke</div>
+      </div>
+      <div class="offering-desc">Fully bespoke engagement for individuals requiring a higher level of discretion, access, and customisation.</div>
+      <a class="offering-cta" href="mailto:chris@eyrecoaching.com?subject=EYRE Private Enquiry">Enquire directly →</a>
+    </div>
+
+    <div class="section-label" style="margin-top:1.5rem;">Organisational</div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Workshop</div>
+        <div class="offering-tag">Team · Group</div>
+      </div>
+      <div class="offering-desc">Half or full day session delivered to a team. Nervous system education, practical breathwork tools, and a shared framework for regulation under pressure.</div>
+      <a class="offering-cta" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call →</a>
+    </div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Keynote</div>
+        <div class="offering-tag">Speaking</div>
+      </div>
+      <div class="offering-desc">A presentation built around the science of nervous system regulation and what it means for performance, leadership, and organisational culture.</div>
+      <a class="offering-cta" href="mailto:chris@eyrecoaching.com?subject=EYRE Keynote Enquiry">Enquire directly →</a>
+    </div>
+
+    <div class="offering">
+      <div class="offering-header">
+        <div class="offering-name">Engagement</div>
+        <div class="offering-tag">Ongoing · Retained</div>
+      </div>
+      <div class="offering-desc">Retained organisational relationship. Ongoing access to EYRE for a team or leadership group. Regular sessions and embedded nervous system culture over time.</div>
+      <a class="offering-cta" href="mailto:chris@eyrecoaching.com?subject=EYRE Organisational Engagement">Enquire directly →</a>
+    </div>
+
+    <!-- Book at bottom of offerings -->
+    <div style="padding-top:1.5rem;">
+      <a class="btn-primary" href="https://calendly.com/eyrecoaching" target="_blank" rel="noopener">Book a discovery call</a>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-tag">EYRE Coaching</div>
+    <div class="footer-disc">For self-regulation support only · Not a substitute for professional care</div>
+  </div>
+
+</div>
+<script>
+function toggleOfferings() {
+  const wrap = document.getElementById('offerings-wrap');
+  const btn = document.getElementById('toggle-btn');
+  const isOpen = wrap.classList.contains('open');
+  wrap.classList.toggle('open');
+  btn.textContent = isOpen ? "See what's available ↓" : "Hide offerings ↑";
+  if (!isOpen) {
+    setTimeout(() => { wrap.scrollIntoView({ behavior:'smooth', block:'start' }); }, 100);
+  }
+}
+</script>
+</body>
+</html>
