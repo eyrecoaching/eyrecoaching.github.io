@@ -487,5 +487,32 @@ function acceptGate() {
 }
 
 </script>
+<script>
+(function(){
+  var hamburger = document.getElementById("hamburger");
+  var mobileMenu = document.getElementById("mobile-menu");
+  if(!hamburger || !mobileMenu) return;
+  function toggleMenu() {
+    hamburger.classList.toggle("open");
+    mobileMenu.classList.toggle("open");
+    document.body.style.overflow = mobileMenu.classList.contains("open") ? "hidden" : "";
+  }
+  hamburger.addEventListener("click", toggleMenu, false);
+  var links = mobileMenu.querySelectorAll("a");
+  for(var i=0;i<links.length;i++){
+    links[i].addEventListener("click", function(){
+      hamburger.classList.remove("open");
+      mobileMenu.classList.remove("open");
+      document.body.style.overflow = "";
+    }, false);
+  }
+  var nav = document.getElementById("main-nav");
+  if(nav){
+    window.addEventListener("scroll", function(){
+      nav.classList.toggle("scrolled", window.scrollY > 10);
+    }, {passive:true});
+  }
+})();
+</script>
 </body>
 </html>

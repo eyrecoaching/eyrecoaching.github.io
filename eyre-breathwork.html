@@ -777,5 +777,32 @@ function acceptGate() {
 
 </script>
 <div style="position:fixed;bottom:0;left:0;right:0;text-align:center;padding:0.4rem 1rem 0.8rem;z-index:10;"><div style="font-size:0.48rem;letter-spacing:0.15em;color:#6a6560;text-transform:uppercase;">For self-regulation support only &middot; Not a substitute for professional care</div></div>
+<script>
+(function(){
+  var hamburger = document.getElementById("hamburger");
+  var mobileMenu = document.getElementById("mobile-menu");
+  if(!hamburger || !mobileMenu) return;
+  function toggleMenu() {
+    hamburger.classList.toggle("open");
+    mobileMenu.classList.toggle("open");
+    document.body.style.overflow = mobileMenu.classList.contains("open") ? "hidden" : "";
+  }
+  hamburger.addEventListener("click", toggleMenu, false);
+  var links = mobileMenu.querySelectorAll("a");
+  for(var i=0;i<links.length;i++){
+    links[i].addEventListener("click", function(){
+      hamburger.classList.remove("open");
+      mobileMenu.classList.remove("open");
+      document.body.style.overflow = "";
+    }, false);
+  }
+  var nav = document.getElementById("main-nav");
+  if(nav){
+    window.addEventListener("scroll", function(){
+      nav.classList.toggle("scrolled", window.scrollY > 10);
+    }, {passive:true});
+  }
+})();
+</script>
 </body>
 </html>

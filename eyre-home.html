@@ -352,13 +352,16 @@
   /* ── HAMBURGER ── */
   .hamburger {
     display:none; flex-direction:column; gap:5px;
-    cursor:pointer; padding:4px; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
+    background:none; border:none; outline:none;
+    cursor:pointer; padding:8px;
     -webkit-tap-highlight-color:transparent;
+    touch-action:manipulation;
     z-index:200;
   }
   .hamburger span {
     display:block; width:22px; height:1.5px;
     background:#e8e2d8; transition:all 0.3s ease;
+    pointer-events:none;
   }
   .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
   .hamburger.open span:nth-child(2) { opacity:0; }
@@ -401,20 +404,18 @@
 
 <!-- NAV -->
 <nav id="main-nav">
-  <a class="nav-brand" href="#">EYRE</a>
-
-<div class="hamburger" id="hamburger" onclick="toggleMenu()" ontouchstart="">
-  <span></span><span></span><span></span>
-</div>
-<div class="mobile-menu" id="mobile-menu">
-  <a href="https://eyrecoaching.com/eyre-about.html" onclick="toggleMenu()" ontouchstart="">About</a>
-  <a href="https://eyrecoaching.com/eyre-philosophy.html" onclick="toggleMenu()" ontouchstart="">Philosophy</a>
-  <a href="https://eyrecoaching.com/eyre-programmes.html" onclick="toggleMenu()" ontouchstart="">Work</a>
-  <a href="https://eyrecoaching.com/eyre-tools.html" onclick="toggleMenu()" ontouchstart="">Tools</a>
-  <a href="https://calendly.com/eyrecoaching" target="_blank" class="mobile-cta">Book a call</a>
-</div>
-
-    <div class="nav-links">
+  <a class="nav-brand" href="https://eyrecoaching.com/">EYRE</a>
+  <button class="hamburger" id="hamburger" aria-label="Open menu" type="button">
+    <span></span><span></span><span></span>
+  </button>
+  <div class="mobile-menu" id="mobile-menu">
+    <a href="https://eyrecoaching.com/eyre-about.html">About</a>
+    <a href="https://eyrecoaching.com/eyre-philosophy.html">Philosophy</a>
+    <a href="https://eyrecoaching.com/eyre-programmes.html">Work</a>
+    <a href="https://eyrecoaching.com/eyre-tools.html">Tools</a>
+    <a href="https://calendly.com/eyrecoaching" target="_blank" class="mobile-cta">Book a call</a>
+  </div>
+  <div class="nav-links">
     <a class="nav-link" href="https://eyrecoaching.com/eyre-about.html">About</a>
     <a class="nav-link" href="https://eyrecoaching.com/eyre-philosophy.html">Philosophy</a>
     <a class="nav-link" href="https://eyrecoaching.com/eyre-programmes.html">Work</a>
@@ -570,10 +571,4 @@
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 // Nav border on scroll
 window.ad
-<script>
-function toggleMenu() {
-  document.getElementById('hamburger').classList.toggle('open');
-  document.getElementById('mobile-menu').classList.toggle('open');
-  document.body.style.overflow = document.getElementById('mobile-menu').classList.contains('open') ? 'hidden' : '';
-}
-</script>
+
