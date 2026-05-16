@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BREATHSTATE — Your Nervous System</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#04101E;--navy:#071828;--mid:#0C2840;--teal:#0D6E7A;--tealL:#1A9BAD;--horizon:#B8D0DC;--gold:#C8A44A;--goldL:#E2C070;--coral:#D96A50;--coralL:#F08070;--white:#FFFFFF;--offW:#F0EBE3;--dim:rgba(255,255,255,0.45);--mid-t:rgba(255,255,255,0.72);--border:rgba(255,255,255,0.07);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;font-family:'DM Sans',sans-serif;background:var(--deep);}
+.deck{width:100vw;height:100vh;position:relative;}
+.slide{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:52px 76px 100px;opacity:0;pointer-events:none;transition:opacity 1s ease;overflow:hidden;}
+.slide.active{opacity:1;pointer-events:all;}
+.ocean{position:absolute;inset:0;overflow:hidden;z-index:0;}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,#020B15 0%,#040F1E 12%,#071828 22%,#0A2035 32%,#0D2E48 42%,#124560 50%,#1A6070 57%,#2A7A84 62%,#4A96A0 67%,#7AB8C0 71%,#A8D0D8 75%,#C8B060 79%,#C87040 83%,#8A3830 88%,#3A1818 93%,#140A0A 100%);}
+.stars{position:absolute;top:0;left:0;right:0;height:55%;background-image:radial-gradient(circle 1px at 8% 12%,rgba(255,255,255,.7) 0,transparent 100%),radial-gradient(circle 1.5px at 19% 6%,rgba(255,255,255,.5) 0,transparent 100%),radial-gradient(circle 1px at 31% 18%,rgba(255,255,255,.65) 0,transparent 100%),radial-gradient(circle 1px at 45% 9%,rgba(255,255,255,.55) 0,transparent 100%),radial-gradient(circle 1.5px at 57% 4%,rgba(255,255,255,.7) 0,transparent 100%),radial-gradient(circle 1px at 68% 15%,rgba(255,255,255,.5) 0,transparent 100%),radial-gradient(circle 1px at 79% 8%,rgba(255,255,255,.6) 0,transparent 100%),radial-gradient(circle 1.5px at 91% 20%,rgba(255,255,255,.45) 0,transparent 100%),radial-gradient(circle 1px at 14% 30%,rgba(255,255,255,.35) 0,transparent 100%),radial-gradient(circle 1px at 36% 38%,rgba(255,255,255,.3) 0,transparent 100%),radial-gradient(circle 1px at 62% 26%,rgba(255,255,255,.4) 0,transparent 100%),radial-gradient(circle 1px at 84% 33%,rgba(255,255,255,.3) 0,transparent 100%),radial-gradient(circle 1px at 24% 45%,rgba(255,255,255,.25) 0,transparent 100%),radial-gradient(circle 1px at 73% 42%,rgba(255,255,255,.28) 0,transparent 100%),radial-gradient(circle 1px at 95% 10%,rgba(255,255,255,.5) 0,transparent 100%),radial-gradient(circle 2px at 50% 2%,rgba(255,255,255,.8) 0,transparent 100%);}
+.sun{position:absolute;width:72px;height:72px;border-radius:50%;left:50%;top:61%;transform:translate(-50%,-50%);background:radial-gradient(circle,#FFF0B0 0%,#E8C060 35%,rgba(200,160,50,0) 70%);box-shadow:0 0 50px 16px rgba(200,160,70,.45),0 0 120px 50px rgba(200,140,50,.2);filter:blur(1.5px);}
+.hglow{position:absolute;left:0;right:0;top:59%;height:100px;background:radial-gradient(ellipse 90% 100% at 50% 30%,rgba(200,176,80,.55) 0%,rgba(217,106,80,.28) 50%,transparent 100%);filter:blur(10px);}
+.water{position:absolute;bottom:0;left:0;right:0;height:39%;background:linear-gradient(180deg,#1C5A6A 0%,#113848 28%,#081E2E 65%,#040F1A 100%);}
+.refl{position:absolute;left:calc(50% - 28px);right:calc(50% - 28px);top:61%;bottom:0;background:linear-gradient(180deg,rgba(200,176,80,.55) 0%,rgba(200,160,60,.2) 25%,transparent 60%);clip-path:polygon(-80% 0,180% 0,220% 100%,-120% 100%);filter:blur(4px);}
+.sh{position:absolute;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent 5%,rgba(255,255,255,.14) 50%,transparent 95%);animation:sh 3.5s ease-in-out infinite;}
+@keyframes sh{0%,100%{opacity:.25;transform:scaleX(.75)}50%{opacity:1;transform:scaleX(1)}}
+.ov-full{position:absolute;inset:0;z-index:1;background:linear-gradient(135deg,rgba(4,16,30,.9) 0%,rgba(4,16,30,.72) 55%,rgba(4,16,30,.86) 100%);}
+.ov-left{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,rgba(4,16,30,.96) 0%,rgba(4,16,30,.82) 48%,rgba(4,16,30,.22) 100%);}
+.ov-center{position:absolute;inset:0;z-index:1;background:radial-gradient(ellipse 70% 80% at 50% 50%,rgba(4,16,30,.6) 0%,rgba(4,16,30,.92) 100%);}
+.nav{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);display:flex;align-items:center;gap:6px;z-index:200;background:rgba(4,16,30,.82);border:1px solid rgba(255,255,255,.09);padding:8px 22px;border-radius:100px;backdrop-filter:blur(24px);box-shadow:0 8px 40px rgba(0,0,0,.5);}
+.nav button{background:none;border:none;color:var(--dim);font-family:'DM Sans',sans-serif;font-size:12px;font-weight:500;cursor:pointer;padding:7px 18px;border-radius:100px;transition:all .25s;}
+.nav button:hover{background:rgba(255,255,255,.07);color:white;}
+.nav button:disabled{color:rgba(255,255,255,.18);cursor:default;}
+.nav button:hover:disabled{background:none;}
+.ndot{width:3px;height:3px;border-radius:50%;background:rgba(255,255,255,.18);}
+.ctr{font-size:11px;color:rgba(255,255,255,.28);min-width:52px;text-align:center;letter-spacing:.5px;}
+.prog{position:fixed;top:0;left:0;height:2px;z-index:300;background:linear-gradient(90deg,var(--gold),var(--coral),var(--tealL));transition:width .6s ease;box-shadow:0 0 10px rgba(200,164,74,.6);}
+.brand{position:fixed;top:26px;left:32px;z-index:200;display:flex;flex-direction:column;gap:3px;}
+.brand-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:5px;color:rgba(255,255,255,.85);text-transform:uppercase;}
+.brand-sub{font-size:9px;font-weight:500;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.7;}
+.series-tag{position:fixed;top:26px;right:32px;z-index:200;font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;background:rgba(200,164,74,.1);border:1px solid rgba(200,164,74,.22);padding:7px 16px;border-radius:100px;backdrop-filter:blur(12px);}
+.stime{position:fixed;bottom:30px;right:32px;z-index:200;font-size:10px;color:rgba(255,255,255,.22);letter-spacing:2px;}
+.npanel{position:fixed;bottom:0;left:0;right:0;z-index:300;background:rgba(4,16,30,.97);border-top:1px solid rgba(200,164,74,.25);padding:14px 48px 22px;transform:translateY(100%);transition:transform .4s ease;max-height:190px;overflow-y:auto;}
+.npanel.vis{transform:translateY(0);}
+.nlbl{font-size:9px;font-weight:700;letter-spacing:3px;color:var(--gold);margin-bottom:8px;text-transform:uppercase;}
+.ntxt{font-size:13px;line-height:1.72;color:rgba(255,255,255,.58);}
+.nbtn{position:fixed;bottom:82px;right:32px;z-index:250;background:rgba(4,16,30,.72);border:1px solid rgba(255,255,255,.1);color:var(--dim);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:600;padding:7px 14px;border-radius:100px;cursor:pointer;backdrop-filter:blur(10px);transition:all .2s;}
+.nbtn:hover{color:var(--gold);border-color:rgba(200,164,74,.35);}
+.eyebrow{font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;}
+.eyebrow.teal{color:var(--tealL);}.eyebrow.coral{color:var(--coral);}.eyebrow.center{text-align:center;}
+h1.hero{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(58px,8.5vw,108px);line-height:.92;letter-spacing:-3px;color:var(--white);text-shadow:0 6px 48px rgba(0,0,0,.6);}
+h1.hero em{font-style:italic;color:var(--gold);}
+h2.title{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(34px,4.2vw,54px);line-height:1.05;letter-spacing:-1px;color:var(--white);}
+h2.title em{font-style:italic;color:var(--gold);}
+h2.title .t{color:var(--tealL);}h2.title .c{color:var(--coral);}
+p.body{font-family:'DM Sans',sans-serif;font-size:clamp(14px,1.4vw,18px);line-height:1.82;color:var(--mid-t);max-width:620px;}
+p.body.ctr{text-align:center;}p.body.w{max-width:800px;}
+.rule{display:flex;align-items:center;gap:14px;margin:18px 0;}
+.rl{flex:1;height:1px;background:linear-gradient(90deg,rgba(200,164,74,.55),transparent);}
+.rd{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.rule.ctr{justify-content:center;}.rule.ctr .rl{max-width:72px;}.rule.short{max-width:180px;}
+.chip{display:inline-flex;align-items:center;background:rgba(200,164,74,.11);color:var(--gold);font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;padding:7px 18px;border-radius:100px;border:1px solid rgba(200,164,74,.22);text-transform:uppercase;margin-bottom:20px;}
+.chip.teal{background:rgba(13,110,122,.18);color:var(--tealL);border-color:rgba(26,155,173,.25);}
+.chip.coral{background:rgba(217,106,80,.13);color:var(--coral);border-color:rgba(217,106,80,.25);}
+.chip.white{background:rgba(255,255,255,.1);color:rgba(255,255,255,.75);border-color:rgba(255,255,255,.15);}
+.dchips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:28px;}
+.dchip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:8px 18px;font-size:12px;color:var(--mid-t);font-weight:500;}
+.dchip .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.card{background:rgba(7,24,40,.68);border:1px solid var(--border);border-radius:14px;padding:24px 28px;backdrop-filter:blur(18px);position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--gold),var(--coral),var(--tealL));}
+.card.teal::before{background:linear-gradient(90deg,var(--teal),var(--tealL));}
+.card.coral::before{background:linear-gradient(90deg,var(--coral),var(--coralL));}
+.card.gold::before{background:linear-gradient(90deg,var(--gold),var(--goldL));}
+.card-ghost{font-family:'Playfair Display',serif;font-size:56px;font-weight:900;color:rgba(255,255,255,.035);position:absolute;top:4px;right:14px;line-height:1;}
+.ctag{font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.ctag.teal{color:var(--tealL);}.ctag.coral{color:var(--coral);}
+.ctitle{font-family:'Playfair Display',serif;font-size:clamp(17px,1.7vw,21px);color:white;margin-bottom:10px;font-weight:700;}
+.cbody{font-size:clamp(12px,1.15vw,15px);line-height:1.72;color:var(--dim);}
+.tc{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px;width:100%;max-width:1060px;}
+.twc{display:grid;grid-template-columns:1fr 1fr;gap:44px;width:100%;max-width:1080px;align-items:center;}
+.blist{list-style:none;display:flex;flex-direction:column;gap:12px;}
+.blist li{display:flex;gap:12px;align-items:flex-start;font-size:clamp(14px,1.3vw,17px);line-height:1.65;color:var(--mid-t);}
+.bd{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:9px;background:var(--gold);}
+.bd.t{background:var(--tealL);}.bd.c{background:var(--coral);}
+.callout{border-left:3px solid var(--gold);padding:16px 22px;background:rgba(200,164,74,.06);border-radius:0 10px 10px 0;backdrop-filter:blur(10px);}
+.callout p{font-size:clamp(14px,1.35vw,18px);line-height:1.65;color:rgba(255,255,255,.88);font-weight:500;}
+.callout.teal{border-color:var(--tealL);background:rgba(13,110,122,.1);}
+.callout.teal p{color:var(--horizon);}
+.callout.coral{border-color:var(--coral);background:rgba(217,106,80,.08);}
+.callout.coral p{color:rgba(255,200,180,.9);}
+.agenda{list-style:none;width:100%;max-width:750px;}
+.ait{display:grid;grid-template-columns:106px 1fr;border-bottom:1px solid rgba(255,255,255,.06);padding:15px 0;}
+.atime{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:1.5px;padding-top:3px;}
+.atopic{font-family:'DM Sans',sans-serif;font-weight:600;font-size:clamp(14px,1.35vw,17px);color:white;margin-bottom:2px;}
+.adesc{font-size:11px;color:var(--dim);line-height:1.5;}
+.sci-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(26,155,173,.1);border:1px solid rgba(26,155,173,.2);border-radius:8px;padding:10px 16px;margin-top:14px;width:100%;}
+.sci-badge .icon{font-size:16px;flex-shrink:0;}
+.sci-badge p{font-size:11px;color:var(--tealL);line-height:1.5;}
+.sci-badge strong{color:rgba(255,255,255,.75);}
+.sci-badge.coral{background:rgba(217,106,80,.1);border-color:rgba(217,106,80,.2);}
+.sci-badge.coral p{color:var(--coralL);}
+.ncards{display:flex;gap:14px;width:100%;max-width:1040px;}
+.nc{flex:1;padding:22px 20px;border-radius:12px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-top:2px solid;}
+.nc.g{border-top-color:var(--gold);}.nc.t{border-top-color:var(--tealL);}.nc.c{border-top-color:var(--coral);}
+.ncico{font-size:26px;margin-bottom:10px;display:block;}
+.nctag{font-size:8px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:5px;}
+.nc.g .nctag{color:var(--gold);}.nc.t .nctag{color:var(--tealL);}.nc.c .nctag{color:var(--coral);}
+.nctitle{font-family:'Playfair Display',serif;font-size:clamp(15px,1.55vw,19px);color:white;margin-bottom:7px;font-weight:700;}
+.ncbody{font-size:clamp(11px,1.1vw,14px);color:var(--dim);line-height:1.65;}
+.step-row{display:flex;gap:12px;align-items:center;padding:14px 18px;border-radius:10px;border:1px solid;margin-bottom:10px;}
+.step-row.inp{border-color:rgba(26,155,173,.35);background:rgba(13,110,122,.15);}
+.step-row.mid{border-color:rgba(200,164,74,.4);background:rgba(200,164,74,.1);}
+.step-row.out{border-color:rgba(217,106,80,.35);background:rgba(217,106,80,.08);}
+.step-row.loop{border-color:rgba(200,164,74,.3);background:rgba(200,164,74,.07);}
+.step-ico{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.step-ico.t{background:rgba(26,155,173,.2);}.step-ico.g{background:rgba(200,164,74,.2);}.step-ico.c{background:rgba(217,106,80,.2);}
+.step-label{flex:1;}
+.step-name{font-size:14px;color:white;font-weight:500;margin-bottom:2px;}
+.step-sub{font-size:11px;color:var(--dim);}
+.step-dur{font-size:11px;font-weight:700;letter-spacing:1px;color:var(--tealL);}
+.step-row.mid .step-dur{color:var(--gold);}.step-row.out .step-dur{color:var(--coral);}.step-row.loop .step-dur{color:var(--gold);}
+.btimer{display:flex;flex-direction:column;align-items:center;gap:26px;position:relative;z-index:10;}
+.bcirc{width:220px;height:220px;border-radius:50%;border:1.5px solid rgba(26,155,173,.35);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;background:radial-gradient(circle,rgba(26,155,173,.08) 0%,transparent 68%);transition:transform .85s cubic-bezier(.4,0,.2,1),border-color .7s ease,box-shadow .85s ease;position:relative;}
+.bcirc::after{content:'';position:absolute;inset:-13px;border-radius:50%;border:1px solid rgba(26,155,173,.12);}
+.bcirc::before{content:'';position:absolute;inset:-26px;border-radius:50%;border:1px solid rgba(26,155,173,.06);}
+.bcnt{font-family:'Playfair Display',serif;font-weight:900;font-size:60px;color:var(--tealL);line-height:1;}
+.bph{font-size:11px;font-weight:500;color:var(--dim);letter-spacing:1px;}
+.bbtn{background:linear-gradient(135deg,var(--tealL),var(--teal));color:var(--white);border:none;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:14px 42px;cursor:pointer;transition:all .3s;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 8px 36px rgba(26,155,173,.3);}
+.bbtn:hover{transform:translateY(-2px);box-shadow:0 14px 48px rgba(26,155,173,.42);}
+.bbtn:disabled{opacity:.38;cursor:default;transform:none;}
+.swm{position:absolute;z-index:2;font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(180px,24vw,300px);line-height:1;letter-spacing:-8px;color:rgba(255,255,255,.022);pointer-events:none;top:50%;left:50%;transform:translate(-50%,-50%);}
+.up-card{background:linear-gradient(135deg,rgba(13,110,122,.22),rgba(200,164,74,.1));border:1px solid rgba(200,164,74,.28);border-radius:18px;padding:38px 46px;max-width:800px;width:100%;text-align:center;backdrop-filter:blur(22px);}
+.wpills{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:18px 0;}
+.wpill{padding:8px 16px;border-radius:100px;font-size:10px;font-weight:700;letter-spacing:1px;border:1px solid rgba(255,255,255,.13);color:var(--dim);text-transform:uppercase;}
+.wpill.done{background:linear-gradient(135deg,var(--gold),var(--coral));color:var(--deep);border-color:transparent;}
+.cta{display:inline-block;margin-top:26px;background:linear-gradient(135deg,var(--gold),var(--coral));color:var(--deep);border:none;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;padding:16px 46px;cursor:pointer;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 8px 44px rgba(200,164,74,.35);transition:all .3s;}
+.cta:hover{transform:translateY(-2px);box-shadow:0 14px 56px rgba(200,164,74,.48);}
+.stat-row{display:flex;gap:24px;width:100%;max-width:900px;justify-content:center;}
+.stat-box{flex:1;text-align:center;padding:28px 20px;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;max-width:260px;}
+.stat-num{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(48px,6vw,80px);line-height:1;letter-spacing:-2px;}
+.stat-num.gold{color:var(--gold);text-shadow:0 0 40px rgba(200,164,74,.4);}
+.stat-num.coral{color:var(--coral);text-shadow:0 0 40px rgba(217,106,80,.4);}
+.stat-num.teal{color:var(--tealL);text-shadow:0 0 40px rgba(26,155,173,.4);}
+.stat-label{font-size:11px;color:var(--dim);line-height:1.5;margin-top:8px;letter-spacing:.5px;}
+</style>
+</head>
+<body>
+<div class="prog" id="prog"></div>
+<div class="brand"><div class="brand-name">BREATHSTATE</div><div class="brand-sub">by EYRE</div></div>
+<div class="series-tag">Your Nervous System</div>
+<div class="stime" id="stime">0:00</div>
+<div class="deck">
+
+<!-- 1. TITLE -->
+<div class="slide active" data-time="0:00" data-notes="Open with 10 seconds of silence. Let it sit. Then: 'Before I say a single word — notice the pace of your breath right now. Don't change it. Just notice it.' Pause 5 seconds. 'That breath you just noticed — that's what tonight is about.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div>
+    <div class="sh" style="top:62%;"></div><div class="sh" style="top:65%;animation-delay:1.1s;width:55%;left:22.5%;"></div><div class="sh" style="top:69%;animation-delay:2.2s;"></div><div class="sh" style="top:73%;animation-delay:.6s;width:40%;left:30%;"></div><div class="sh" style="top:78%;animation-delay:1.7s;"></div>
+  </div>
+  <div class="ov-center"></div>
+  <div style="position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;">
+    <div class="chip white" style="margin-bottom:28px;">The Operating System for Your Nervous System &nbsp;·&nbsp; BREATHSTATE by EYRE</div>
+    <h1 class="hero" style="margin-bottom:20px;text-align:center;">Your<br><em>Nervous System</em></h1>
+    <div class="rule ctr" style="margin:22px auto;"><div class="rl"></div><div class="rd"></div><div class="rl" style="background:linear-gradient(270deg,rgba(200,164,74,.55),transparent);"></div></div>
+    <p class="body ctr w" style="margin-bottom:28px;font-size:clamp(15px,1.45vw,20px);">You can't think your way calm. But you can breathe your way there.</p>
+    <div class="dchips">
+      <div class="dchip"><div class="dot"></div>The Problem</div>
+      <div class="dchip"><div class="dot"></div>Polyvagal Theory</div>
+      <div class="dchip"><div class="dot"></div>Three States</div>
+      <div class="dchip"><div class="dot"></div>The Tool</div>
+      <div class="dchip"><div class="dot"></div>25 Minutes</div>
+    </div>
+  </div>
+</div>
+
+<!-- 2. AGENDA -->
+<div class="slide" data-time="0:02" data-notes="'Tonight is structured around four things. The problem — why your nervous system is behaving the way it is. The science — polyvagal theory. The three states — what each one feels like and how to identify which one you're in right now. And the tool — one technique, 90 seconds, that you will use tonight before you sleep.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-full"></div>
+  <div style="position:relative;z-index:10;width:100%;max-width:750px;">
+    <div class="eyebrow center">Tonight's Session</div>
+    <h2 class="title" style="text-align:center;margin-bottom:28px;">What we <em>cover</em></h2>
+    <ul class="agenda">
+      <li class="ait"><span class="atime">00 – 04</span><div><div class="atopic">The problem nobody names</div><div class="adesc">Why you finish work but you're still in the meeting three hours later</div></div></li>
+      <li class="ait"><span class="atime">04 – 10</span><div><div class="atopic">The science — Polyvagal Theory</div><div class="adesc">Dr Stephen Porges, 1994. The vagus nerve. What it does. Why it matters to every person in this room.</div></div></li>
+      <li class="ait"><span class="atime">10 – 17</span><div><div class="atopic">The three states</div><div class="adesc">Safe and Social. Fight or Flight. Freeze and Collapse. Which one are you in right now?</div></div></li>
+      <li class="ait"><span class="atime">17 – 22</span><div><div class="atopic">The tool — Physiological Sigh</div><div class="adesc">Stanford Huberman Lab 2022. Outperformed every other technique tested. 90 seconds.</div></div></li>
+      <li class="ait" style="border-bottom:none;"><span class="atime">22 – 25</span><div><div class="atopic">Integration — attach to a trigger</div><div class="adesc">When to use it. How to make it automatic. One trigger. Seven days.</div></div></li>
+    </ul>
+  </div>
+</div>
+
+<!-- 3. THE PROBLEM -->
+<div class="slide" data-time="0:02" data-notes="'You finished work three hours ago. The laptop is closed. But you're still in it. Jaw tight. Heart rate elevated. You snapped at someone at dinner and you're not sure why. That's not weakness. That's not a character flaw. That's a nervous system that doesn't know the threat is gone.' Pause. Let that land.">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-full"></div>
+  <div style="position:relative;z-index:10;text-align:center;max-width:820px;">
+    <div class="chip coral">The Problem</div>
+    <h2 class="title" style="text-align:center;margin-bottom:18px;font-size:clamp(38px,5vw,64px);">You finished work.<br><span class="c">Your body didn't.</span></h2>
+    <div class="rule ctr" style="margin:22px auto;"><div class="rl"></div><div class="rd"></div><div class="rl" style="background:linear-gradient(270deg,rgba(200,164,74,.55),transparent);"></div></div>
+    <p class="body ctr w" style="margin-bottom:32px;">The laptop closes. The meeting ends. But the jaw stays tight. The heart rate stays elevated. Three hours later you're still running threat responses to emails that no longer exist.</p>
+    <div class="callout coral" style="text-align:left;max-width:700px;margin:0 auto;"><p>That's not weakness. That's a nervous system doing exactly what it was designed to do — in an environment it was never designed for.</p></div>
+  </div>
+</div>
+
+<!-- 4. THE STATS -->
+<div class="slide" data-time="0:04" data-notes="'Three numbers.' Read each one slowly. '77% of people experience physical stress symptoms — regularly. Six hours — that's how long cortisol stays elevated after a single high-stress event. And 90 seconds — that's all it takes to shift your state with breath alone. Tonight you're going to do it.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-full"></div>
+  <div style="position:relative;z-index:10;text-align:center;max-width:1000px;">
+    <div class="eyebrow center">The Scale of It</div>
+    <h2 class="title" style="text-align:center;margin-bottom:36px;">Three numbers that <em>matter</em></h2>
+    <div class="stat-row">
+      <div class="stat-box"><div class="stat-num coral">77%</div><div class="stat-label">of people experience physical stress symptoms regularly — not occasionally</div></div>
+      <div class="stat-box"><div class="stat-num gold">6hrs</div><div class="stat-label">average cortisol elevation after a single high-stress event</div></div>
+      <div class="stat-box"><div class="stat-num teal">90s</div><div class="stat-label">to shift your nervous system state with breath alone</div></div>
+    </div>
+    <div class="callout" style="margin-top:32px;max-width:700px;margin-left:auto;margin-right:auto;"><p>Breath is the only autonomic function under conscious control. Everything else — heart rate, digestion, immune response — happens without you. Breath is the door in.</p></div>
+  </div>
+</div>
+
+<!-- 5. POLYVAGAL -->
+<div class="slide" data-time="0:05" data-notes="'In 1994, Stephen Porges published a theory that changed how we understand the nervous system. Polyvagal Theory. The name sounds complex. The idea is not. You have a nerve — the vagus nerve — that runs from your brainstem down through your heart, lungs and gut. 80% of the signals go from body to brain. Your body is constantly reporting to your brain about whether you are safe.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-left"></div>
+  <div style="position:relative;z-index:10;width:100%;max-width:1060px;" class="twc">
+    <div>
+      <div class="eyebrow">Polyvagal Theory</div>
+      <h2 class="title" style="margin-bottom:16px;">Dr Stephen Porges.<br><em>1994.</em></h2>
+      <div class="rule short" style="margin-bottom:18px;"><div class="rl" style="max-width:80px;"></div><div class="rd"></div></div>
+      <p class="body" style="margin-bottom:18px;">The vagus nerve is the longest nerve in the body. It connects the brainstem directly to the heart, lungs and gut. 80% of its fibres are afferent — signals travel from body to brain. Your body is reporting to your brain about safety or threat before a single thought forms.</p>
+      <p class="body" style="margin-bottom:18px;">Breath is the fastest direct access point to this system. Breath is how you change your state.</p>
+      <div class="sci-badge"><span class="icon">🔬</span><p><strong>Porges, S.W. (2011) — The Polyvagal Theory, Norton:</strong> Foundational framework for understanding how the autonomic nervous system regulates safety, threat and social connection.</p></div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card gold"><div class="card-ghost">VN</div><div class="ctag">The Vagus Nerve</div><div class="ctitle">The body's safety wire</div><div class="cbody">Runs from brainstem through throat, heart, lungs and gut. Carries safety signals in both directions. The primary pathway between your state of being and your physiological response.</div></div>
+      <div class="card teal"><div class="card-ghost">80</div><div class="ctag teal">Signal Direction</div><div class="ctitle">Body talks to brain</div><div class="cbody">80% of vagal fibres are afferent — signals travel upward from body to brain. This is why changing your breath changes your state. You're not just breathing — you're sending data upstream.</div></div>
+      <div class="card coral"><div class="card-ghost">∞</div><div class="ctag coral">Neuroception</div><div class="ctitle">Detection below thought</div><div class="cbody">The nervous system scans for safety or threat continuously — before a single conscious thought forms. That feeling something is off before you can name it? That's neuroception. That's data.</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- 6. THREE STATES -->
+<div class="slide" data-time="0:10" data-notes="'Porges identified three distinct states the nervous system moves between. Not emotions — states. Physiological states. Each one produces a predictable pattern of behaviour, thought and physical sensation. Most people in this room spend the majority of their time in fight or flight — without knowing it. They think that is just who they are. It is not. It is a state. States can be changed.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-full"></div>
+  <div style="position:relative;z-index:10;width:100%;max-width:1060px;">
+    <div class="eyebrow center">The Three States</div>
+    <h2 class="title" style="text-align:center;margin-bottom:24px;">Where is your nervous system <em>right now?</em></h2>
+    <div class="ncards">
+      <div class="nc g"><span class="ncico">🟢</span><div class="nctag">Ventral Vagal</div><div class="nctitle">Safe and Social</div><div class="ncbody">Connection · Curiosity · Creativity · Presence · Heart settled · Breath full and easy. This is where you do your best work and your best parenting. Most people visit this state — they don't live here.</div></div>
+      <div class="nc c"><span class="ncico">🔴</span><div class="nctag">Sympathetic</div><div class="nctitle">Fight or Flight</div><div class="ncbody">Hypervigilance · Urgency · Reactivity · Irritability · Heart racing · Breath shallow and fast. Everything feels urgent. Patience disappears. The state most modern professionals live in chronically — without knowing it.</div></div>
+      <div class="nc t"><span class="ncico">🔵</span><div class="nctag">Dorsal Vagal</div><div class="nctitle">Freeze and Collapse</div><div class="ncbody">Withdrawal · Numbness · Fog · Disconnection · Breath shallow and held · Body heavy. The state of shutdown. When the system has been in threat too long. Often misread as depression or laziness.</div></div>
+    </div>
+    <div class="callout" style="margin-top:20px;max-width:100%;"><p>These are not personality types. They are not fixed. They are states — and the nervous system moves between them based on the cues it receives. Breath is the fastest cue you control.</p></div>
+  </div>
+</div>
+
+<!-- 7. NEUROCEPTION -->
+<div class="slide" data-time="0:13" data-notes="'Your nervous system detects safety or threat below conscious awareness. Before a single thought forms. Which means you can be in full threat response to a completely safe situation. An email that reads as aggressive. A tone of voice that sounds like a parent. Your nervous system is not responding to reality — it is responding to its best interpretation of reality, built from every experience you've ever had. That's not a flaw. That's a feature. But it means the response isn't always right.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-center"></div>
+  <div class="swm">Cues</div>
+  <div style="position:relative;z-index:10;text-align:center;max-width:840px;">
+    <div class="chip">Neuroception</div>
+    <h2 class="title" style="text-align:center;margin-bottom:16px;font-size:clamp(36px,5vw,58px);">Your system responds<br><em>before you think.</em></h2>
+    <div class="rule ctr" style="margin:20px auto;"><div class="rl"></div><div class="rd"></div><div class="rl" style="background:linear-gradient(270deg,rgba(200,164,74,.55),transparent);"></div></div>
+    <p class="body ctr w" style="margin-bottom:28px;">The nervous system scans for safety and threat cues continuously. It doesn't wait for your conscious mind to weigh in. By the time you have a thought about a situation — your nervous system has already made a decision about it.</p>
+    <div class="callout teal" style="text-align:left;max-width:760px;margin:0 auto;"><p>That meeting that left you unsettled for hours. That person whose presence puts you on edge before they've said a word. That room you walked into and something just felt wrong. That's neuroception. Your nervous system doing its job — accurately or not.</p></div>
+  </div>
+</div>
+
+<!-- 8. THE TOOL -->
+<div class="slide" data-time="0:17" data-notes="'Stanford. 2022. Huberman Lab. They tested every breathing technique against each other. One came out on top for rapid anxiety reduction. The physiological sigh.' Pause. 'You've done this before — involuntarily. That double breath you take when you've been crying and can't catch your breath. That's the physiological sigh. Your body already knows this. We're making it intentional.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-left"></div>
+  <div style="position:relative;z-index:10;width:100%;max-width:1060px;" class="twc">
+    <div>
+      <div class="eyebrow coral">The Tool</div>
+      <h2 class="title" style="margin-bottom:16px;">Physiological<br><em>Sigh</em></h2>
+      <div class="rule short" style="margin-bottom:18px;"><div class="rl" style="max-width:80px;"></div><div class="rd"></div></div>
+      <p class="body" style="margin-bottom:18px;">Stanford Huberman Lab, 2022. Tested against every other breathing technique for rapid anxiety reduction. The physiological sigh produced the fastest measurable reduction in stress markers of any technique tested.</p>
+      <p class="body" style="margin-bottom:18px;">The double inhale pops collapsed alveoli — maximising oxygen and CO₂ exchange. The long exhale activates the vagal brake — the fastest parasympathetic pathway available. Measurable state shift in 90 seconds.</p>
+      <div class="sci-badge coral"><span class="icon">🔬</span><p><strong>Huberman Lab, Stanford (2022):</strong> Cyclic sighing outperforms mindfulness meditation and box breathing for acute stress reduction. Cell Reports Medicine.</p></div>
+    </div>
+    <div>
+      <div class="ctag" style="margin-bottom:16px;">The Sequence — 4 Rounds · 90 Seconds</div>
+      <div class="step-row inp"><div class="step-ico t">👃</div><div class="step-label"><div class="step-name">Deep inhale through the nose</div><div class="step-sub">Fill the lungs fully — belly first, then chest</div></div><span class="step-dur">3s</span></div>
+      <div class="step-row mid"><div class="step-ico g">👃</div><div class="step-label"><div class="step-name">Short sharp second inhale</div><div class="step-sub">Pack the lungs — a sniff stacked on top</div></div><span class="step-dur">1s</span></div>
+      <div class="step-row out"><div class="step-ico c">👄</div><div class="step-label"><div class="step-name">Long slow exhale through the mouth</div><div class="step-sub">All the way out — longer than the inhale</div></div><span class="step-dur">8s</span></div>
+      <div class="step-row loop"><div class="step-ico g">🔄</div><div class="step-label"><div class="step-name">Repeat 4 times</div><div class="step-sub">90 seconds total</div></div><span class="step-dur">×4</span></div>
+      <div style="margin-top:16px;padding:14px 18px;border-radius:10px;background:rgba(26,155,173,.07);border:1px solid rgba(26,155,173,.2);font-size:12px;color:var(--tealL);font-weight:600;text-align:center;letter-spacing:1px;">THE LONG EXHALE ACTIVATES THE VAGAL BRAKE — THE FASTEST PARASYMPATHETIC PATHWAY</div>
+    </div>
+  </div>
+</div>
+
+<!-- 9. LIVE PRACTICE -->
+<div class="slide" data-time="0:20" data-notes="'Let's do it together right now. Four rounds. Close your eyes if that feels right. Both feet on the floor. Follow the circle.' Run all four rounds with the group. After the final exhale, 8 seconds silence. Then: 'Notice that. That shift — that's the vagal brake engaging. That's your parasympathetic system doing exactly what it was designed to do. And you just activated it intentionally.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div>
+    <div class="sh" style="top:62%;"></div><div class="sh" style="top:66%;animation-delay:1.2s;width:50%;left:25%;"></div><div class="sh" style="top:71%;animation-delay:2.4s;"></div>
+  </div>
+  <div class="ov-center"></div>
+  <div style="position:relative;z-index:10;text-align:center;">
+    <div class="chip teal" style="margin-bottom:22px;">Live Practice — Together Now</div>
+    <h2 class="title" style="text-align:center;margin-bottom:8px;">Physiological Sigh</h2>
+    <p class="body ctr" style="margin-bottom:28px;font-size:clamp(13px,1.2vw,16px);">Four rounds. Follow the circle. Notice the shift.</p>
+    <div class="btimer">
+      <div class="bcirc" id="sighCircle"><div class="bcnt" id="sighCount">4</div><div class="bph" id="sighPhase">ready</div></div>
+      <p class="body ctr" style="max-width:420px;">Deep inhale through the nose · Sharp second inhale on top<br>Long slow exhale through the mouth · All the way out</p>
+      <button class="bbtn" id="sighBtn" onclick="startSigh()">Begin Practice</button>
+    </div>
+  </div>
+</div>
+
+<!-- 10. INTEGRATION -->
+<div class="slide" data-time="0:22" data-notes="'The tool only works if you use it. And you only use it if you've attached it to something that already happens in your day. Choose one trigger. Just one. Tonight.' Go through each card. 'The driveway is the one I come back to most. What happens when you walk in the door still carrying the day — your family feels it before you've said a word. Two rounds in the driveway. Arrive as a person, not a reaction.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-full"></div>
+  <div style="position:relative;z-index:10;width:100%;max-width:1060px;">
+    <div class="eyebrow center">Integration</div>
+    <h2 class="title" style="text-align:center;margin-bottom:24px;">One trigger. <em>Seven days.</em></h2>
+    <div class="tc">
+      <div class="card gold"><div class="card-ghost">1</div><div class="ctag">The Laptop Close</div><div class="ctitle">End of work</div><div class="cbody">The moment the laptop closes. Four rounds. Non-negotiable. Don't leave your desk in fight mode. This is the boundary between work and the rest of your life — mark it with your breath.</div></div>
+      <div class="card teal"><div class="card-ghost">2</div><div class="ctag teal">The Red Light</div><div class="ctitle">In the car</div><div class="cbody">One round. Just one. The car is one of the most private spaces you have all day. Every red light is an invitation. Nobody can see you. Nobody is watching. Use it.</div></div>
+      <div class="card coral"><div class="card-ghost">3</div><div class="ctag coral">The Driveway</div><div class="ctitle">Before you go in</div><div class="cbody">Two rounds before you open the front door. Your family feels your state before you've said a single word. Give them the version of you that has actually left the day behind.</div></div>
+    </div>
+    <div class="callout" style="margin-top:20px;max-width:100%;"><p>Choose one trigger. Not three. One. Attach the four rounds to it. Do it every day for seven days. The nervous system learns by repetition — not by intention.</p></div>
+  </div>
+</div>
+
+<!-- 11. THE PRINCIPLE -->
+<div class="slide" data-time="0:23" data-notes="'Not a technique. A principle.' Pause. 'Breath is the only part of your autonomic nervous system you can control consciously. Heart rate — involuntary. Digestion — involuntary. Immune response — involuntary. But breath — you just took a breath and you had a choice about how to do it. That is the door in. Every time. No equipment. No app. No prescription. Always there. Always works.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div></div>
+  <div class="ov-center"></div>
+  <div class="swm">Why</div>
+  <div style="position:relative;z-index:10;text-align:center;max-width:820px;">
+    <div class="chip teal">The Principle</div>
+    <h2 class="title" style="text-align:center;margin-bottom:16px;font-size:clamp(32px,4.2vw,52px);">Breath is the only autonomic function<br><em>under conscious control.</em></h2>
+    <div class="rule ctr" style="margin:20px auto;"><div class="rl"></div><div class="rd"></div><div class="rl" style="background:linear-gradient(270deg,rgba(200,164,74,.55),transparent);"></div></div>
+    <p class="body ctr w" style="margin-bottom:28px;">Heart rate — involuntary. Digestion — involuntary. Immune response — involuntary. Breath — you just took one and you had a choice about how to do it. That is the door in to your nervous system. Always available. No equipment. No prescription.</p>
+    <div class="callout teal" style="text-align:left;max-width:760px;margin:0 auto;"><p>This session gave you the why. The BREATHSTATE library gives you the how — applied to the specific moments in your life where it matters most.</p></div>
+  </div>
+</div>
+
+<!-- 12. WHAT'S NEXT -->
+<div class="slide" data-time="0:24" data-notes="'Tonight you got the foundation. The nervous system map. You know what the three states are, how neuroception works, and you have the tool that shifts you out of fight or flight in 90 seconds. Next — Nasal Breathing. Why most people are doing it wrong every single day, all day, without knowing it. Including their children.'">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div>
+    <div class="sh" style="top:62%;"></div><div class="sh" style="top:66%;animation-delay:1.1s;width:55%;left:22.5%;"></div><div class="sh" style="top:71%;animation-delay:2.2s;"></div>
+  </div>
+  <div class="ov-center"></div>
+  <div style="position:relative;z-index:10;text-align:center;width:100%;max-width:840px;">
+    <div class="chip" style="margin-bottom:22px;">BREATHSTATE by EYRE</div>
+    <h2 class="title" style="text-align:center;margin-bottom:6px;">Tonight gave you the <em>map.</em></h2>
+    <p class="body ctr" style="margin:14px auto 26px;">The library gives you the tools — applied to the moments that matter.</p>
+    <div class="up-card">
+      <p style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--dim);text-transform:uppercase;margin-bottom:6px;">Also Available</p>
+      <div class="wpills">
+        <div class="wpill done">Your Nervous System ✓</div>
+        <div class="wpill">Nasal Breathing</div>
+        <div class="wpill">HRV</div>
+        <div class="wpill">Coming Soon</div>
+        <div class="wpill">Coming Soon</div>
+      </div>
+      <div style="height:1px;background:rgba(255,255,255,.08);margin:20px 0;"></div>
+      <p style="font-size:14px;color:var(--dim);line-height:1.75;max-width:560px;margin:0 auto 20px;">Each session is standalone. Each tool is ready to use tonight. Free.</p>
+      <p style="font-size:10px;font-weight:700;letter-spacing:3px;color:var(--tealL);text-transform:uppercase;margin-bottom:10px;">Ready to go deeper?</p>
+      <button class="cta" onclick="window.open('https://calendly.com/eyrecoaching','_blank')">Book a Discovery Call</button>
+      <p style="font-size:10px;color:var(--dim);margin-top:14px;letter-spacing:1px;">eyrecoaching.com &nbsp;·&nbsp; chris@eyrecoaching.com</p>
+    </div>
+  </div>
+</div>
+
+<!-- 13. CLOSE -->
+<div class="slide" data-time="0:25" data-notes="Silence. 10 seconds. Then: 'Tonight you learned why your nervous system behaves the way it does. You learned where the door in is. And you used it.' Pause. 'One trigger. One tool. Seven days. That's all I'm asking.' Leave it there.">
+  <div class="ocean"><div class="sky"></div><div class="stars"></div><div class="sun"></div><div class="hglow"></div><div class="water"></div><div class="refl"></div>
+    <div class="sh" style="top:62%;"></div><div class="sh" style="top:65%;animation-delay:.9s;width:52%;left:24%;"></div><div class="sh" style="top:69%;animation-delay:1.8s;"></div><div class="sh" style="top:73%;animation-delay:2.7s;width:38%;left:31%;"></div><div class="sh" style="top:78%;animation-delay:.4s;"></div>
+  </div>
+  <div class="ov-center"></div>
+  <div style="position:relative;z-index:10;text-align:center;display:flex;flex-direction:column;align-items:center;">
+    <div style="font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;letter-spacing:8px;color:rgba(255,255,255,.85);margin-bottom:6px;text-transform:uppercase;">BREATHSTATE</div>
+    <div style="font-size:9px;font-weight:600;letter-spacing:4px;color:var(--gold);margin-bottom:24px;text-transform:uppercase;">by EYRE</div>
+    <div class="rule ctr" style="margin:0 auto 28px;"><div class="rl"></div><div class="rd"></div><div class="rl" style="background:linear-gradient(270deg,rgba(200,164,74,.55),transparent);"></div></div>
+    <p style="font-family:'Playfair Display',serif;font-size:clamp(18px,2.2vw,28px);font-style:italic;color:rgba(255,255,255,.65);margin-bottom:12px;">One trigger.</p>
+    <p style="font-family:'Playfair Display',serif;font-size:clamp(18px,2.2vw,28px);font-style:italic;color:rgba(255,255,255,.65);margin-bottom:12px;">One tool.</p>
+    <p style="font-family:'Playfair Display',serif;font-size:clamp(18px,2.2vw,28px);font-style:italic;color:rgba(255,255,255,.45);margin-bottom:40px;">Seven days.</p>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+      <p style="font-size:11px;color:var(--dim);letter-spacing:3px;text-transform:uppercase;">eyrecoaching.com</p>
+      <p style="font-size:14px;color:var(--dim);">chris@eyrecoaching.com</p>
+      <div style="margin-top:22px;border:1px solid rgba(200,164,74,.38);padding:14px 38px;border-radius:100px;font-size:11px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;">Book a Discovery Call</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /deck -->
+
+<div class="nav">
+  <button id="prevBtn" onclick="prevSlide()" disabled>← Back</button>
+  <div class="ndot"></div>
+  <div class="ctr" id="ctr">1 / 13</div>
+  <div class="ndot"></div>
+  <button id="nextBtn" onclick="nextSlide()">Next →</button>
+</div>
+<button class="nbtn" id="nbtn" onclick="toggleNotes()">Speaker Notes</button>
+<div class="npanel" id="npanel">
+  <div class="nlbl" id="nlbl">Speaker Notes — Slide 1</div>
+  <div class="ntxt" id="ntxt"></div>
+</div>
+
+<script>
+  let cur=0;
+  const slides=document.querySelectorAll('.slide');
+  const total=slides.length;
+  let nvis=false;
+  function show(n){
+    slides[cur].classList.remove('active');
+    cur=Math.max(0,Math.min(n,total-1));
+    slides[cur].classList.add('active');
+    document.getElementById('ctr').textContent=`${cur+1} / ${total}`;
+    document.getElementById('prevBtn').disabled=cur===0;
+    document.getElementById('nextBtn').disabled=cur===total-1;
+    document.getElementById('prog').style.width=`${((cur+1)/total)*100}%`;
+    document.getElementById('stime').textContent=slides[cur].dataset.time||'';
+    document.getElementById('nlbl').textContent=`Speaker Notes — Slide ${cur+1}`;
+    document.getElementById('ntxt').textContent=slides[cur].dataset.notes||'';
+  }
+  function nextSlide(){show(cur+1);}
+  function prevSlide(){show(cur-1);}
+  function toggleNotes(){
+    nvis=!nvis;
+    document.getElementById('npanel').classList.toggle('vis',nvis);
+    document.getElementById('nbtn').textContent=nvis?'Hide Notes':'Speaker Notes';
+  }
+  document.addEventListener('keydown',e=>{
+    if(['ArrowRight','ArrowDown',' '].includes(e.key)){e.preventDefault();nextSlide();}
+    if(['ArrowLeft','ArrowUp'].includes(e.key)){e.preventDefault();prevSlide();}
+    if(e.key==='n'||e.key==='N')toggleNotes();
+  });
+  show(0);
+  let sighRunning=false,sighInterval=null;
+  const SIGH_SEQ=[];
+  for(let i=0;i<4;i++){
+    SIGH_SEQ.push({label:'Inhale deep through nose…',secs:3,sc:'1.15',bc:'rgba(26,155,173,.7)',sh:'0 0 60px rgba(26,155,173,.28)'});
+    SIGH_SEQ.push({label:'Sharp second inhale — sniff!',secs:1,sc:'1.22',bc:'rgba(26,155,173,.9)',sh:'0 0 80px rgba(26,155,173,.4)'});
+    SIGH_SEQ.push({label:'Long slow exhale through mouth…',secs:8,sc:'0.88',bc:'rgba(26,155,173,.4)',sh:'none'});
+  }
+  function startSigh(){
+    if(sighRunning)return;
+    sighRunning=true;
+    const btn=document.getElementById('sighBtn');
+    const circ=document.getElementById('sighCircle');
+    const cnt=document.getElementById('sighCount');
+    const ph=document.getElementById('sighPhase');
+    btn.textContent='Breathing…';btn.disabled=true;
+    let si=0,secLeft=0;
+    function tick(){
+      if(si>=SIGH_SEQ.length){
+        clearInterval(sighInterval);
+        cnt.textContent='✓';ph.textContent='Notice the shift';
+        circ.style.transform='scale(1)';circ.style.borderColor='rgba(26,155,173,.6)';circ.style.boxShadow='0 0 60px rgba(26,155,173,.3)';
+        btn.textContent='Begin Practice';btn.disabled=false;sighRunning=false;return;
+      }
+      const s=SIGH_SEQ[si];
+      if(secLeft===0){
+        secLeft=s.secs;cnt.textContent=secLeft;ph.textContent=s.label;
+        circ.style.transform='scale('+s.sc+')';circ.style.borderColor=s.bc;circ.style.boxShadow=s.sh;
+      } else {secLeft--;if(secLeft===0){si++;}else{cnt.textContent=secLeft;}}
+    }
+    secLeft=0;tick();sighInterval=setInterval(tick,1000);
+  }
+</script>
+</body>
+</html>
