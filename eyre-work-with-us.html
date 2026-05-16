@@ -100,7 +100,54 @@
   /* Footer */
   .footer { text-align:center; display:flex; flex-direction:column; gap:0.2rem; padding-top:1rem; border-top:1px solid var(--border); }
   .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2e2e2a; text-transform:uppercase; }
-  .footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#2e2e2a; text-transform:uppercase; margin-top:0.15rem; }
+  .footer-disc { font-size:0.48rem; letter-spacing:0.15em; color:#b0aa9f; text-transform:uppercase; margin-top:0.15rem; }
+
+  /* ── HAMBURGER ── */
+  .hamburger {
+    display:none; flex-direction:column; gap:5px;
+    cursor:pointer; padding:4px;
+    -webkit-tap-highlight-color:transparent;
+    z-index:200;
+  }
+  .hamburger span {
+    display:block; width:22px; height:1.5px;
+    background:#e8e2d8; transition:all 0.3s ease;
+  }
+  .hamburger.open span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
+  .hamburger.open span:nth-child(2) { opacity:0; }
+  .hamburger.open span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
+
+  .mobile-menu {
+    display:none; position:fixed; top:0; left:0; right:0; bottom:0;
+    background:#0c0c0b; z-index:150;
+    flex-direction:column; align-items:center; justify-content:center;
+    gap:2rem;
+  }
+  .mobile-menu.open { display:flex; }
+  .mobile-menu a {
+    font-family:'Montserrat',sans-serif; font-size:1.1rem;
+    letter-spacing:0.2em; text-transform:uppercase;
+    color:#e8e2d8; text-decoration:none; transition:color 0.2s;
+  }
+  .mobile-menu a:hover { color:#d4a95a; }
+  .mobile-menu .mobile-cta {
+    border:1px solid #d4a95a; color:#d4a95a;
+    padding:0.7rem 1.8rem; font-size:0.8rem;
+  }
+
+  @media (max-width: 768px) {
+    .nav-links { display:none; }
+    .hamburger { display:flex; }
+
+    .hero { padding-top:5rem; }
+    .statement, .who, .change-inner, .how, .cta-section,
+    .pillar, .pillar.dark .pillar-inner,
+    .origin, .background-inner, .why, .training-inner,
+    .offerings-section, .content, .section-gap { padding-left:1.2rem; padding-right:1.2rem; }
+
+    .hero-headline { font-size:clamp(1.8rem,8vw,3rem); }
+    .section-divider { margin:0 auto; }
+  }
 </style>
 </head>
 <body>
@@ -220,6 +267,13 @@ function toggleOfferings() {
   if (!isOpen) {
     setTimeout(() => { wrap.scrollIntoView({ behavior:'smooth', block:'start' }); }, 100);
   }
+}
+</script>
+
+<script>
+function toggleMenu() {
+  document.getElementById('hamburger').classList.toggle('open');
+  document.getElementById('mobile-menu').classList.toggle('open');
 }
 </script>
 </body>

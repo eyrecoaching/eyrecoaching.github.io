@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<title>EYRE — Box Breathing</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  :root { --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f; --accent:#d4a95a; }
+  html, body { height:100%; background:#0c0c0b; }
+  body { background:#0c0c0b !important; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.08em; color-scheme:dark; display:flex; flex-direction:column; position:fixed; inset:0; overflow:hidden; }
+  body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+  .header { flex:0 0 auto; text-align:center; padding:max(env(safe-area-inset-top),0.7rem) 1rem 0.3rem; position:relative; z-index:1; }
+  .header-eyre { font-family:'Cormorant Garamond',serif; font-size:1.2rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .main { flex:1 1 auto; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; overflow:hidden; }
+  .footer { flex:0 0 auto; text-align:center; padding:0.3rem 1rem max(env(safe-area-inset-bottom),0.5rem); position:relative; z-index:1; }
+  .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2e2e2a; text-transform:uppercase; }
+  .footer-disc { font-size:0.44rem; letter-spacing:0.12em; color:#2a2a26; text-transform:uppercase; margin-top:0.1rem; }
+  .screen { display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; padding:0 2rem; gap:1rem; animation:fadeIn 0.4s ease; }
+  .screen.active { display:flex; }
+  @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+  .intro-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
+  .intro-pattern { font-size:0.58rem; color:#c8c2b8; letter-spacing:0.16em; text-align:center; text-transform:uppercase; line-height:2.2; }
+  .intro-sub { font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic; color:var(--muted); text-align:center; }
+  .intro-when { font-size:0.65rem; color:#a0998f; letter-spacing:0.06em; text-align:center; line-height:1.8; }
+  .dur-label { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; }
+  .duration-row { display:flex; gap:0.4rem; justify-content:center; flex-wrap:wrap; }
+  .dur-btn { background:transparent; border:1px solid var(--border); color:var(--muted); padding:0.5rem 0.85rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; letter-spacing:0.14em; cursor:pointer; transition:all 0.25s; -webkit-tap-highlight-color:transparent; }
+  .dur-btn.selected { border-color:var(--accent); color:var(--accent); }
+  .orb-container { position:relative; width:min(44vw,170px); height:min(44vw,170px); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .arc-svg { position:absolute; top:0; left:0; width:100%; height:100%; transform:rotate(-90deg); }
+  .arc-track { fill:none; stroke:#2a2a27; stroke-width:1.5; }
+  .arc-fill { fill:none; stroke:#8a9a8a; stroke-width:1.5; stroke-linecap:round; stroke-dasharray:565; stroke-dashoffset:565; }
+  .orb { width:38%; height:38%; border-radius:50%; background:radial-gradient(circle at 38% 38%,#5a7a6e,#2a3d38); box-shadow:0 0 30px rgba(143,173,160,0.15),inset 0 0 15px rgba(0,0,0,0.4); position:relative; z-index:2; }
+  .orb.inhaling { box-shadow:0 0 50px rgba(143,173,160,0.3),inset 0 0 15px rgba(0,0,0,0.3); }
+  .orb.holding { box-shadow:0 0 40px rgba(212,169,90,0.2),inset 0 0 15px rgba(0,0,0,0.3); }
+  .orb.exhaling { box-shadow:0 0 10px rgba(143,173,160,0.05),inset 0 0 20px rgba(0,0,0,0.5); }
+  .session-label { font-size:0.55rem; letter-spacing:0.28em; text-transform:uppercase; color:var(--muted); text-align:center; }
+  .phase-label { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:400; font-style:italic; color:var(--text); text-align:center; transition:opacity 0.4s ease; min-height:2.4rem; }
+  .phase-count { font-size:1rem; letter-spacing:0.3em; color:#e8e2d8; text-align:center; min-height:1.2rem; }
+  .cycle-info { font-size:0.58rem; letter-spacing:0.25em; color:#d4cfc8; text-transform:uppercase; text-align:center; }
+  .divider { width:32px; height:1px; background:var(--border); }
+  .progress-bar { width:100%; height:1px; background:var(--border); overflow:hidden; }
+  .progress-fill { height:100%; background:var(--accent); width:0%; transition:width 0.5s linear; }
+  .controls { display:flex; gap:0.8rem; align-items:center; justify-content:center; }
+  .btn-primary { background:transparent; border:1px solid var(--accent); color:var(--accent); padding:0.75rem 1.6rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.25em; text-transform:uppercase; cursor:pointer; transition:background 0.3s,color 0.3s; -webkit-tap-highlight-color:transparent; }
+  .btn-primary:active { background:var(--accent); color:var(--bg); }
+  .btn-ghost { background:transparent; border:none; color:var(--muted); font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.2em; text-transform:uppercase; cursor:pointer; padding:0.75rem 0.8rem; -webkit-tap-highlight-color:transparent; }
+  .complete-title { font-family:'Cormorant Garamond',serif; font-size:2rem; font-weight:300; font-style:italic; text-align:center; color:var(--text); }
+  .complete-sub { font-size:0.65rem; letter-spacing:0.14em; color:#c0bab2; text-align:center; line-height:1.9; }
+  #accept-gate { position:fixed; inset:0; z-index:999; background:#0c0c0b; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:max(env(safe-area-inset-top),2rem) 2rem max(env(safe-area-inset-bottom),2rem); }
+  #accept-gate::before { content:''; position:absolute; inset:0; pointer-events:none; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
+  .gate-inner { position:relative; z-index:1; width:100%; max-width:300px; display:flex; flex-direction:column; gap:1.4rem; }
+  .gate-brand { font-family:'Cormorant Garamond',serif; font-size:1.2rem; letter-spacing:0.55em; color:#b0aa9f; text-transform:uppercase; text-align:center; }
+  .gate-divider { width:24px; height:1px; background:#2a2a27; margin:0 auto; }
+  .gate-scope { font-size:0.63rem; color:#7a7470; letter-spacing:0.07em; line-height:1.9; text-align:center; }
+  .gate-accept { background:transparent; border:1px solid #d4a95a; color:#d4a95a; padding:0.9rem 1.6rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; font-weight:300; letter-spacing:0.3em; text-transform:uppercase; cursor:pointer; width:100%; transition:background 0.3s,color 0.3s; -webkit-tap-highlight-color:transparent; }
+  .gate-accept:active { background:#d4a95a; color:#0c0c0b; }
+  .gate-terms { font-size:0.5rem; color:#6a6460; letter-spacing:0.1em; text-align:center; line-height:1.8; text-transform:uppercase; }
+  .intro-safety { font-size:0.6rem; color:#8a8480; letter-spacing:0.08em; text-align:center; line-height:1.7; border-top:1px solid #2a2a27; padding-top:0.8rem; width:100%; }
+</style>
+</head>
+<body>
+<div id="accept-gate">
+  <div class="gate-inner">
+    <div class="gate-brand">EYRE</div>
+    <div class="gate-divider"></div>
+    <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
+    <button class="gate-accept" onclick="acceptGate()">Continue</button>
+    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/terms" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
+  </div>
+</div>
+
+<div class="header"><div class="header-eyre">EYRE</div></div>
+<div class="main">
+
+  <div class="screen active" id="screen-intro">
+    <div class="intro-title">Box<br>Breathing</div>
+    <div class="intro-pattern">4 sec inhale · 4 sec hold<br>4 sec exhale · 4 sec hold</div>
+    <div class="intro-sub">Focus. Clarity. Control.</div>
+    <div class="intro-when">Before high-pressure situations, important decisions, or when you need to focus fast.</div>
+    <div class="intro-safety">Find a quiet place to sit or lie down. Do not practise while driving or operating machinery.</div>
+    <div class="controls"><button class="btn-primary" onclick="showScreen('screen-duration')">Begin</button></div>
+  </div>
+
+  <div class="screen" id="screen-duration">
+    <div class="dur-label">How long?</div>
+    <div class="duration-row">
+      <button class="dur-btn selected" onclick="selectDuration(this,5)">5 min</button>
+      <button class="dur-btn" onclick="selectDuration(this,10)">10 min</button>
+      <button class="dur-btn" onclick="selectDuration(this,15)">15 min</button>
+      <button class="dur-btn" onclick="selectDuration(this,20)">20 min</button>
+    </div>
+    <div class="controls">
+      <button class="btn-primary" onclick="startSession()">Start</button>
+      <button class="btn-ghost" onclick="showScreen('screen-intro')">Back</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-breath">
+    <div class="session-label">Box Breathing</div>
+    <div class="orb-container">
+      <svg class="arc-svg" viewBox="0 0 200 200">
+        <circle class="arc-track" cx="100" cy="100" r="90"/>
+        <circle class="arc-fill" id="arc-fill" cx="100" cy="100" r="90"/>
+      </svg>
+      <div class="orb" id="orb"></div>
+    </div>
+    <div class="phase-label" id="phase-label">—</div>
+    <div class="phase-count" id="phase-count"></div>
+    <div class="divider"></div>
+    <div class="cycle-info" id="cycle-info">Cycle 1</div>
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="controls">
+      <button class="btn-primary" id="pause-btn" onclick="togglePause()">Pause</button>
+      <button class="btn-ghost" onclick="endSession()">End</button>
+    </div>
+  </div>
+
+  <div class="screen" id="screen-complete">
+    <div class="complete-title">Well done.</div>
+    <div class="divider"></div>
+    <div class="complete-sub" id="complete-sub">Practice complete.</div>
+    <div class="controls"><button class="btn-primary" onclick="showScreen('screen-intro')">Again</button></div>
+  </div>
+
+</div>
+<div class="footer">
+  <div class="footer-tag">EYRE Coaching</div>
+  <div class="footer-disc">For self-regulation support only · Not a substitute for professional care</div>
+</div>
+
+<script>
+function setVH(){document.body.style.height=window.innerHeight+'px';}
+setVH();window.addEventListener('resize',setVH);
+const PHASES=[{name:'Inhale',duration:4,type:'inhale'},{name:'Hold',duration:4,type:'hold'},{name:'Exhale',duration:4,type:'exhale'},{name:'Hold',duration:4,type:'hold'}];
+const CIRC=2*Math.PI*90;
+let sessionDuration=5,sessionTimer=null,phaseTimer=null,cycleCount=0,phaseIndex=0,isPaused=false,sessionTotalSeconds=0,elapsedSeconds=0,phaseRemaining=0;
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function selectDuration(btn,mins){document.querySelectorAll('.dur-btn').forEach(b=>b.classList.remove('selected'));btn.classList.add('selected');sessionDuration=mins;}
+function startSession(){sessionTotalSeconds=sessionDuration*60;elapsedSeconds=0;cycleCount=0;phaseIndex=0;isPaused=false;document.getElementById('pause-btn').textContent='Pause';showScreen('screen-breath');updateProgress();startPhase();startElapsedTimer();}
+function startPhase(){const p=PHASES[phaseIndex];phaseRemaining=p.duration;setPhaseLabel(p.name,p.type);animateVisual(p.type,p.duration);if(phaseIndex===0){cycleCount++;document.getElementById('cycle-info').textContent='Cycle '+cycleCount;}countDown();}
+function countDown(){clearTimeout(phaseTimer);if(isPaused)return;if(phaseRemaining<=0){phaseIndex=(phaseIndex+1)%PHASES.length;startPhase();return;}document.getElementById('phase-count').textContent=phaseRemaining;phaseRemaining--;phaseTimer=setTimeout(countDown,1000);}
+function startElapsedTimer(){clearInterval(sessionTimer);sessionTimer=setInterval(()=>{if(isPaused)return;elapsedSeconds++;updateProgress();if(elapsedSeconds>=sessionTotalSeconds){clearInterval(sessionTimer);finishSession();}},1000);}
+function updateProgress(){document.getElementById('progress-fill').style.width=Math.min(100,(elapsedSeconds/sessionTotalSeconds)*100)+'%';}
+function setPhaseLabel(name,type){const el=document.getElementById('phase-label');el.style.opacity='0';setTimeout(()=>{el.textContent=name;el.style.color=type==='inhale'?'#a8c4b8':type==='hold'?'#d4a95a':'#b8a898';el.style.opacity='1';},200);}
+function togglePause(){isPaused=!isPaused;document.getElementById('pause-btn').textContent=isPaused?'Resume':'Pause';if(!isPaused){countDown();animateVisual(PHASES[phaseIndex].type,phaseRemaining);}else{clearTimeout(phaseTimer);const o=document.getElementById('orb');o.style.transform=getComputedStyle(o).transform;o.style.transition='none';}}
+function endSession(){clearInterval(sessionTimer);clearTimeout(phaseTimer);const o=document.getElementById('orb');o.style.transition='transform 1s ease';o.style.transform='scale(1)';o.className='orb';showScreen('screen-intro');}
+function finishSession(){clearTimeout(phaseTimer);const o=document.getElementById('orb');o.style.transition='transform 1s ease';o.style.transform='scale(1)';o.className='orb';document.getElementById('complete-sub').textContent=sessionDuration+' min · '+cycleCount+' cycles · Box';showScreen('screen-complete');}
+function animateVisual(type,duration){animateOrb(type,duration);animateArc(type,duration);}
+function animateOrb(type,duration){const o=document.getElementById('orb');o.style.transition='none';o.className='orb';requestAnimationFrame(()=>{if(type==='inhale'){o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(2.1)';o.classList.add('inhaling');}else if(type==='hold'){o.classList.add('holding');}else{o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(1)';o.classList.add('exhaling');}});}
+function animateArc(type,duration){const a=document.getElementById('arc-fill');if(!a)return;a.style.transition='none';if(type==='inhale'){a.style.stroke='#8a9a8a';a.style.strokeDashoffset=CIRC;requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=0;});}else if(type==='hold'){a.style.stroke='#d4a95a';}else{a.style.stroke='#6a8080';a.style.strokeDashoffset=0;requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=CIRC;});}}
+function acceptGate(){const g=document.getElementById('accept-gate');g.style.transition='opacity 0.4s ease';g.style.opacity='0';setTimeout(()=>{g.style.display='none';},400);}
+</script>
+</body>
+</html>
