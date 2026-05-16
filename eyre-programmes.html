@@ -103,7 +103,7 @@
   /* ── HAMBURGER ── */
   .hamburger {
     display:none; flex-direction:column; gap:5px;
-    cursor:pointer; padding:4px;
+    cursor:pointer; padding:4px; -webkit-tap-highlight-color:transparent; touch-action:manipulation;
     -webkit-tap-highlight-color:transparent;
     z-index:200;
   }
@@ -153,14 +153,14 @@
 <nav>
   <a class="nav-brand" href="https://eyrecoaching.com/eyre-home.html">EYRE</a>
 
-<div class="hamburger" id="hamburger" onclick="toggleMenu()">
+<div class="hamburger" id="hamburger" onclick="toggleMenu()" ontouchstart="">
   <span></span><span></span><span></span>
 </div>
 <div class="mobile-menu" id="mobile-menu">
-  <a href="https://eyrecoaching.com/eyre-about.html" onclick="toggleMenu()">About</a>
-  <a href="https://eyrecoaching.com/eyre-philosophy.html" onclick="toggleMenu()">Philosophy</a>
-  <a href="https://eyrecoaching.com/eyre-programmes.html" onclick="toggleMenu()">Work</a>
-  <a href="https://eyrecoaching.com/eyre-tools.html" onclick="toggleMenu()">Tools</a>
+  <a href="https://eyrecoaching.com/eyre-about.html" onclick="toggleMenu()" ontouchstart="">About</a>
+  <a href="https://eyrecoaching.com/eyre-philosophy.html" onclick="toggleMenu()" ontouchstart="">Philosophy</a>
+  <a href="https://eyrecoaching.com/eyre-programmes.html" onclick="toggleMenu()" ontouchstart="">Work</a>
+  <a href="https://eyrecoaching.com/eyre-tools.html" onclick="toggleMenu()" ontouchstart="">Tools</a>
   <a href="https://calendly.com/eyrecoaching" target="_blank" class="mobile-cta">Book a call</a>
 </div>
 
