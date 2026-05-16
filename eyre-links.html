@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EYRE — Links</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  :root{--bg:#0c0c0b;--text:#f2ede4;--muted:#b0aa9f;--accent:#d4a95a;--border:#2a2a27;}
+  body{background:var(--bg);color:var(--text);font-family:'Montserrat',sans-serif;font-weight:300;letter-spacing:0.05em;min-height:100vh;padding:3rem 2rem;}
+  .wrap{max-width:600px;margin:0 auto;}
+  .brand{font-family:'Cormorant Garamond',serif;font-size:1rem;letter-spacing:0.5em;color:var(--muted);text-transform:uppercase;margin-bottom:0.3rem;}
+  .title{font-family:'Cormorant Garamond',serif;font-size:1.8rem;font-weight:300;color:var(--text);margin-bottom:0.5rem;}
+  .subtitle{font-size:0.65rem;color:var(--muted);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:3rem;}
+  .section{margin-bottom:2.5rem;}
+  .section-label{font-size:0.55rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--border);}
+  .link-item{display:flex;align-items:center;justify-content:space-between;padding:0.9rem 0;border-bottom:1px solid var(--border);gap:1rem;}
+  .link-item:last-child{border-bottom:none;}
+  .link-name{font-size:0.75rem;color:var(--text);letter-spacing:0.05em;}
+  .link-desc{font-size:0.6rem;color:var(--muted);letter-spacing:0.03em;margin-top:0.2rem;}
+  .link-actions{display:flex;gap:0.5rem;flex-shrink:0;}
+  .btn{font-family:'Montserrat',sans-serif;font-size:0.55rem;letter-spacing:0.15em;text-transform:uppercase;padding:0.4rem 0.8rem;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;text-decoration:none;transition:all 0.2s;white-space:nowrap;}
+  .btn:hover{border-color:var(--accent);color:var(--accent);}
+  .btn.primary{border-color:var(--accent);color:var(--accent);}
+  .btn.primary:hover{background:var(--accent);color:var(--bg);}
+  .copied{color:#60D890 !important;border-color:#60D890 !important;}
+  .footer{margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--border);font-size:0.55rem;color:#3a3a35;letter-spacing:0.15em;text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="brand">EYRE Coaching</div>
+  <div class="title">Master Links</div>
+  <div class="subtitle">eyrecoaching.com — Internal reference</div>
+
+  <!-- BREATHSTATE WEBINARS -->
+  <div class="section">
+    <div class="section-label">BREATHSTATE — Community Webinars</div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Week 1 — Your Nervous System</div>
+        <div class="link-desc">Polyvagal theory · Physiological sigh · 25 minutes</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn primary" href="https://eyrecoaching.com/breathstate-nervous-system.html" target="_blank">Open</a>
+        <button class="btn" onclick="copyLink('https://eyrecoaching.com/breathstate-nervous-system.html', this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Week 2 — Nasal Breathing</div>
+        <div class="link-desc">Nitric oxide · Facial structure · Sleep · 30 minutes</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn primary" href="https://eyrecoaching.com/breathstate-nasal-breathing.html" target="_blank">Open</a>
+        <button class="btn" onclick="copyLink('https://eyrecoaching.com/breathstate-nasal-breathing.html', this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Week 3 — HRV</div>
+        <div class="link-desc">Coming soon</div>
+      </div>
+      <div class="link-actions">
+        <button class="btn" disabled style="opacity:0.3;cursor:default;">Coming</button>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Week 4 — TBD</div>
+        <div class="link-desc">Coming soon</div>
+      </div>
+      <div class="link-actions">
+        <button class="btn" disabled style="opacity:0.3;cursor:default;">Coming</button>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Week 5 — TBD</div>
+        <div class="link-desc">Coming soon</div>
+      </div>
+      <div class="link-actions">
+        <button class="btn" disabled style="opacity:0.3;cursor:default;">Coming</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- MAIN SITE -->
+  <div class="section">
+    <div class="section-label">Main Website</div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">eyrecoaching.com</div>
+        <div class="link-desc">Main site — home, about, philosophy, programmes</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn primary" href="https://eyrecoaching.com" target="_blank">Open</a>
+        <button class="btn" onclick="copyLink('https://eyrecoaching.com', this)">Copy</button>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Book a Discovery Call</div>
+        <div class="link-desc">Calendly — eyrecoaching</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn primary" href="https://calendly.com/eyrecoaching" target="_blank">Open</a>
+        <button class="btn" onclick="copyLink('https://calendly.com/eyrecoaching', this)">Copy</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ADMIN -->
+  <div class="section">
+    <div class="section-label">Admin</div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">GitHub Repository</div>
+        <div class="link-desc">eyrecoaching.github.io — file management</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn" href="https://github.com/eyrecoaching/eyrecoaching.github.io" target="_blank">Open</a>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">chris@eyrecoaching.com</div>
+        <div class="link-desc">Google Workspace</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn" href="https://mail.google.com" target="_blank">Open</a>
+      </div>
+    </div>
+
+    <div class="link-item">
+      <div>
+        <div class="link-name">Stripe</div>
+        <div class="link-desc">Payments — Arkana Life ABN</div>
+      </div>
+      <div class="link-actions">
+        <a class="btn" href="https://dashboard.stripe.com" target="_blank">Open</a>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer">EYRE Coaching · eyrecoaching.com · Internal use only</div>
+
+</div>
+
+<script>
+function copyLink(url, btn) {
+  navigator.clipboard.writeText(url).then(function() {
+    var original = btn.textContent;
+    btn.textContent = 'Copied ✓';
+    btn.classList.add('copied');
+    setTimeout(function() {
+      btn.textContent = original;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
