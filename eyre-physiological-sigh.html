@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<!-- saved from url=(0061)file:///C:/Users/ckowa/Downloads/eyre-physiological-sigh.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
 <meta name="color-scheme" content="dark">
 <title>EYRE — Physiological Sigh</title>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300&family=Montserrat:wght@300;400&display=swap" rel="stylesheet">
+<link href="./EYRE — Physiological Sigh_files/css2" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
   :root { --bg:#0c0c0b; --border:#2a2a27; --text:#f2ede4; --muted:#b0aa9f; --accent:#d4a95a; }
@@ -61,67 +61,59 @@
   .gate-terms { font-size:0.5rem; color:#6a6460; letter-spacing:0.1em; text-align:center; line-height:1.8; text-transform:uppercase; }
   .intro-safety { font-size:0.6rem; color:#8a8480; letter-spacing:0.08em; text-align:center; line-height:1.7; border-top:1px solid #2a2a27; padding-top:0.8rem; width:100%; }
 
-  
+  /* ── MOBILE OPTIMISATION ── */
+  @media (max-width: 480px) {
+    .intro-title { font-size: 1.5rem; }
+    .intro-pattern { font-size: 0.55rem; letter-spacing: 0.12em; }
+    .intro-sub { font-size: 0.9rem; }
+    .intro-when { font-size: 0.6rem; }
+    .dur-btn { padding: 0.65rem 1rem; font-size: 0.62rem; min-height: 44px; min-width: 56px; }
+    .btn-primary { padding: 0.85rem 2rem; font-size: 0.6rem; min-height: 44px; }
+    .btn-secondary { padding: 0.65rem 1.5rem; font-size: 0.55rem; min-height: 44px; }
+    .screen { padding: 0 1.2rem; gap: 0.85rem; }
+    .circle-num { font-size: clamp(3rem, 18vw, 5.5rem); }
+    .circle-label { font-size: 0.55rem; letter-spacing: 0.18em; }
+    .circle { width: clamp(140px, 55vw, 200px); height: clamp(140px, 55vw, 200px); }
+    .breath-title { font-size: 1.1rem; }
+    .breath-cycle { font-size: 0.55rem; }
+    .gate-title { font-size: 0.8rem; }
+    .gate-body { font-size: 0.62rem; line-height: 1.7; }
+    .gate-terms { font-size: 0.48rem; }
+    .dur-label { font-size: 0.95rem; }
+    .complete-title { font-size: 1.3rem; }
+    .header-eyre { font-size: 1rem; letter-spacing: 0.4em; }
   }
-/* ── HAMBURGER ── */
-  #menu-toggle { display:none; }
-  .hamburger {
-    display:none; flex-direction:column; gap:5px;
-    cursor:pointer; padding:12px;
-    -webkit-tap-highlight-color:transparent;
-    z-index:1000; position:relative;
+
+  @media (max-width: 390px) {
+    .intro-title { font-size: 1.3rem; }
+    .circle { width: clamp(120px, 50vw, 160px); height: clamp(120px, 50vw, 160px); }
+    .circle-num { font-size: clamp(2.5rem, 16vw, 4rem); }
+    .screen { padding: 0 1rem; gap: 0.7rem; }
   }
-  .hamburger span {
-    display:block; width:22px; height:1.5px;
-    background:#e8e2d8; transition:all 0.3s ease;
-    pointer-events:none;
+
+  /* ── OPPO / ANDROID TOUCH FIX ── */
+  button, .dur-btn, .btn-primary, .btn-secondary {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+    cursor: pointer;
   }
-  #menu-toggle:checked + nav .hamburger span:nth-child(1),
-  #menu-toggle:checked ~ nav .hamburger span:nth-child(1) { transform:rotate(45deg) translate(5px,5px); }
-  #menu-toggle:checked + nav .hamburger span:nth-child(2),
-  #menu-toggle:checked ~ nav .hamburger span:nth-child(2) { opacity:0; }
-  #menu-toggle:checked + nav .hamburger span:nth-child(3),
-  #menu-toggle:checked ~ nav .hamburger span:nth-child(3) { transform:rotate(-45deg) translate(5px,-5px); }
-  .mobile-menu {
-    display:none;
-    position:fixed;
-    top:0; left:0; right:0; bottom:0;
-    width:100%; height:100%;
-    background:#0c0c0b;
-    z-index:999;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:2rem;
+
+  /* ── IPHONE NOTCH / SAFE AREA ── */
+  @supports (padding: max(0px)) {
+    .header { padding-top: max(env(safe-area-inset-top), 1rem); }
+    .footer { padding-bottom: max(env(safe-area-inset-bottom), 0.8rem); }
   }
-  #menu-toggle:checked + nav .mobile-menu,
-  #menu-toggle:checked ~ nav .mobile-menu { display:flex; }
-  .mobile-menu a {
-    font-family:'Montserrat',sans-serif; font-size:1.1rem;
-    letter-spacing:0.2em; text-transform:uppercase;
-    color:#e8e2d8; text-decoration:none; transition:color 0.2s;
-    display:block; padding:0.5rem 0;
-  }
-  .mobile-menu a:hover { color:#d4a95a; }
-  .mobile-menu .mobile-cta {
-    border:1px solid #d4a95a; color:#d4a95a;
-    padding:0.7rem 1.8rem; font-size:0.8rem;
-    margin-top:1rem;
-  }
-  @media (max-width: 768px) {
-    .nav-links { display:none !important; }
-    .hamburger { display:flex; }
-  }
+
 </style>
 </head>
-<body>
+<body style="height: 558px;">
 <div id="accept-gate">
   <div class="gate-inner">
     <div class="gate-brand">EYRE</div>
     <div class="gate-divider"></div>
     <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
     <button class="gate-accept" onclick="acceptGate()">Continue</button>
-    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/terms" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
+    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/eyre-terms.html" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
   </div>
 </div>
 
@@ -134,7 +126,7 @@
     <div class="intro-sub">Acute. Fast. Effective.</div>
     <div class="intro-when">In the moment — a spike of stress, before you walk into something hard, when nothing else is fast enough.</div>
     <div class="intro-safety">Find a quiet place to sit or lie down. Do not practise while driving or operating machinery.</div>
-    <div class="controls"><button class="btn-primary" onclick="showScreen('screen-duration')">Begin</button></div>
+    <div class="controls"><button class="btn-primary" onclick="showScreen(&#39;screen-duration&#39;)">Begin</button></div>
   </div>
 
   <div class="screen" id="screen-duration">
@@ -147,7 +139,7 @@
     </div>
     <div class="controls">
       <button class="btn-primary" onclick="startSession()">Start</button>
-      <button class="btn-ghost" onclick="showScreen('screen-intro')">Back</button>
+      <button class="btn-ghost" onclick="showScreen(&#39;screen-intro&#39;)">Back</button>
     </div>
   </div>
 
@@ -155,8 +147,8 @@
     <div class="session-label">Physiological Sigh</div>
     <div class="orb-container">
       <svg class="arc-svg" viewBox="0 0 200 200">
-        <circle class="arc-track" cx="100" cy="100" r="90"/>
-        <circle class="arc-fill" id="arc-fill" cx="100" cy="100" r="90"/>
+        <circle class="arc-track" cx="100" cy="100" r="90"></circle>
+        <circle class="arc-fill" id="arc-fill" cx="100" cy="100" r="90"></circle>
       </svg>
       <div class="orb" id="orb"></div>
     </div>
@@ -175,7 +167,7 @@
     <div class="complete-title">Well done.</div>
     <div class="divider"></div>
     <div class="complete-sub" id="complete-sub">Practice complete.</div>
-    <div class="controls"><button class="btn-primary" onclick="showScreen('screen-intro')">Again</button></div>
+    <div class="controls"><button class="btn-primary" onclick="showScreen(&#39;screen-intro&#39;)">Again</button></div>
   </div>
 
 </div>
@@ -208,15 +200,4 @@ function acceptGate(){const g=document.getElementById('accept-gate');g.style.tra
 </script>
 
 
-<script>
-(function(){
-  var nav = document.getElementById("main-nav");
-  if(nav){
-    window.addEventListener("scroll", function(){
-      nav.classList.toggle("scrolled", window.scrollY > 10);
-    }, {passive:true});
-  }
-})();
-</script>
-</body>
-</html>
+</body></html>
