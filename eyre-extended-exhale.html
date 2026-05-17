@@ -122,7 +122,7 @@
 
   <div class="screen active" id="screen-intro">
     <div class="intro-title">Extended<br>Exhale</div>
-    <div class="intro-pattern">4 sec inhale · 7 sec hold<br>8 sec exhale</div>
+    <div class="intro-pattern">4 sec inhale · 8 sec exhale</div>
     <div class="intro-sub">Downregulate. Release. Rest.</div>
     <div class="intro-when">Before sleep, after sustained stress, or when anxiety is running high and you need to fully come down.</div>
     <div class="intro-safety">Find a quiet place to sit or lie down. Do not practise while driving or operating machinery.</div>
@@ -179,7 +179,7 @@
 <script>
 function setVH(){document.body.style.height=window.innerHeight+'px';}
 setVH();window.addEventListener('resize',setVH);
-const PHASES=[{name:'Inhale',duration:4,type:'inhale'},{name:'Hold',duration:7,type:'hold'},{name:'Exhale',duration:8,type:'exhale'}];
+const PHASES=[{name:'Inhale',duration:4,type:'inhale'},{name:'Exhale',duration:8,type:'exhale'}];
 const CIRC=2*Math.PI*90;
 let sessionDuration=2,sessionTimer=null,phaseTimer=null,cycleCount=0,phaseIndex=0,isPaused=false,sessionTotalSeconds=0,elapsedSeconds=0,phaseRemaining=0;
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
