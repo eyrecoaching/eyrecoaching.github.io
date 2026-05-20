@@ -21,7 +21,7 @@
   .screen { display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; padding:0 2rem; gap:1rem; animation:fadeIn 0.4s ease; }
   .screen.active { display:flex; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-  .intro-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
+  .intro-title { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
   .intro-pattern { font-size:0.58rem; color:#c8c2b8; letter-spacing:0.16em; text-align:center; text-transform:uppercase; line-height:2.2; }
   .intro-sub { font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic; color:var(--muted); text-align:center; }
   .intro-when { font-size:0.65rem; color:#a0998f; letter-spacing:0.06em; text-align:center; line-height:1.8; }
@@ -104,27 +104,18 @@
     .footer { padding-bottom: max(env(safe-area-inset-bottom), 0.8rem); }
   }
 
+#screen-duration{justify-content:flex-start;padding-top:max(env(safe-area-inset-top,0px),3rem);gap:1.4rem;}
 </style>
 </head>
 <body style="height: 558px;">
-<div id="accept-gate">
-  <div class="gate-inner">
-    <div class="gate-brand">EYRE</div>
-    <div class="gate-divider"></div>
-    <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
-    <button class="gate-accept" onclick="acceptGate()">Continue</button>
-    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/eyre-terms.html" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
-  </div>
-</div>
 
-<div class="header"><div class="header-eyre">EYRE</div></div>
+<div class="header"><div class="header-eyre">EYRE</div><div style="font-size:0.42rem;color:#6a6460;letter-spacing:0.15em;text-transform:uppercase;text-align:center;margin-top:0.2rem;">by Christopher Kowald</div></div>
 <div class="main">
 
   <div class="screen active" id="screen-intro">
     <div class="intro-title">Physiological<br>Sigh</div>
-    <div class="intro-pattern">4 sec inhale · 2 sec second inhale<br>8 sec exhale</div>
-    <div class="intro-sub">Acute. Fast. Effective.</div>
-    <div class="intro-when">In the moment — a spike of stress, before you walk into something hard, when nothing else is fast enough.</div>
+    <div class="intro-when" style="font-size:0.78rem;color:#e8e2d8;letter-spacing:0.06em;line-height:1.4;">Instant calm when you need it most.</div>
+    
     <div class="intro-safety">Find a quiet place to sit or lie down. Do not practise while driving or operating machinery.</div>
     <div class="controls"><button class="btn-primary" onclick="showScreen(&#39;screen-duration&#39;)">Begin</button></div>
   </div>
@@ -139,8 +130,9 @@
     </div>
     <div class="controls">
       <button class="btn-primary" onclick="startSession()">Start</button>
-      <button class="btn-ghost" onclick="showScreen(&#39;screen-intro&#39;)">Back</button>
+      <button class="btn-ghost" onclick="showScreen('screen-intro')">Back</button>
     </div>
+    <p style="margin-top:1.6rem;font-size:0.45rem;color:#6a6460;letter-spacing:0.08em;text-align:center;line-height:1.9;width:100%;padding:0 1rem;">By using this tool you agree to our <a href="https://eyrecoaching.com/eyre-terms.html" target="_blank" style="color:#d4a95a;text-decoration:none;">terms of use</a>. For self-regulation support only — not a substitute for professional care.</p></div>
   </div>
 
   <div class="screen" id="screen-breath">
@@ -196,7 +188,7 @@ function finishSession(){clearTimeout(phaseTimer);const o=document.getElementByI
 function animateVisual(type,duration){animateOrb(type,duration);animateArc(type,duration);}
 function animateOrb(type,duration){const o=document.getElementById('orb');o.style.transition='none';o.className='orb';requestAnimationFrame(()=>{if(type==='inhale'){o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(2.1)';o.classList.add('inhaling');}else if(type==='inhale2'){o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(2.4)';o.classList.add('inhale2');}else{o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(1)';o.classList.add('exhaling');}});}
 function animateArc(type,duration){const a=document.getElementById('arc-fill');if(!a)return;a.style.transition='none';if(type==='inhale'){a.style.stroke='#8a9a8a';a.style.strokeDashoffset=CIRC;requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=0;});}else if(type==='inhale2'){a.style.stroke='#a8c4b8';requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=0;});}else{a.style.stroke='#6a8080';a.style.strokeDashoffset=0;requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=CIRC;});}}
-function acceptGate(){const g=document.getElementById('accept-gate');g.style.transition='opacity 0.4s ease';g.style.opacity='0';setTimeout(()=>{g.style.display='none';},400);}
+function acceptGate(){}
 </script>
 
 

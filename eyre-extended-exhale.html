@@ -2,7 +2,7 @@
 <!-- saved from url=(0058)file:///C:/Users/ckowa/Downloads/eyre-extended-exhale.html -->
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, interactive-widget=resizes-content">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="color-scheme" content="dark">
 <title>EYRE — Extended Exhale</title>
 <link href="./EYRE — Extended Exhale_files/css2" rel="stylesheet">
@@ -13,7 +13,7 @@
   body { background:#0c0c0b !important; color:var(--text); font-family:'Montserrat',sans-serif; font-weight:300; letter-spacing:0.08em; color-scheme:dark; display:flex; flex-direction:column; position:fixed; inset:0; overflow:hidden; }
   body::before { content:''; position:fixed; inset:0; pointer-events:none; z-index:0; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E"); }
   .header { flex:0 0 auto; text-align:center; padding:max(env(safe-area-inset-top),0.7rem) 1rem 0.3rem; position:relative; z-index:1; }
-  .header-eyre { font-family:'Cormorant Garamond',serif; font-size:1.2rem; letter-spacing:0.5em; color:var(--muted); text-transform:uppercase; }
+  .header-eyre { font-family:'Cormorant Garamond',serif; font-size:1.9rem; letter-spacing:0.55em; color:var(--muted); text-transform:uppercase; text-align:center; }
   .main { flex:1 1 auto; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; overflow:hidden; }
   .footer { flex:0 0 auto; text-align:center; padding:0.3rem 1rem max(env(safe-area-inset-bottom),0.5rem); position:relative; z-index:1; }
   .footer-tag { font-size:0.5rem; letter-spacing:0.25em; color:#2e2e2a; text-transform:uppercase; }
@@ -21,10 +21,10 @@
   .screen { display:none; flex-direction:column; align-items:center; justify-content:center; width:100%; padding:0 2rem; gap:1rem; animation:fadeIn 0.4s ease; }
   .screen.active { display:flex; }
   @keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
-  .intro-title { font-family:'Cormorant Garamond',serif; font-size:1.8rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
+  .intro-title { font-family:'Cormorant Garamond',serif; font-size:2.6rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; line-height:1.2; }
   .intro-pattern { font-size:0.58rem; color:#c8c2b8; letter-spacing:0.16em; text-align:center; text-transform:uppercase; line-height:2.2; }
   .intro-sub { font-family:'Cormorant Garamond',serif; font-size:1rem; font-style:italic; color:var(--muted); text-align:center; }
-  .intro-when { font-size:0.65rem; color:#a0998f; letter-spacing:0.06em; text-align:center; line-height:1.8; }
+  .intro-when { font-size:0.78rem; color:#e8e2d8; letter-spacing:0.06em; text-align:center; line-height:1.4; }
   .dur-label { font-family:'Cormorant Garamond',serif; font-size:1.1rem; font-weight:300; font-style:italic; color:var(--text); text-align:center; }
   .duration-row { display:flex; gap:0.4rem; justify-content:center; flex-wrap:wrap; }
   .dur-btn { background:transparent; border:1px solid var(--border); color:var(--muted); padding:0.5rem 0.85rem; font-family:'Montserrat',sans-serif; font-size:0.6rem; letter-spacing:0.14em; cursor:pointer; transition:all 0.25s; -webkit-tap-highlight-color:transparent; }
@@ -60,71 +60,19 @@
   .gate-accept:active { background:#d4a95a; color:#0c0c0b; }
   .gate-terms { font-size:0.5rem; color:#6a6460; letter-spacing:0.1em; text-align:center; line-height:1.8; text-transform:uppercase; }
   .intro-safety { font-size:0.6rem; color:#8a8480; letter-spacing:0.08em; text-align:center; line-height:1.7; border-top:1px solid #2a2a27; padding-top:0.8rem; width:100%; }
-
-  /* ── MOBILE OPTIMISATION ── */
-  @media (max-width: 480px) {
-    .intro-title { font-size: 1.5rem; }
-    .intro-pattern { font-size: 0.55rem; letter-spacing: 0.12em; }
-    .intro-sub { font-size: 0.9rem; }
-    .intro-when { font-size: 0.6rem; }
-    .dur-btn { padding: 0.65rem 1rem; font-size: 0.62rem; min-height: 44px; min-width: 56px; }
-    .btn-primary { padding: 0.85rem 2rem; font-size: 0.6rem; min-height: 44px; }
-    .btn-secondary { padding: 0.65rem 1.5rem; font-size: 0.55rem; min-height: 44px; }
-    .screen { padding: 0 1.2rem; gap: 0.85rem; }
-    .circle-num { font-size: clamp(3rem, 18vw, 5.5rem); }
-    .circle-label { font-size: 0.55rem; letter-spacing: 0.18em; }
-    .circle { width: clamp(140px, 55vw, 200px); height: clamp(140px, 55vw, 200px); }
-    .breath-title { font-size: 1.1rem; }
-    .breath-cycle { font-size: 0.55rem; }
-    .gate-title { font-size: 0.8rem; }
-    .gate-body { font-size: 0.62rem; line-height: 1.7; }
-    .gate-terms { font-size: 0.48rem; }
-    .dur-label { font-size: 0.95rem; }
-    .complete-title { font-size: 1.3rem; }
-    .header-eyre { font-size: 1rem; letter-spacing: 0.4em; }
-  }
-
-  @media (max-width: 390px) {
-    .intro-title { font-size: 1.3rem; }
-    .circle { width: clamp(120px, 50vw, 160px); height: clamp(120px, 50vw, 160px); }
-    .circle-num { font-size: clamp(2.5rem, 16vw, 4rem); }
-    .screen { padding: 0 1rem; gap: 0.7rem; }
-  }
-
-  /* ── OPPO / ANDROID TOUCH FIX ── */
-  button, .dur-btn, .btn-primary, .btn-secondary {
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-    cursor: pointer;
-  }
-
-  /* ── IPHONE NOTCH / SAFE AREA ── */
-  @supports (padding: max(0px)) {
-    .header { padding-top: max(env(safe-area-inset-top), 1rem); }
-    .footer { padding-bottom: max(env(safe-area-inset-bottom), 0.8rem); }
-  }
-
+#screen-intro{padding-bottom:5rem;}
 </style>
 </head>
 <body style="height: 558px;">
-<div id="accept-gate">
-  <div class="gate-inner">
-    <div class="gate-brand">EYRE</div>
-    <div class="gate-divider"></div>
-    <div class="gate-scope">This tool is for self-regulation support. It is not a substitute for professional mental health care. Consult your GP before use if you have a heart or respiratory condition, are pregnant, have a psychological condition or injury, or are under the age of 18.</div>
-    <button class="gate-accept" onclick="acceptGate()">Continue</button>
-    <div class="gate-terms">By continuing you agree to our <a href="https://eyrecoaching.com/eyre-terms.html" target="_blank" style="color:#d4a95a;text-decoration:none;letter-spacing:0.1em;">terms of use</a></div>
-  </div>
-</div>
 
-<div class="header"><div class="header-eyre">EYRE</div></div>
+<div class="header"><div class="header-eyre">EYRE</div><div style="font-size:0.42rem;color:#6a6460;letter-spacing:0.15em;text-transform:uppercase;text-align:center;margin-top:0.2rem;">by Christopher Kowald</div></div>
 <div class="main">
 
   <div class="screen active" id="screen-intro">
     <div class="intro-title">Extended<br>Exhale</div>
-    <div class="intro-pattern">4 sec inhale · 8 sec exhale</div>
     <div class="intro-sub">Downregulate. Release. Rest.</div>
-    <div class="intro-when">Before sleep, after sustained stress, or when anxiety is running high and you need to fully come down.</div>
+    <div class="intro-when">Before sleep. After a hard day. When you need to fully come down.</div>
+    
     <div class="intro-safety">Find a quiet place to sit or lie down. Do not practise while driving or operating machinery.</div>
     <div class="controls"><button class="btn-primary" onclick="showScreen(&#39;screen-duration&#39;)">Begin</button></div>
   </div>
@@ -141,6 +89,7 @@
       <button class="btn-primary" onclick="startSession()">Start</button>
       <button class="btn-ghost" onclick="showScreen(&#39;screen-intro&#39;)">Back</button>
     </div>
+    <p style="margin-top:1.6rem;font-size:0.45rem;color:#6a6460;letter-spacing:0.08em;text-align:center;line-height:1.9;width:100%;padding:0 1rem;">By using this tool you agree to our <a href="https://eyrecoaching.com/eyre-terms.html" target="_blank" style="color:#d4a95a;text-decoration:none;">terms of use</a>. For self-regulation support only — not a substitute for professional care.</p>
   </div>
 
   <div class="screen" id="screen-breath">
@@ -179,7 +128,7 @@
 <script>
 function setVH(){document.body.style.height=window.innerHeight+'px';}
 setVH();window.addEventListener('resize',setVH);
-const PHASES=[{name:'Inhale',duration:4,type:'inhale'},{name:'Exhale',duration:8,type:'exhale'}];
+const PHASES=[{name:'Inhale',duration:4,type:'inhale'},{name:'Hold',duration:7,type:'hold'},{name:'Exhale',duration:8,type:'exhale'}];
 const CIRC=2*Math.PI*90;
 let sessionDuration=2,sessionTimer=null,phaseTimer=null,cycleCount=0,phaseIndex=0,isPaused=false,sessionTotalSeconds=0,elapsedSeconds=0,phaseRemaining=0;
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
@@ -196,7 +145,7 @@ function finishSession(){clearTimeout(phaseTimer);const o=document.getElementByI
 function animateVisual(type,duration){animateOrb(type,duration);animateArc(type,duration);}
 function animateOrb(type,duration){const o=document.getElementById('orb');o.style.transition='none';o.className='orb';requestAnimationFrame(()=>{if(type==='inhale'){o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(2.1)';o.classList.add('inhaling');}else if(type==='hold'){o.classList.add('holding');}else{o.style.transition=`transform ${duration}s cubic-bezier(0.4,0,0.2,1)`;o.style.transform='scale(1)';o.classList.add('exhaling');}});}
 function animateArc(type,duration){const a=document.getElementById('arc-fill');if(!a)return;a.style.transition='none';if(type==='inhale'){a.style.stroke='#8a9a8a';a.style.strokeDashoffset=CIRC;requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=0;});}else if(type==='hold'){a.style.stroke='#d4a95a';}else{a.style.stroke='#6a8080';a.style.strokeDashoffset=0;requestAnimationFrame(()=>{a.style.transition=`stroke-dashoffset ${duration}s linear`;a.style.strokeDashoffset=CIRC;});}}
-function acceptGate(){const g=document.getElementById('accept-gate');g.style.transition='opacity 0.4s ease';g.style.opacity='0';setTimeout(()=>{g.style.display='none';},400);}
+function acceptGate(){}
 </script>
 
 
