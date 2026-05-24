@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>EYRE — Why Can't I Sleep?</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --deep:#04101E;--navy:#071828;
+  --teal:#0D6E7A;--tealL:#1A9BAD;--horizon:#B8D0DC;
+  --gold:#C8A44A;--goldL:#E2C070;
+  --coral:#D96A50;--coralL:#F08070;
+  --white:#FFFFFF;
+  --dim:rgba(255,255,255,0.45);--mid-t:rgba(255,255,255,0.72);
+  --border:rgba(255,255,255,0.07);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;}
+body{font-family:'DM Sans',sans-serif;background:var(--deep);color:var(--white);min-height:100vh;}
+.bg-fixed{position:fixed;inset:0;z-index:0;overflow:hidden;}
+.sky{position:absolute;inset:0;background:linear-gradient(180deg,#020B15 0%,#040F1E 20%,#071828 40%,#0A2035 60%,#0D2E48 80%,#071020 100%);}
+.stars{position:absolute;top:0;left:0;right:0;height:60%;background-image:radial-gradient(circle 1px at 8% 12%,rgba(255,255,255,.5) 0,transparent 100%),radial-gradient(circle 1.5px at 19% 6%,rgba(255,255,255,.4) 0,transparent 100%),radial-gradient(circle 1px at 31% 18%,rgba(255,255,255,.45) 0,transparent 100%),radial-gradient(circle 1px at 45% 9%,rgba(255,255,255,.35) 0,transparent 100%),radial-gradient(circle 1.5px at 57% 4%,rgba(255,255,255,.5) 0,transparent 100%),radial-gradient(circle 2px at 50% 2%,rgba(255,255,255,.6) 0,transparent 100%);}
+.overlay{position:absolute;inset:0;background:rgba(4,16,30,.82);}
+.page{position:relative;z-index:10;max-width:860px;margin:0 auto;padding:80px 24px 120px;}
+.brand-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:64px;}
+.brand-name{font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;letter-spacing:5px;color:rgba(255,255,255,.85);text-transform:uppercase;}
+.brand-sub{font-size:9px;font-weight:500;letter-spacing:3px;color:var(--gold);text-transform:uppercase;opacity:.7;margin-top:3px;}
+.series-pill{font-size:10px;font-weight:700;letter-spacing:2px;color:var(--gold);text-transform:uppercase;background:rgba(200,164,74,.1);border:1px solid rgba(200,164,74,.22);padding:7px 16px;border-radius:100px;}
+.hero-section{text-align:center;margin-bottom:72px;}
+.chip{display:inline-flex;align-items:center;font-family:'DM Sans',sans-serif;font-size:9px;font-weight:700;letter-spacing:2.5px;padding:7px 18px;border-radius:100px;text-transform:uppercase;margin-bottom:24px;}
+.chip.coral{background:rgba(217,106,80,.13);color:var(--coral);border:1px solid rgba(217,106,80,.25);}
+.chip.teal{background:rgba(13,110,122,.18);color:var(--tealL);border:1px solid rgba(26,155,173,.25);}
+.chip.green{background:rgba(80,200,120,.12);color:#60D890;border:1px solid rgba(80,200,120,.25);}
+.chip.gold{background:rgba(200,164,74,.11);color:var(--gold);border:1px solid rgba(200,164,74,.22);}
+h1{font-family:'Playfair Display',serif;font-weight:900;font-size:clamp(48px,7vw,84px);line-height:.92;letter-spacing:-2px;color:var(--white);margin-bottom:24px;}
+h1 em{font-style:italic;color:var(--gold);}
+.rule{display:flex;align-items:center;gap:14px;margin:24px auto;max-width:200px;}
+.rl{flex:1;height:1px;background:linear-gradient(90deg,rgba(200,164,74,.55),transparent);}
+.rd{width:4px;height:4px;border-radius:50%;background:var(--gold);flex-shrink:0;}
+.hero-body{font-size:clamp(15px,1.6vw,19px);line-height:1.82;color:var(--mid-t);max-width:640px;margin:0 auto 32px;}
+.dchips{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:28px;}
+.dchip{display:inline-flex;align-items:center;gap:8px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:100px;padding:8px 18px;font-size:12px;color:var(--mid-t);font-weight:500;}
+.dchip .dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.section{margin-bottom:56px;}
+.section-label{font-size:9px;font-weight:700;letter-spacing:4px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;}
+.section-label.teal{color:var(--tealL);}
+.section-label.coral{color:var(--coral);}
+.section-label.green{color:#60D890;}
+h2{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(28px,3.5vw,42px);line-height:1.05;letter-spacing:-1px;color:var(--white);margin-bottom:20px;}
+h2 em{font-style:italic;color:var(--gold);}
+h2 .t{color:var(--tealL);}
+h2 .c{color:var(--coral);}
+h2 .g{color:#60D890;}
+.body-text{font-size:clamp(14px,1.4vw,17px);line-height:1.82;color:var(--mid-t);margin-bottom:16px;}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px;}
+.card-grid.three{grid-template-columns:1fr 1fr 1fr;}
+@media(max-width:600px){.card-grid,.card-grid.three{grid-template-columns:1fr;}}
+.card{background:rgba(7,24,40,.68);border:1px solid var(--border);border-radius:14px;padding:22px 24px;position:relative;overflow:hidden;}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;}
+.card.gold::before{background:linear-gradient(90deg,var(--gold),var(--goldL));}
+.card.teal::before{background:linear-gradient(90deg,var(--teal),var(--tealL));}
+.card.coral::before{background:linear-gradient(90deg,var(--coral),var(--coralL));}
+.card.green::before{background:linear-gradient(90deg,#40C070,#60D890);}
+.card-ghost{font-family:'Playfair Display',serif;font-size:52px;font-weight:900;color:rgba(255,255,255,.03);position:absolute;top:4px;right:12px;line-height:1;}
+.ctag{font-size:8px;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:8px;}
+.card.gold .ctag{color:var(--gold);}
+.card.teal .ctag{color:var(--tealL);}
+.card.coral .ctag{color:var(--coral);}
+.card.green .ctag{color:#60D890;}
+.ctitle{font-family:'Playfair Display',serif;font-size:clamp(16px,1.6vw,20px);color:white;margin-bottom:8px;font-weight:700;}
+.cbody{font-size:clamp(12px,1.1vw,14px);line-height:1.72;color:var(--dim);}
+.callout{border-left:3px solid var(--gold);padding:16px 22px;background:rgba(200,164,74,.06);border-radius:0 10px 10px 0;margin:20px 0;}
+.callout p{font-size:clamp(14px,1.35vw,17px);line-height:1.65;color:rgba(255,255,255,.88);font-weight:500;}
+.callout.teal{border-color:var(--tealL);background:rgba(13,110,122,.1);}
+.callout.teal p{color:var(--horizon);}
+.callout.coral{border-color:var(--coral);background:rgba(217,106,80,.08);}
+.callout.coral p{color:rgba(255,200,180,.9);}
+.vs-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:8px;}
+@media(max-width:500px){.vs-row{grid-template-columns:1fr;}}
+.vs-head{font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(14px,1.4vw,18px);padding:12px 16px;border-radius:10px 10px 0 0;text-align:center;}
+.vs-head.bad{background:rgba(217,106,80,.15);color:var(--coral);}
+.vs-head.good{background:rgba(26,155,173,.15);color:var(--tealL);}
+.vs-col{display:flex;flex-direction:column;gap:8px;}
+.vs-item{padding:10px 14px;font-size:clamp(12px,1.1vw,14px);color:var(--mid-t);line-height:1.5;border-radius:6px;}
+.vs-item.bad{background:rgba(217,106,80,.06);border-left:2px solid rgba(217,106,80,.3);}
+.vs-item.good{background:rgba(26,155,173,.06);border-left:2px solid rgba(26,155,173,.3);}
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(200,164,74,.2),transparent);margin:48px 0;}
+.deeper-list{display:flex;flex-direction:column;gap:10px;width:100%;}
+.deeper-item{display:flex;gap:14px;align-items:flex-start;padding:12px 18px;border-radius:10px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.07);}
+.deeper-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;}
+.deeper-text{font-size:clamp(13px,1.2vw,16px);color:var(--mid-t);line-height:1.6;}
+.deeper-text strong{color:white;font-weight:600;}
+.breath-section{text-align:center;padding:40px 0;}
+.btimer{display:flex;flex-direction:column;align-items:center;gap:26px;}
+.bcirc{width:180px;height:180px;border-radius:50%;border:1.5px solid rgba(26,155,173,.35);display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;background:radial-gradient(circle,rgba(26,155,173,.08) 0%,transparent 68%);transition:transform .85s cubic-bezier(.4,0,.2,1),box-shadow .85s ease;position:relative;}
+.bcirc::after{content:'';position:absolute;inset:-13px;border-radius:50%;border:1px solid rgba(26,155,173,.12);}
+.bcnt{font-family:'Playfair Display',serif;font-weight:900;font-size:54px;color:var(--tealL);line-height:1;}
+.bph{font-size:11px;font-weight:500;color:var(--dim);letter-spacing:1px;}
+.bbtn{background:linear-gradient(135deg,var(--tealL),var(--teal));color:var(--white);border:none;border-radius:100px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;padding:14px 42px;cursor:pointer;transition:all .3s;letter-spacing:1.5px;text-transform:uppercase;box-shadow:0 8px 36px rgba(26,155,173,.3);}
+.cta-section{background:linear-gradient(135deg,rgba(13,110,122,.22),rgba(200,164,74,.1));border:1px solid rgba(200,164,74,.28);border-radius:18px;padding:40px 32px;text-align:center;margin-top:56px;}
+.cta-section p{font-size:clamp(14px,1.4vw,17px);color:var(--mid-t);line-height:1.72;max-width:540px;margin:0 auto 24px;}
+.cta-label{font-size:10px;font-weight:700;letter-spacing:3px;color:var(--gold);text-transform:uppercase;}
+</style>
+</head>
+<body>
+<div class="bg-fixed"><div class="sky"></div><div class="stars"></div><div class="overlay"></div></div>
+<div class="page">
+
+  <div class="brand-bar">
+    <div><div class="brand-name">EYRE</div><div class="brand-sub">Free Training</div></div>
+    <div class="series-pill">Recovery · Capacity · Performance</div>
+  </div>
+
+  <!-- HERO -->
+  <div class="hero-section">
+    <div class="chip coral">Free Training</div>
+    <h1>Why Can't<br><em>I Sleep?</em></h1>
+    <div class="rule"><div class="rl"></div><div class="rd"></div><div class="rl" style="background:linear-gradient(270deg,rgba(200,164,74,.55),transparent);"></div></div>
+    <p class="hero-body">What's actually keeping you awake — and what to do about it tonight.</p>
+    <div class="dchips">
+      <div class="dchip"><div class="dot"></div>The Problem</div>
+      <div class="dchip"><div class="dot"></div>Why It Happens</div>
+      <div class="dchip"><div class="dot"></div>Tonight's Protocol</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROBLEM -->
+  <div class="section">
+    <div class="section-label coral">The Problem</div>
+    <h2>You're exhausted.<br><span class="c">But you can't switch off.</span></h2>
+    <p class="body-text">You lie down and your mind starts. You fall asleep and wake at 2am. You're tired all day but wired at night. You've tried everything. Nothing sticks.</p>
+    <div class="callout coral">
+      <p>This isn't a sleep problem. It's a nervous system problem. Your body hasn't had the signal that the day is over. It's still running.</p>
+    </div>
+  </div>
+
+  <!-- COST -->
+  <div class="section">
+    <div class="section-label">What It's Costing You</div>
+    <h2>Poor sleep isn't just <em>tiredness.</em></h2>
+    <div class="card-grid three">
+      <div class="card coral"><div class="card-ghost">1</div><div class="ctag">Recovery</div><div class="ctitle">Your body can't repair</div><div class="cbody">Growth hormone releases during deep sleep. No deep sleep — no recovery. Every hard day goes unprocessed.</div></div>
+      <div class="card gold"><div class="card-ghost">2</div><div class="ctag">Capacity</div><div class="ctitle">Your tolerance drops</div><div class="cbody">Sleep deprivation compresses your window of tolerance. Everything feels harder. Stress hits harder than it should.</div></div>
+      <div class="card teal"><div class="card-ghost">3</div><div class="ctag">Performance</div><div class="ctitle">Running on debt</div><div class="cbody">Cognitive performance, reaction time, emotional regulation — all degrade. You can push through. But you're borrowing from tomorrow.</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WHY IT HAPPENS -->
+  <div class="section">
+    <div class="section-label teal">Why It Happens</div>
+    <h2>Your nervous system<br><span class="t">didn't get the memo.</span></h2>
+    <p class="body-text">Your autonomic nervous system has two modes — sympathetic (on, activated, ready) and parasympathetic (off, recovered, safe). Sleep requires parasympathetic dominance.</p>
+    <p class="body-text">Most people who can't sleep are stuck in sympathetic. Their body is physiologically prepared for threat, not rest. No amount of willpower overrides that signal.</p>
+    <div class="callout teal"><p>The nervous system doesn't respond to "relax." It responds to physiological input — specifically, your breath.</p></div>
+    <div class="card-grid" style="margin-top:20px;">
+      <div class="card coral"><div class="ctag">Sympathetic — Stuck On</div><div class="ctitle">Heart rate elevated</div><div class="cbody">Cortisol still circulating. Mind scanning for problems. Body prepared for action — not sleep.</div></div>
+      <div class="card teal"><div class="ctag teal">Parasympathetic — What You Need</div><div class="ctitle">Heart rate slowing</div><div class="cbody">Muscles releasing. Mind quieting. Body temperature dropping. The nervous system has received a clear signal — the day is done.</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- MOUTH VS NOSE -->
+  <div class="section">
+    <div class="section-label">The Mechanism</div>
+    <h2>How you breathe<br><em>changes everything.</em></h2>
+    <div class="vs-row">
+      <div class="vs-col">
+        <div class="vs-head bad">👄 Mouth</div>
+        <div class="vs-item bad">Zero nitric oxide</div>
+        <div class="vs-item bad">Keeps system activated</div>
+        <div class="vs-item bad">More snoring, more waking</div>
+        <div class="vs-item bad">Signals threat</div>
+      </div>
+      <div class="vs-col">
+        <div class="vs-head good">👃 Nasal</div>
+        <div class="vs-item good">Produces nitric oxide</div>
+        <div class="vs-item good">Activates vagus nerve</div>
+        <div class="vs-item good">Less snoring, less waking</div>
+        <div class="vs-item good">Signals safety</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- MOUTH TAPING -->
+  <div class="section">
+    <div class="section-label coral">Mouth Taping</div>
+    <h2>The simplest thing<br><span class="c">most people won't try.</span></h2>
+    <p class="body-text">Most people mouth breathe during sleep without knowing it. A dry mouth in the morning is the tell. Mouth taping keeps lips closed during sleep — a gentle prompt, not a seal.</p>
+    <div class="card-grid three">
+      <div class="card gold"><div class="ctag">What to use</div><div class="ctitle">Surgical tape</div><div class="cbody">Small piece. Centre of lips only to start. Nexcare or 3M surgical tape works. Build over a week.</div></div>
+      <div class="card teal"><div class="ctag teal">How to build</div><div class="ctitle">One week</div><div class="cbody">Night 1–2: wear for 20 mins before sleep, remove. Night 3–4: sleep with it. By night 7 it's normal.</div></div>
+      <div class="card green"><div class="ctag green">What changes</div><div class="ctitle">Morning is different</div><div class="cbody">Mouth moist not dry. Less snoring. HRV improves. You wake having actually recovered.</div></div>
+    </div>
+    <div class="callout coral" style="margin-top:20px;"><p>Not for everyone. If you have nasal obstruction or sleep apnoea — address those first.</p></div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- CO2 -->
+  <div class="section">
+    <div class="section-label coral">Why Some People Can't Settle</div>
+    <h2>CO2 tolerance.<br><span class="c">Most people have never heard of it.</span></h2>
+    <p class="body-text">CO2 isn't just waste gas. It's the trigger that tells your body to breathe. Low CO2 tolerance means your nervous system fires the alarm earlier and more often — even during sleep.</p>
+    <p class="body-text">People with low CO2 tolerance wake more easily, feel more anxious at night, and struggle to settle. It's not anxiety. It's physiology.</p>
+    <div class="callout coral"><p>CO2 tolerance is trainable. The 30 Day Challenge includes the specific protocol. It takes weeks — but the difference is significant.</p></div>
+  </div>
+
+  <!-- 2AM WAKE -->
+  <div class="section">
+    <div class="section-label coral">The 2am Wake</div>
+    <h2>Why 2am?<br><span class="c">It's not random.</span></h2>
+    <p class="body-text">Cortisol begins its natural rise around 2–4am to prepare the body for waking. In a regulated nervous system this is gradual and you sleep through it. In an activated system — it fires you awake.</p>
+    <div class="callout coral"><p>When you wake at 2am — don't fight it. Slow nasal exhale. Four in, eight out. Three cycles. The system will downshift if you give it the signal.</p></div>
+    <div class="card-grid" style="margin-top:20px;">
+      <div class="card coral"><div class="ctag">What's happening</div><div class="ctitle">Cortisol spike</div><div class="cbody">A regulated system absorbs it. An activated system treats it as a threat. You wake. Mind starts. Can't get back.</div></div>
+      <div class="card teal"><div class="ctag teal">In the moment</div><div class="ctitle">4 in — 8 out</div><div class="cbody">Nasal only. Don't reach for your phone. Three cycles. Most people are back asleep within minutes.</div></div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- PROTOCOL -->
+  <div class="section">
+    <div class="section-label">Tonight's Protocol</div>
+    <h2>Simple. Not easy.<br><em>But simple.</em></h2>
+    <p class="body-text">Three changes. Start tonight. Pick one. Do it for seven nights. Then add the next.</p>
+    <div class="card-grid three">
+      <div class="card gold"><div class="card-ghost">1</div><div class="ctag">90 Mins Before Bed</div><div class="ctitle">Stop the stimulation</div><div class="cbody">No screens, no work, no difficult conversations. Dim the lights. Give your nervous system a runway to land.</div></div>
+      <div class="card teal"><div class="card-ghost">2</div><div class="ctag teal">Lying Down</div><div class="ctitle">4 in — 8 out</div><div class="cbody">Nasal only. In for 4. Out for 8. Five minutes. The extended exhale activates the vagal brake.</div></div>
+      <div class="card coral"><div class="card-ghost">3</div><div class="ctag coral">During Sleep</div><div class="ctitle">Mouth tape</div><div class="cbody">One small piece. Centre of lips. Build over a week. If you wake at 2am — 4 in, 8 out. Three cycles.</div></div>
+    </div>
+  </div>
+
+  <!-- BREATH PRACTICE -->
+  <div class="section breath-section">
+    <div class="section-label teal" style="text-align:center;">Practice Now</div>
+    <h2 style="text-align:center;">Extended <em>Exhale</em></h2>
+    <p class="body-text" style="text-align:center;margin:0 auto 28px;">Nasal only. In for 4. Out for 8. Three cycles.</p>
+    <div class="btimer">
+      <div class="bcirc" id="breathCircle">
+        <div class="bcnt" id="breathCount">4</div>
+        <div class="bph" id="breathPhase">ready</div>
+      </div>
+      <button class="bbtn" id="breathBtn" onclick="startBreath()">Begin</button>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- WHAT CHANGES -->
+  <div class="section">
+    <div class="section-label green">What Changes</div>
+    <h2>This is a <em>30-day</em> shift.</h2>
+    <div class="card-grid three">
+      <div class="card gold"><div class="card-ghost">7</div><div class="ctag">Days 1–7</div><div class="ctitle">First changes</div><div class="cbody">Fall asleep faster. Wake less. Dry mouth reduces. Morning grogginess lifts.</div></div>
+      <div class="card teal"><div class="card-ghost">14</div><div class="ctag teal">Days 8–14</div><div class="ctitle">Pattern emerging</div><div class="cbody">HRV begins to improve. Energy more consistent. The breathing practice takes less effort.</div></div>
+      <div class="card green"><div class="card-ghost">30</div><div class="ctag green">Days 15–30</div><div class="ctitle">New baseline</div><div class="cbody">Sleep quality measurably different. Recovery faster. This is not temporary relief. This is a new operating state.</div></div>
+    </div>
+  </div>
+
+  <!-- SALES SLIDE -->
+  <div class="section">
+    <div class="section-label">Sleep Is The Entry Point</div>
+    <h2>Fix sleep and you've started.<br><em>There's more underneath.</em></h2>
+    <p class="body-text">Sleep is where most people feel the problem first. But the nervous system issues that disrupt sleep are the same ones that limit performance, compress recovery and reduce capacity under pressure.</p>
+    <div class="deeper-list">
+      <div class="deeper-item"><div class="deeper-dot"></div><div class="deeper-text"><strong>CO2 tolerance training</strong> — builds resilience at the nervous system level, not just better sleep</div></div>
+      <div class="deeper-item"><div class="deeper-dot"></div><div class="deeper-text"><strong>HRV as a daily metric</strong> — knowing when to push and when to recover before your body forces the decision</div></div>
+      <div class="deeper-item"><div class="deeper-dot"></div><div class="deeper-text"><strong>Cumulative load management</strong> — why high performers hit walls and how regulation prevents the crash</div></div>
+      <div class="deeper-item"><div class="deeper-dot"></div><div class="deeper-text"><strong>Polyvagal application</strong> — using nervous system states deliberately, not just reacting to them</div></div>
+    </div>
+    <p class="body-text" style="margin-top:20px;color:var(--dim);">The 30 Day Challenge starts here. Private coaching goes deeper.</p>
+  </div>
+
+  <!-- CTA -->
+  <div class="cta-section">
+    <div class="section-label green" style="margin-bottom:16px;">Next Step</div>
+    <h2 style="margin-bottom:12px;">Join the <em>30 Day</em><br>Sleep Challenge</h2>
+    <p>30 days. Daily practice. Track sleep quality, night waking, morning energy and HRV. Build regulation capacity. Post your wins in the community.</p>
+    <div class="cta-label">Recovery. Capacity. Performance.</div>
+  </div>
+
+</div>
+
+<script>
+let breathRunning = false;
+function startBreath() {
+  if (breathRunning) return;
+  breathRunning = true;
+  document.getElementById('breathBtn').disabled = true;
+  document.getElementById('breathBtn').textContent = 'Breathing...';
+  let cycle = 0;
+  function runPhase(phase, duration, nextFn) {
+    const el = document.getElementById('breathCount');
+    const ph = document.getElementById('breathPhase');
+    const circ = document.getElementById('breathCircle');
+    ph.textContent = phase === 'in' ? 'inhale' : 'exhale';
+    circ.style.transform = phase === 'in' ? 'scale(1.12)' : 'scale(0.92)';
+    circ.style.boxShadow = phase === 'in' ? '0 0 40px rgba(26,155,173,.3)' : 'none';
+    let t = duration; el.textContent = t;
+    const iv = setInterval(() => { t--; el.textContent = t; if (t <= 0) { clearInterval(iv); nextFn(); } }, 1000);
+  }
+  function doCycle() {
+    if (cycle >= 3) {
+      document.getElementById('breathPhase').textContent = 'done';
+      document.getElementById('breathCount').textContent = '✓';
+      document.getElementById('breathCircle').style.transform = 'scale(1)';
+      document.getElementById('breathBtn').textContent = 'Complete';
+      breathRunning = false; return;
+    }
+    runPhase('in', 4, () => { runPhase('out', 8, () => { cycle++; doCycle(); }); });
+  }
+  doCycle();
+}
+</script>
+</body>
+</html>
