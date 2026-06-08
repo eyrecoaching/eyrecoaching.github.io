@@ -1,0 +1,1492 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+<title>Symons Clark VOC App</title>
+<meta name="theme-color" content="#111111"/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="SCL VOC"/>
+
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Barlow:wght@400;600;700&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js">window.addEventListener('pagehide',function(){try{localStorage.removeItem('sclVocPixelV1');}catch(e){}});
+</script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --red:#d60012;
+  --deep-red:#b9000f;
+  --green:#229a35;
+  --orange:#ee7300;
+  --gray:#8d8d8d;
+  --black:#101214;
+  --line:#d7d7d7;
+  --bg:#efefef;
+  --paper:#fff;
+  --text:#141414;
+}
+html,body{min-height:100%;}
+body{
+  font-family:Barlow,Arial,sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  font-size:16px;
+  -webkit-text-size-adjust:100%;
+}
+button,input,textarea{font-family:Barlow,Arial,sans-serif}
+button{cursor:pointer;touch-action:manipulation}
+canvas{touch-action:none;display:block;-webkit-user-select:none;user-select:none}
+.app-shell{
+  width:min(100%,920px);
+  margin:20px auto;
+  background:#fff;
+  box-shadow:0 10px 30px rgba(0,0,0,.18);
+  border:1px solid #d0d0d0;
+}
+.topbar{
+  background:var(--black);
+  color:#fff;
+  min-height:92px;
+  display:grid;
+  grid-template-columns:260px 1fr 185px;
+  align-items:center;
+  gap:18px;
+  padding:14px 20px;
+}
+.logo-wrap{
+  border-right:1px solid rgba(255,255,255,.35);
+  padding-right:18px;
+  height:65px;
+  display:flex;
+  align-items:center;
+}
+.brand-logo{max-width:215px;max-height:58px;object-fit:contain}
+.logo-fallback b{display:block;font-family:'Barlow Condensed';font-size:28px;letter-spacing:1px}
+.logo-fallback span{display:block;color:var(--red);font-family:'Barlow Condensed';font-size:15px;letter-spacing:2px}
+.doc-title h1{
+  font-family:'Barlow Condensed';
+  font-size:30px;
+  line-height:.95;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.doc-title h2{
+  font-family:'Barlow Condensed';
+  color:#ff1c27;
+  font-size:22px;
+  text-transform:uppercase;
+  letter-spacing:1.2px;
+  margin-top:5px;
+}
+.doc-title p{
+  font-size:13px;
+  margin-top:8px;
+  color:#fff;
+  letter-spacing:.4px;
+}
+.assessment-card{
+  border:1px solid rgba(255,255,255,.45);
+  border-radius:5px;
+  padding:10px 12px;
+  min-height:66px;
+}
+.assessment-card small{
+  display:block;
+  font-family:'Barlow Condensed';
+  text-transform:uppercase;
+  font-size:10px;
+  letter-spacing:1.4px;
+  color:#ddd;
+  margin-bottom:2px;
+}
+.assessment-card strong{
+  display:block;
+  font-family:'Barlow Condensed';
+  font-size:15px;
+  letter-spacing:1px;
+  color:#fff;
+  margin-bottom:6px;
+}
+.assessment-date{
+  border-top:1px solid rgba(255,255,255,.35);
+  padding-top:7px;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  font-family:'Barlow Condensed';
+  font-size:13px;
+  text-transform:uppercase;
+}
+.tabbar{
+  display:flex;
+  overflow-x:auto;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  border-bottom:1px solid var(--line);
+  border-top:1px solid #cfcfcf;
+  background:#fff;
+}
+.tabbar::-webkit-scrollbar{display:none;}
+.tabbar button{
+  min-height:54px;
+  min-width:80px;
+  flex-shrink:0;
+  border:0;
+  border-right:1px solid #ddd;
+  background:#fff;
+  font-family:'Barlow Condensed';
+  font-size:11px;
+  font-weight:900;
+  line-height:1.15;
+  text-transform:uppercase;
+  color:#151515;
+  padding:8px 10px;
+  border-bottom:4px solid transparent;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.tabbar button.active{
+  color:var(--red);
+  border-bottom-color:var(--red);
+  background:#fff;
+}
+.progress-row{
+  display:grid;
+  grid-template-columns:110px 1fr 110px;
+  align-items:center;
+  gap:12px;
+  padding:14px 24px 8px;
+  font-family:'Barlow Condensed';
+  font-weight:900;
+  text-transform:uppercase;
+  font-size:14px;
+}
+.progress-track{
+  height:10px;
+  background:#ddd;
+  border-radius:10px;
+  overflow:hidden;
+}
+.progress-fill{
+  height:100%;
+  background:var(--red);
+  border-radius:10px;
+  transition:.2s;
+}
+.main{
+  padding:8px 24px 0;
+}
+.screen-title{
+  margin-bottom:10px;
+}
+.screen-title .step{
+  font-family:'Barlow Condensed';
+  font-size:23px;
+  color:var(--red);
+  font-weight:900;
+  text-transform:uppercase;
+}
+.screen-title h3{
+  font-family:'Barlow Condensed';
+  font-size:43px;
+  line-height:.95;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+}
+.info-alert{
+  display:grid;
+  grid-template-columns:55px 1fr;
+  align-items:center;
+  gap:16px;
+  border:1px solid #ff6b72;
+  background:#fff3f4;
+  border-radius:5px;
+  padding:12px 16px;
+  margin:10px 0 12px;
+}
+.info-alert .icon{
+  width:42px;height:42px;
+  background:var(--red);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  font-family:'Barlow Condensed';
+  font-size:34px;
+  font-weight:900;
+}
+.info-alert p{font-size:15px;line-height:1.35}
+.details-card{
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:16px 18px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:26px;
+  margin-bottom:14px;
+}
+.details-card h4{
+  font-family:'Barlow Condensed';
+  color:var(--red);
+  text-transform:uppercase;
+  font-size:18px;
+  letter-spacing:.8px;
+  margin-bottom:12px;
+}
+.divider-left{border-left:1px solid var(--line);padding-left:26px}
+.form-row{
+  display:grid;
+  grid-template-columns:110px 1fr;
+  gap:10px;
+  align-items:center;
+  margin-bottom:9px;
+}
+.form-row label{
+  font-weight:700;
+  font-size:14px;
+}
+.form-row input{
+  min-height:44px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  padding:8px 10px;
+  font-size:16px;
+  width:100%;
+  -webkit-appearance:none;
+}
+.pill-row{display:flex;flex-wrap:wrap;gap:7px}
+.pill{
+  border:2px solid #ccc;
+  background:#fff;
+  padding:10px 14px;
+  min-height:44px;
+  font-family:'Barlow Condensed';
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.5px;
+  touch-action:manipulation;
+  -webkit-tap-highlight-color:transparent;
+}
+.pill.on{background:var(--red);color:#fff;border-color:var(--red)}
+.comp-wrap{
+  border:1px solid var(--line);
+  border-radius:5px;
+  overflow:hidden;
+  margin-top:10px;
+}
+.comp-head{
+  background:linear-gradient(90deg,#bf000d,#e00012);
+  color:#fff;
+  display:grid;
+  grid-template-columns:1fr 330px;
+  padding:10px 18px;
+  font-family:'Barlow Condensed';
+  font-size:18px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+.group-head{
+  background:#f3f3f3;
+  border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);
+  padding:9px 16px;
+  font-family:'Barlow Condensed';
+  font-weight:900;
+  text-transform:uppercase;
+  color:#111;
+  letter-spacing:.6px;
+}
+.comp-item{
+  display:grid;
+  grid-template-columns:60px 1fr 330px;
+  gap:14px;
+  padding:14px 16px;
+  border-bottom:1px solid var(--line);
+  align-items:start;
+}
+.comp-num{
+  background:var(--red);
+  color:#fff;
+  border-radius:4px;
+  width:44px;
+  height:44px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-family:'Barlow Condensed';
+  font-size:20px;
+  font-weight:900;
+}
+.comp-text b{
+  display:block;
+  font-size:17px;
+  margin-bottom:4px;
+}
+.comp-text p{
+  font-size:14px;
+  line-height:1.3;
+}
+.comp-controls{display:grid;gap:10px}
+.ratings{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:10px;
+}
+.rate{
+  min-height:45px;
+  border:0;
+  border-radius:4px;
+  color:#fff;
+  font-family:'Barlow Condensed';
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:.5px;
+  opacity:.72;
+}
+.rate.c{background:var(--green)}
+.rate.nyc{background:var(--orange)}
+.rate.na{background:var(--gray)}
+.rate.on{opacity:1;outline:3px solid rgba(0,0,0,.18)}
+.comment-row{
+  display:grid;
+  grid-template-columns:120px 1fr;
+  gap:8px;
+  align-items:center;
+}
+.comment-row label{font-size:13px}
+.comment-row input{
+  min-height:34px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  padding:7px 9px;
+  font-size:13px;
+}
+.bottom-actions{
+  display:grid;
+  grid-template-columns:150px 1fr 150px;
+  gap:16px;
+  align-items:center;
+  padding:14px 0 10px;
+}
+.back-btn,.next-btn{
+  min-height:64px;
+  border:0;
+  border-radius:5px;
+  color:#fff;
+  font-family:'Barlow Condensed';
+  font-size:20px;
+  font-weight:900;
+  text-transform:uppercase;
+  letter-spacing:.7px;
+}
+.back-btn{background:var(--red)}
+.next-btn{background:var(--green)}
+.back-btn:disabled,.next-btn:disabled{background:#777;color:#ccc}
+.final-box{
+  justify-self:center;
+  min-width:390px;
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:9px 14px;
+  text-align:center;
+}
+.final-box h4{
+  font-family:'Barlow Condensed';
+  font-size:14px;
+  text-transform:uppercase;
+  margin-bottom:7px;
+}
+.final-options{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.final-options button{
+  min-height:56px;
+  border:0;
+  border-radius:4px;
+  color:#fff;
+  font-family:'Barlow Condensed';
+  font-size:17px;
+  font-weight:900;
+  text-transform:uppercase;
+  line-height:1.05;
+  opacity:.8;
+}
+.final-options .competent{background:var(--green)}
+.final-options .nyc{background:var(--red)}
+.final-options button.on{opacity:1;outline:3px solid rgba(0,0,0,.18)}
+.doc-footer{
+  border-top:2px solid var(--red);
+  margin-top:4px;
+  padding:8px 10px 0;
+}
+.doc-grid{
+  border:1px solid var(--line);
+  border-radius:4px;
+  display:grid;
+  grid-template-columns:140px 1fr 120px 150px 150px 150px 80px;
+  align-items:stretch;
+  overflow:hidden;
+}
+.doc-stamp{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:var(--red);
+  font-family:'Barlow Condensed';
+  font-weight:900;
+  font-size:16px;
+  line-height:1;
+  border:2px solid var(--red);
+  margin:7px;
+  border-radius:4px;
+  text-align:center;
+}
+.doc-cell{
+  border-left:1px solid var(--line);
+  padding:8px 8px;
+  text-align:center;
+  font-size:12px;
+}
+.doc-cell b{
+  display:block;
+  font-family:'Barlow Condensed';
+  text-transform:uppercase;
+  font-size:11px;
+  letter-spacing:.7px;
+  margin-bottom:4px;
+}
+.green-text{color:var(--green);font-weight:700}
+.red-text{color:var(--red);font-weight:700}
+.uncontrolled{
+  text-align:center;
+  font-family:'Barlow Condensed';
+  font-size:12px;
+  letter-spacing:1.3px;
+  padding:7px 0 10px;
+}
+.panel{
+  border:1px solid var(--line);
+  border-radius:5px;
+  padding:18px;
+  margin-bottom:14px;
+}
+.panel h4{
+  font-family:'Barlow Condensed';
+  color:var(--red);
+  font-size:20px;
+  text-transform:uppercase;
+  margin-bottom:12px;
+}
+textarea{
+  width:100%;
+  min-height:100px;
+  border:1px solid #ccc;
+  border-radius:4px;
+  padding:10px;
+  font-size:15px;
+}
+.sign-pad canvas{
+  width:100%;
+  height:135px;
+  border:1px solid #ccc;
+  background:#fafafa;
+  touch-action:none;
+  -webkit-user-select:none;
+  user-select:none;
+  cursor:crosshair;
+  display:block;
+}
+.sign-head{
+  display:flex;
+  justify-content:space-between;
+  margin-bottom:5px;
+  font-family:'Barlow Condensed';
+  text-transform:uppercase;
+  font-weight:900;
+}
+.clear-btn{
+  border:0;
+  background:transparent;
+  color:var(--red);
+  font-family:'Barlow Condensed';
+  font-weight:900;
+  text-transform:uppercase;
+}
+.save-pdf{
+  width:100%;
+  min-height:56px;
+  border:0;
+  border-radius:4px;
+  background:var(--green);
+  color:#fff;
+  font-family:'Barlow Condensed';
+  font-size:20px;
+  font-weight:900;
+  text-transform:uppercase;
+  margin-top:10px;
+}
+.save-pdf:disabled{background:#777;color:#ccc}
+@media(max-width:900px){
+  .app-shell{margin:0;width:100%;box-shadow:none;border:0}
+  .topbar{grid-template-columns:1fr;gap:10px}
+  .logo-wrap{border-right:0;border-bottom:1px solid rgba(255,255,255,.3);padding-bottom:10px}
+  .assessment-card{max-width:260px}
+  .tabbar{overflow-x:auto;display:flex}
+  .tabbar button{min-width:120px}
+  .details-card{grid-template-columns:1fr}
+  .divider-left{border-left:0;padding-left:0}
+  .comp-head{grid-template-columns:1fr}
+  .comp-item{grid-template-columns:48px 1fr}
+  .comp-controls{grid-column:1 / -1}
+  .bottom-actions{grid-template-columns:1fr;}
+  .final-box{min-width:0;width:100%}
+  .doc-grid{grid-template-columns:1fr 1fr}
+  .doc-stamp{grid-column:1/-1;min-height:45px}
+}
+@media(max-width:560px){
+  .main{padding:8px 12px 0}
+  .progress-row{grid-template-columns:1fr;padding:12px}
+  .screen-title h3{font-size:31px}
+  .info-alert{grid-template-columns:1fr;text-align:left}
+  .form-row{grid-template-columns:1fr}
+  .ratings{grid-template-columns:1fr}
+  .comment-row{grid-template-columns:1fr}
+  .doc-title h1{font-size:26px}
+  .doc-title h2{font-size:18px}
+}
+
+/* ── FIELD TEST FIXES v1.1 ─────────────────────────────
+   - Strong selected state for C / NYC / NA and final result
+   - Better keyboard focus
+   - Prevent Enter key jump / accidental activation
+─────────────────────────────────────────────────────── */
+.rate{
+  opacity:.38;
+  position:relative;
+  transition:transform .08s ease, opacity .12s ease, box-shadow .12s ease;
+}
+.rate.on{
+  opacity:1;
+  transform:scale(1.03);
+  box-shadow:0 0 0 4px rgba(0,0,0,.20), 0 4px 10px rgba(0,0,0,.20);
+}
+.rate.on::before{
+  content:"✓";
+  position:absolute;
+  left:8px;
+  top:50%;
+  transform:translateY(-50%);
+  font-size:18px;
+}
+.rate.nyc.on::before{
+  content:"✕";
+}
+.rate.na.on::before{
+  content:"—";
+}
+.final-options button{
+  opacity:.42;
+  position:relative;
+  transition:transform .08s ease, opacity .12s ease, box-shadow .12s ease;
+}
+.final-options button.on{
+  opacity:1;
+  transform:scale(1.03);
+  box-shadow:0 0 0 4px rgba(0,0,0,.22), 0 5px 12px rgba(0,0,0,.22);
+}
+input:focus, textarea:focus, button:focus{
+  outline:3px solid rgba(0,0,0,.22);
+  outline-offset:2px;
+}
+.pdf-comment-preview{
+  border-left:4px solid #1D4ED8;
+  background:#EFF6FF;
+  color:#1E3A8A;
+}
+
+
+/* ── v1.2 footer + final result placement fixes ───────────── */
+.bottom-actions{
+  grid-template-columns:150px 1fr 150px;
+}
+.bottom-spacer{
+  min-height:1px;
+}
+.final-box-signoff{
+  width:100%;
+  min-width:0;
+  border:none;
+  padding:0;
+}
+.final-box-signoff .final-options button{
+  min-height:70px;
+  font-size:20px;
+}
+.doc-footer{
+  border-top:none;
+  margin-top:10px;
+  padding:0 0 12px;
+}
+.doc-grid{
+  border:1px solid #cfcfcf;
+  border-top:4px solid var(--red);
+  border-radius:6px;
+  display:grid;
+  grid-template-columns:150px repeat(6, 1fr);
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.06);
+}
+.doc-stamp{
+  margin:0;
+  border:0;
+  border-right:1px solid #d7d7d7;
+  border-radius:0;
+  background:#fff5f6;
+  color:var(--red);
+  min-height:58px;
+  font-size:15px;
+}
+.doc-cell{
+  border-left:0;
+  border-right:1px solid #d7d7d7;
+  padding:10px 8px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  min-height:58px;
+}
+.doc-cell:last-child{
+  border-right:0;
+}
+.doc-cell b{
+  color:#555;
+  font-size:10px;
+  letter-spacing:1px;
+}
+.doc-cell span,
+.doc-cell{
+  font-weight:700;
+}
+.uncontrolled{
+  background:#111;
+  color:#fff;
+  border-radius:0 0 6px 6px;
+  margin-top:0;
+  padding:8px 6px;
+  font-size:11px;
+  letter-spacing:1.4px;
+}
+.result-box{
+  display:inline-block;
+  padding:12px 18px;
+  background:#f3f3f3;
+  border-left:6px solid var(--red);
+  font-family:'Barlow Condensed';
+  font-size:22px;
+  font-weight:900;
+  text-transform:uppercase;
+}
+@media(max-width:900px){
+  .doc-grid{
+    grid-template-columns:1fr 1fr;
+  }
+  .doc-stamp{
+    grid-column:1/-1;
+    border-right:0;
+    border-bottom:1px solid #d7d7d7;
+  }
+}
+@media(max-width:560px){
+  .bottom-actions{
+    grid-template-columns:1fr 1fr;
+  }
+  .bottom-spacer{
+    display:none;
+  }
+  .doc-grid{
+    grid-template-columns:1fr;
+  }
+  .doc-cell{
+    border-right:0;
+    border-bottom:1px solid #d7d7d7;
+  }
+}
+
+
+/* ── v1.3 competency card usability fix ─────────────
+   Full-width comments under every competency item.
+──────────────────────────────────────────────────── */
+.comp-item{
+  display:grid;
+  grid-template-columns:60px 1fr;
+  gap:14px;
+  align-items:start;
+}
+.comp-controls{
+  grid-column:1 / -1;
+  display:grid;
+  grid-template-columns:1fr;
+  gap:12px;
+  padding-left:60px;
+}
+.ratings{
+  max-width:420px;
+}
+.comment-row{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:6px;
+  width:100%;
+}
+.comment-row label{
+  font-family:'Barlow Condensed';
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:1px;
+  text-transform:uppercase;
+  color:#444;
+}
+.comment-row input{
+  width:100%;
+  min-height:72px;
+  font-size:15px;
+  line-height:1.35;
+  padding:12px;
+}
+@media(max-width:900px){
+  .comp-controls{
+    padding-left:0;
+  }
+  .ratings{
+    max-width:none;
+  }
+}
+
+</style>
+</head>
+<body>
+<div class="app-shell">
+  <header class="topbar">
+    <div class="logo-wrap"><img class="brand-logo" src="data:image/png;base64,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" alt="Symons Clark Logistics"/></div>
+    <div class="doc-title">
+      <h1>Pneumatic Tanker</h1>
+      <h2>Verification of Competency</h2>
+      <p>SCL-VOC-PT-001 &nbsp; | &nbsp; Version 1.6 STABLE</p>
+    </div>
+    <div class="assessment-card">
+      <small>Assessment ID</small>
+      <strong id="assessment-id">VOC-NEW</strong>
+      <div class="assessment-date"><span>Date</span><span id="today-display"></span></div>
+    </div>
+  </header>
+
+  <nav class="tabbar" id="tabbar"></nav>
+
+  <div class="progress-row">
+    <div id="step-indicator">Step 1 of 7</div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div id="percent-display">0% complete</div>
+  </div>
+
+  <main class="main">
+    <section class="screen-title">
+      <div class="step" id="screen-step">Step 1</div>
+      <h3 id="screen-title">Driver Details</h3>
+    </section>
+    <section id="screen-content"></section>
+
+    <section class="bottom-actions" id="bottom-actions">
+      <button type="button" tabindex="-1" class="back-btn" id="back-btn" onclick="navigate(-1)">‹ Back</button>
+      <div class="bottom-spacer"></div>
+      <button type="button" tabindex="-1" class="next-btn" id="next-btn" onclick="navigate(1)">Next ›</button>
+    </section>
+
+    <footer class="doc-footer">
+      <div class="doc-grid">
+        <div class="doc-stamp">CONTROLLED<br/>DOCUMENT</div>
+        <div class="doc-cell"><b>Document No.</b>SCL-VOC-PT-001</div>
+        <div class="doc-cell"><b>Version</b>1.6 STABLE</div>
+        <div class="doc-cell"><b>Approved Date</b><span class="green-text">07/06/2025</span></div>
+        <div class="doc-cell"><b>Effective Date</b><span class="green-text">07/06/2025</span></div>
+        <div class="doc-cell"><b>Review Date</b><span class="red-text">07/06/2027</span></div>
+        <div class="doc-cell"><b>Page</b><span id="page-display">1 of 7</span></div>
+      </div>
+      <div class="uncontrolled">THIS IS A CONTROLLED DOCUMENT &nbsp; | &nbsp; UNCONTROLLED WHEN PRINTED OR DOWNLOADED</div>
+    </footer>
+  </main>
+</div>
+
+<script>
+var VOC_TYPES = ["1st (Start of employment)","Safety","Annual/Biannual","Other"];
+
+var LICENCE_CLASSES = ["LR","MR","HR","HC","MC","HRWL"];
+
+var CONFIGS = ["RIGID","SINGLE","B DOUBLE","ROAD TRAIN"];
+
+var TRANS = ["SYNCHRO","FULL AUTO","SEMI AUTO","RR/CRASHBOX"];
+
+var PARTS = {
+  1:[
+    {g:"Recorded Prestart Documentation",ii:[
+      "Operator logged onto MT Data tablet without assistance, following correct procedure",
+      "Thorough pre-start inspection conducted; results recorded in MT Data system",
+      "Without MT Data: pre-start and Fit for Duty declaration completed manually on timesheet, signed correctly",
+      "All defects found during precheck reported",
+    ]},
+    {g:"Compressor Blower (If Fitted / Independent)",ii:[
+      "Oil level and condition checked in blower/compressor",
+      "Fuel level checked for independent engine-driven units",
+      "Compressor started as per manufacturer procedure",
+      "Manual Start: hearing protection worn · isolation switch ON · key pos 1 for 10s · pos 2 to start",
+      "Electric Start: hearing protection worn · isolation ON · secondary isolator ON · push start",
+      "RPM increased to 1150–1250",
+      "Positive air pressure obtained and stable before use",
+    ]},
+  ],
+  2:[
+    {g:"Hot Air Hose and Hose Tubes",ii:[
+      "Cam lock fittings secure",
+      "Hose inspected for cracks, wear, or drying out",
+      "Heavy-duty clamps fitted and locked",
+      "Locking mechanisms secure and functional (if fitted)",
+      "Safety whip checks available",
+      "Hose tubes checked — soft spots reported (indicates internal wear)",
+    ]},
+    {g:"Handrail System & Access",ii:[
+      "Handrail switch tested for smooth operation, no air leaks",
+      "Company policy followed for tanker roof access",
+      "Walkway ramp operates smoothly (if handrail raised)",
+    ]},
+    {g:"Pressure Relief Valve",ii:[
+      "Manual relief valve checked for condition",
+      "Stamped pressure rating confirmed to match tank specifications",
+      "Operator understands valve purpose; valve functions during pressure discharge",
+    ]},
+    {g:"Control Panel",ii:[
+      "Tank pressure gauge reads zero before operation",
+      "Pinch/butterfly switches checked for leaks and smooth operation (if fitted)",
+      "All decals and labels legible and undamaged",
+      "Pinch/butterfly valves left fully open when idle to prevent rubber fatigue",
+    ]},
+    {g:"Under Tank — Cones & Manifolds",ii:[
+      "Manifolds, seals, gaskets, and air hose clamps inspected for cracks, corrosion, looseness, or stress",
+      "Any air hissing or leaking reported immediately",
+    ]},
+    {g:"Hatches",ii:[
+      "Hatch and balance valves clean and functioning",
+      "Tank pressure confirmed zero before opening hatches",
+      "Manual hatches: levers, seals, and wear plates checked (if fitted)",
+      "Hatch body checked for cracks or damage",
+      "Operator knows location of air-operated hatch lever",
+    ]},
+    {g:"Final Checks Before Departure",ii:[
+      "Handrail lowered and secured",
+      "All hoses, hammers, and loose gear properly stowed",
+      "Operator understands: handrail still deployed = brakes will not release",
+    ]},
+  ],
+  3:[
+    {g:"PPE & Site Readiness",ii:[
+      "Correct PPE worn before exiting vehicle: eye/hearing protection, gloves, Hi-Vis, hard hat",
+      "Knowledge of site-specific safety requirements and TMP demonstrated",
+      "Safe entry/exit confirmed — signage and speed limits observed",
+      "Signed into site; silo isolation keys obtained where applicable",
+    ]},
+    {g:"Vehicle Positioning",ii:[
+      "Tanker positioned correctly under designated silo, hatch aligned to chute",
+      "Vehicle causes minimal obstruction to other operations",
+      "Parking brake applied; wheel chocks or stabilisation used if required",
+    ]},
+    {g:"Loading Procedure",ii:[
+      "Product type, destination, and weight confirmed with batcher",
+      "Vent open and tank pressure '0' confirmed before opening top hatches",
+      "Walkway guard rail raised; top of tanker accessed using three points of contact",
+      "Appropriate hatches opened in preparation for loading",
+      "Exits cab; proceeds to loading controls to commence loading (where required)",
+      "Loading process monitored; vehicle repositioned if needed",
+      "Loading confirmed complete; signed paperwork collected; hatches secured; handrails lowered",
+      "Final visual inspection — no tools, gear, or debris left on tanker",
+    ]},
+    {g:"Vehicle Weights and Documentation",ii:[
+      "GCM confirmed and entered into MT Data mass management tab",
+      "Documentation completed and ready for destination",
+      "Correct weights obtained from weighbridge if on site",
+    ]},
+  ],
+  4:[
+    {g:"Discharge Set-up",ii:[
+      "Tanker parked in position for silo connection",
+      "Parking brake applied; vehicle stabilised with chocks or safety devices",
+      "Site reporting procedure understood",
+      "Blower and discharge dust covers checked and removed",
+      "Hoses, seals, and camlocks inspected for wear, cracks, or contamination",
+      "Air and product hoses connected between tanker and silo; secured with safety straps",
+      "Discharge valves closed · aerator valves open · purge/vent valves closed",
+      "Product build-up around seal checked; cleaned as required",
+      "Hose(s) connected between tankers and blowers; safety straps fitted",
+      "Blower fluid levels confirmed and topped up if necessary",
+      "Silo control key turned to open silo valves; correct operation confirmed",
+      "Hoses allowed to fully depressurise before disconnecting during shutdown",
+    ]},
+    {g:"Tanker Discharge Operation",ii:[
+      "Blower/compressor started using correct manual or electric start procedure",
+      "At 100–120 kPa: boost valve opened halfway and rear compartment valve opened",
+      "Boost valve adjusted for firm, even hose pulsations (no whipping)",
+      "Maximum tanker pressure does not exceed 150 kPa",
+      "Silo alarms, pressure gauges, hoses, couplings, and top hatches monitored for dust",
+      "Product level monitored; switched to front compartment when rear is empty",
+      "Only white-faced rubber mallet used to check product levels in trailer",
+      "Front compartment empty: front valve closed · rear reopened · delivery continued",
+      "Airflow carefully managed during final discharge to avoid over-pressurisation",
+      "All product cleared from cones and lines",
+      "Operator did not leave tanker while unloading was in progress",
+    ]},
+    {g:"Emergency Procedures",ii:[
+      "Silo alarm: close compartment valve · clear product line 1–2 min · close boost · open purge · turn blower off",
+      "Reconnection to another fill point if approved by batcher",
+      "Resume: close purge · open boost · restart blower · monitor pressure · reopen compartment valve",
+    ]},
+    {g:"Shut Down & Site Departure",ii:[
+      "Aerator valves closed",
+      "Tanker depressurised by opening vent valve (confirmed with gauges)",
+      "Blower/compressor shut down and isolated",
+      "Hoses verified soft and pressure near zero before removal",
+      "Tank pressure confirmed zero; boost valve closed",
+      "Safety straps and hoses removed; returned to storage",
+      "Camlock caps replaced; residual product cleaned up",
+      "Silo valves shut using key switch (Closed)",
+      "Paperwork or delivery dockets signed off as required by site",
+      "Site exited in accordance with TMP and site instructions",
+    ]},
+  ],
+  5:[
+    {g:"Tanker External Walk-Around",ii:[
+      "Under tanker checked for leaks or product",
+      "Hoses, clamps, and connections in place and undamaged",
+      "Air and discharge lines inspected for wear, cracks, or signs of failure",
+      "All hatches, seals, and manlids closed and secure",
+      "Toolboxes closed and secured; no loose gear",
+    ]},
+  ],
+};
+
+const STEPS = [
+  "1. Driver\nDetails",
+  "2. Pre-Start &\nSetup",
+  "3. Operations",
+  "4. Road\nTransport",
+  "5. Emergency\n& Incidents",
+  "6. Shutdown",
+  "7. Sign Off"
+];
+
+const TITLES = [
+  "Driver Details",
+  "Pre-Start & Setup",
+  "Operations",
+  "Road Transport",
+  "Emergency & Incidents",
+  "Shutdown",
+  "Sign Off"
+];
+
+const STEP_PART = {1:1,2:2,3:3,4:4,5:5};
+
+let state = {
+  step:0,
+  ratings:{},
+  comments:{},
+  f:{
+    site:"", date:todayISO(), start:"", finish:"", assessor:"", vocType:"",
+    opName:"", licNo:"", licExp:"", licClass:[], dgNo:"", dgExp:"", licSighted:"",
+    vMake:"", vModel:"", serialNo:"", vExp:"", t1:"", t1e:"", t2:"", t2e:"", t3:"", t3e:"", config:"", trans:"",
+    taeCmt:"", smeCmt:"", pName:"", pDate:todayISO(), conductedBy:"", review:"", reviewPeriod:"", finalResult:"",
+    assessmentId:""
+  }
+};
+
+function todayISO(){
+  const d = new Date();
+  return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+}
+function displayDate(iso){
+  if(!iso) return "";
+  const p = iso.split("-");
+  return p.length===3 ? p[2]+"/"+p[1]+"/"+p[0] : iso;
+}
+function nowStamp(){
+  const d = new Date();
+  const p = n => String(n).padStart(2,"0");
+  return d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes());
+}
+function ensureAssessmentId(){
+  if(!state.f.assessmentId){
+    const d = new Date();
+    const p = n => String(n).padStart(2,"0");
+    state.f.assessmentId = "VOC-"+d.getFullYear()+p(d.getMonth()+1)+p(d.getDate())+"-"+p(d.getHours())+p(d.getMinutes())+p(d.getSeconds());
+  }
+  return state.f.assessmentId;
+}
+function esc(s){
+  return String(s||"").replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+function kesc(s){ return String(s).replace(/\\/g,"\\\\").replace(/'/g,"\\'"); }
+function save(){ try{ localStorage.setItem("sclVocPixelV1", JSON.stringify(state)); }catch(e){} }
+function load(){ try{ const x=localStorage.getItem("sclVocPixelV1"); if(x) state=JSON.parse(x); }catch(e){} }
+function setF(k,v){ state.f[k]=v; save(); }
+function setPill(k,v){ state.f[k]=state.f[k]===v?"":v; save(); render(); }
+function toggleArr(k,v){ const a=state.f[k]||[]; state.f[k]=a.includes(v)?a.filter(x=>x!==v):a.concat([v]); save(); render(); }
+function setRating(k,v){ state.ratings[k]=state.ratings[k]===v?"":v; save(); render(); }
+function setComment(k,v){ state.comments[k]=v; save(); }
+function setFinal(v){ state.f.finalResult=state.f.finalResult===v?"":v; save(); render(); }
+
+function totalItems(){
+  let n=0;
+  for(let p=1;p<=5;p++) PARTS[p].forEach(g=>n+=g.ii.length);
+  return n;
+}
+function ratedItems(){
+  return Object.values(state.ratings).filter(Boolean).length;
+}
+function autoResult(){
+  const vals = Object.values(state.ratings).filter(Boolean);
+  if(!vals.length) return "";
+  return vals.includes("NYC") ? "NYC" : "C";
+}
+function navigate(dir){
+  state.step = Math.max(0, Math.min(6, state.step + dir));
+  save(); render(); window.scrollTo(0,0);
+}
+function input(k,type="text",ph=""){
+  return `<input type="${type}" value="${esc(state.f[k])}" placeholder="${esc(ph)}" oninput="setF('${k}',this.value)">`;
+}
+function row(label, html){
+  return `<div class="form-row"><label>${label}</label>${html}</div>`;
+}
+function pills(k, opts, multi=false){
+  return `<div class="pill-row">`+opts.map(o=>{
+    const on = multi ? (state.f[k]||[]).includes(o) : state.f[k]===o;
+    const fn = multi ? `toggleArr('${k}','${kesc(o)}')` : `setPill('${k}','${kesc(o)}')`;
+    return `<button type="button" class="pill ${on?'on':''}" onclick="${fn}">${esc(o)}</button>`;
+  }).join("")+`</div>`;
+}
+function detailCard(leftTitle,leftRows,rightTitle,rightRows){
+  return `<div class="details-card">
+    <div><h4>${leftTitle}</h4>${leftRows}</div>
+    <div class="divider-left"><h4>${rightTitle}</h4>${rightRows}</div>
+  </div>`;
+}
+function alertBox(text){
+  return `<div class="info-alert"><div class="icon">!</div><p>${text}</p></div>`;
+}
+function competencyScreen(part){
+  let counter = 1;
+  let body = `<div class="comp-wrap"><div class="comp-head"><div>Competency Requirements</div><div>Assessment</div></div>`;
+  PARTS[part].forEach(group=>{
+    body += `<div class="group-head">${esc(group.g)}</div>`;
+    group.ii.forEach(item=>{
+      const key = group.g+"::"+item;
+      const r = state.ratings[key]||"";
+      const num = (part+1)+"."+counter++;
+      body += `<article class="comp-item">
+        <div class="comp-num">${num}</div>
+        <div class="comp-text"><b>${esc(item.split(" — ")[0])}</b><p>${esc(item)}</p></div>
+        <div class="comp-controls">
+          <div class="ratings">
+            <button type="button" class="rate c ${r==='C'?'on':''}" data-key="${esc(key)}" data-val="C" onclick="setRating('${kesc(key)}','C')">C</button>
+            <button type="button" class="rate nyc ${r==='NYC'?'on':''}" data-key="${esc(key)}" data-val="NYC" onclick="setRating('${kesc(key)}','NYC')">NYC</button>
+            <button type="button" class="rate na ${r==='NA'?'on':''}" data-key="${esc(key)}" data-val="NA" onclick="setRating('${kesc(key)}','NA')">NA</button>
+          </div>
+          <div class="comment-row">
+            <label>Comments<br/>(if required):</label>
+            <input value="${esc(state.comments[key])}" placeholder="Required for NYC — add evidence" oninput="setComment('${kesc(key)}',this.value)">
+          </div>
+        </div>
+      </article>`;
+    });
+  });
+  body += `</div>`;
+  return body;
+}
+function signPad(id){
+  return `<div class="sign-pad"><div class="sign-head"><span>Signature</span><button type="button" class="clear-btn" onclick="clearPad('${id}')">Clear</button></div><canvas id="canvas-${id}" width="900" height="140"></canvas></div>`;
+}
+let padState = {};
+function initPad(id){
+  const canvas=document.getElementById("canvas-"+id);
+  if(!canvas) return;
+  
+  // Always remove old listeners by cloning the canvas
+  const fresh = canvas.cloneNode(true);
+  canvas.parentNode.replaceChild(fresh, canvas);
+  const c = document.getElementById("canvas-"+id);
+  
+  // Size canvas correctly for device pixel ratio
+  const rect = c.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  c.width = Math.round(rect.width * dpr);
+  c.height = Math.round(rect.height * dpr);
+  const ctx = c.getContext("2d");
+  ctx.scale(dpr, dpr);
+  
+  let drawing = false;
+  let last = null;
+  
+  function getPos(e){
+    const r = c.getBoundingClientRect();
+    const src = e.touches ? e.touches[0] : e;
+    return {x: src.clientX - r.left, y: src.clientY - r.top};
+  }
+  
+  function start(e){
+    e.preventDefault();
+    e.stopPropagation();
+    drawing = true;
+    last = getPos(e);
+  }
+  
+  function move(e){
+    e.preventDefault();
+    e.stopPropagation();
+    if(!drawing || !last) return;
+    const p = getPos(e);
+    const ctx2 = c.getContext("2d");
+    ctx2.beginPath();
+    ctx2.moveTo(last.x, last.y);
+    ctx2.lineTo(p.x, p.y);
+    ctx2.strokeStyle = "#111";
+    ctx2.lineWidth = 2.5;
+    ctx2.lineCap = "round";
+    ctx2.lineJoin = "round";
+    ctx2.stroke();
+    last = p;
+  }
+  
+  function end(e){
+    e.preventDefault();
+    drawing = false;
+    last = null;
+  }
+  
+  c.addEventListener("mousedown", start, false);
+  c.addEventListener("mousemove", move, false);
+  c.addEventListener("mouseup", end, false);
+  c.addEventListener("mouseleave", end, false);
+  c.addEventListener("touchstart", start, {passive:false});
+  c.addEventListener("touchmove", move, {passive:false});
+  c.addEventListener("touchend", end, {passive:false});
+  c.addEventListener("touchcancel", end, {passive:false});
+}
+function clearPad(id){
+  const c=document.getElementById("canvas-"+id);
+  if(!c) return;
+  const dpr = window.devicePixelRatio || 1;
+  c.getContext("2d").clearRect(0,0,c.width/dpr,c.height/dpr);
+}
+
+function render(){
+  ensureAssessmentId();
+  const total=totalItems(), rated=ratedItems(), pct=Math.round((rated/total)*100);
+  document.getElementById("assessment-id").textContent=state.f.assessmentId;
+  document.getElementById("today-display").textContent=displayDate(state.f.date||todayISO());
+  document.getElementById("progress-fill").style.width=pct+"%";
+  document.getElementById("step-indicator").textContent="Step "+(state.step+1)+" of 7";
+  document.getElementById("percent-display").textContent=pct+"% complete";
+  document.getElementById("screen-step").textContent="Step "+(state.step+1);
+  document.getElementById("screen-title").textContent=TITLES[state.step];
+  document.getElementById("page-display").textContent=(state.step+1)+" of 7";
+  document.getElementById("back-btn").disabled=state.step===0;
+  document.getElementById("next-btn").disabled=state.step===6;
+
+  document.getElementById("tabbar").innerHTML = STEPS.map((t,i)=>`<button type="button" tabindex="-1" class="${i===state.step?'active':''}" onclick="this.blur();state.step=${i};save();render()">${t.replace(/\n/g,"<br>")}</button>`).join("");
+
+  let html="";
+  if(state.step===0){
+    html += alertBox("Confirm driver identity, licence, VOC type, assessor details and fitness for duty before commencing the assessment.");
+    html += detailCard("Driver",
+      row("Name:", input("opName","text","John Driver"))+
+      row("Licence No:", input("licNo","text","QLD 123456789"))+
+      row("Licence Exp:", input("licExp","date"))+
+      row("Licence Class:", pills("licClass",LICENCE_CLASSES,true))+
+      row("DG No:", input("dgNo"))+
+      row("Sighted:", pills("licSighted",["Yes","No"])),
+      "Assessment",
+      row("Site / Load:", input("site","text","Brisbane Terminal"))+
+      row("VOC Type:", pills("vocType",VOC_TYPES))+
+      row("Assessor:", input("assessor","text","Full name"))+
+      row("Date:", input("date","date"))+
+      row("Start:", input("start","time"))+
+      row("Finish:", input("finish","time"))+
+      signPad("op")
+    );
+  } else if(state.step===1){
+    html += alertBox("Assess the driver's ability to safely complete pre-start checks and setup procedures in accordance with company and NHVR requirements.");
+    html += detailCard("Driver",
+      row("Name:", input("opName","text","John Driver"))+
+      row("Licence No:", input("licNo","text","QLD 123456789"))+
+      row("Driver Ref:", input("serialNo","text","DR-2025-045")),
+      "Load / Site",
+      row("Site / Load:", input("site","text","Brisbane Terminal"))+
+      row("Product:", input("vModel","text","Liquid Petroleum Gas (LPG)"))+
+      row("Date:", input("date","date"))
+    );
+    html += competencyScreen(1);
+  } else if(state.step>=2 && state.step<=5){
+    const part = state.step;
+    html += alertBox("Complete each competency item. Select C, NYC, or NA. Add evidence in the comment field where required, especially for NYC.");
+    html += competencyScreen(part);
+  } else if(state.step===6){
+    const ar = autoResult();
+    html += `<div class="panel"><h4>Calculated Result</h4><div class="result-box">${ar==="C"?"✓ Competent":ar==="NYC"?"✕ Not Yet Competent":"No items rated yet"}</div></div>
+    <div class="panel"><h4>Final Declared Result</h4>
+      <div class="final-box final-box-signoff">
+        <div class="final-options">
+          <button type="button" class="competent ${state.f.finalResult==="Competent (C)"?"on":""}" onclick="setFinal('Competent (C)')">✓ Competent<br/>(C)</button>
+          <button type="button" class="nyc ${state.f.finalResult==="Not Yet Competent (NYC)"?"on":""}" onclick="setFinal('Not Yet Competent (NYC)')">✕ Not Yet<br/>Competent (NYC)</button>
+        </div>
+      </div>
+    </div>`;
+    html += `<div class="panel"><h4>Comments & Recommendations</h4>
+      <label>TAE Assessor Comments</label><textarea oninput="setF('taeCmt',this.value)">${esc(state.f.taeCmt)}</textarea><br/><br/>
+      <label>SME Comments</label><textarea oninput="setF('smeCmt',this.value)">${esc(state.f.smeCmt)}</textarea>
+    </div>`;
+    html += `<div class="panel"><h4>Sign Off</h4>
+      <div class="details-card">
+        <div>
+          ${row("Participant:", input("pName"))}
+          ${row("Date:", input("pDate","date"))}
+          ${row("Conducted By:", pills("conductedBy",["TAE","SME"]))}
+        </div>
+        <div class="divider-left">
+          ${row("Review Req:", pills("review",["Yes","No"]))}
+          ${row("Review Period:", pills("reviewPeriod",["3 Month","1 Year","2 Year","3 Year","Other"]))}
+          ${signPad("part")}
+        </div>
+      </div>
+      <button type="button" class="save-pdf" onclick="doPDF()" ${state.f.finalResult?'':'disabled'}>Save as PDF</button>
+    </div>`;
+  }
+  document.getElementById("screen-content").innerHTML=html;
+  // Clear padState for current step so initPad always reinitialises after render
+  delete padState["op"];
+  delete padState["part"];
+  setTimeout(()=>{initPad("op");initPad("part");},150);
+  // Update save PDF button state
+  const savePdfBtn = document.querySelector(".save-pdf");
+  if(savePdfBtn){
+    savePdfBtn.disabled = !state.f.finalResult;
+    savePdfBtn.textContent = state.f.finalResult ? "Save as PDF" : "Save as PDF — Declare result first";
+  }
+}
+
+function doPDF(){
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({unit:"mm",format:"a4"});
+  let y=14, m=14, w=182;
+  function check(h){ if(y+h>278){ footer(); doc.addPage(); y=14; } }
+  function footer(){
+    const p=doc.internal.getCurrentPageInfo().pageNumber;
+    doc.setFontSize(7); doc.setTextColor(80);
+    doc.line(m,286,196,286);
+    doc.text("Document No: SCL-VOC-PT-001",m,291);
+    doc.text("Version: 1.6 | Approved: 07/06/2025 | Effective: 07/06/2025 | Review: 07/06/2027",105,291,{align:"center"});
+    doc.text("Controlled Document | Page "+p,196,291,{align:"right"});
+  }
+  function head(tag,title){
+    check(12); doc.setFillColor(214,0,18); doc.rect(m,y,18,8,"F");
+    doc.setTextColor(255); doc.setFontSize(8); doc.text(tag,m+2,y+5.5);
+    doc.setFillColor(20,20,20); doc.rect(m+18,y,w-18,8,"F");
+    doc.text(title,m+22,y+5.5); y+=11;
+  }
+  function rowPDF(a,b){
+    check(7); doc.setFontSize(8); doc.setTextColor(30); doc.text(String(a),m,y); doc.text(String(b||"—"),65,y); y+=6;
+  }
+  head("VOC","Pneumatic Tanker Verification of Competency");
+  rowPDF("Assessment ID",state.f.assessmentId);
+  rowPDF("Date",displayDate(state.f.date));
+  rowPDF("Operator",state.f.opName);
+  rowPDF("Assessor",state.f.assessor);
+  rowPDF("Final Result",state.f.finalResult);
+  rowPDF("Generated",nowStamp());
+  y+=4;
+  for(let p=1;p<=5;p++){
+    head("P"+p,"Part "+p+" Competencies");
+    PARTS[p].forEach(g=>{
+      check(7); doc.setFontSize(8); doc.setTextColor(214,0,18); doc.text(g.g,m,y); y+=5;
+      g.ii.forEach(item=>{
+        const k=g.g+"::"+item;
+        check(13);
+        doc.setTextColor(30); doc.setFontSize(7);
+        const lines=doc.splitTextToSize(item,w-35);
+        doc.text(lines,m,y);
+        doc.setFontSize(8); doc.text(state.ratings[k]||"—",176,y);
+        y+=Math.max(5,lines.length*4);
+        if(state.comments[k]){
+          const cLines = doc.splitTextToSize("ASSESSOR COMMENT: "+state.comments[k], w-6);
+          const boxH = Math.max(8, cLines.length*4 + 4);
+          check(boxH + 2);
+          doc.setFillColor(239,246,255);
+          doc.setDrawColor(29,78,216);
+          doc.setLineWidth(0.6);
+          doc.rect(m, y-3, w, boxH, "FD");
+          doc.setTextColor(29,78,216);
+          doc.setFontSize(7.5);
+          doc.setFont(undefined, "bold");
+          doc.text(cLines, m+3, y+1);
+          doc.setFont(undefined, "normal");
+          y += boxH + 2;
+        }
+      });
+    });
+  }
+  head("COM","Comments");
+  rowPDF("TAE",state.f.taeCmt);
+  rowPDF("SME",state.f.smeCmt);
+  footer();
+  const fname="SCL_VOC_"+(state.f.opName||"Operator").replace(/[^a-z0-9]/gi,"_")+"_"+todayISO()+".pdf";
+  
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent);
+  if(isIOS){
+    // iOS — create a visible link the user can tap to open PDF
+    const dataUrl = doc.output("datauristring");
+    const existing = document.getElementById("pdf-link-container");
+    if(existing) existing.remove();
+    const container = document.createElement("div");
+    container.id = "pdf-link-container";
+    container.style.cssText = "position:fixed;bottom:80px;left:0;right:0;z-index:9999;padding:14px 20px;background:#229a35;text-align:center;";
+    const link = document.createElement("a");
+    link.href = dataUrl;
+    link.target = "_blank";
+    link.style.cssText = "color:#fff;font-family:'Barlow Condensed',Arial,sans-serif;font-size:20px;font-weight:900;text-transform:uppercase;letter-spacing:1px;text-decoration:none;";
+    link.textContent = "TAP HERE TO OPEN PDF — then Share → Save to Files";
+    container.appendChild(link);
+    document.body.appendChild(container);
+    setTimeout(function(){ if(container.parentNode) container.parentNode.removeChild(container); }, 30000);
+  } else {
+    doc.save(fname);
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+// ── v1.6 Enter key fix ────────────────────────────────────────
+// Enter on a rating button selects it directly and restores the same card.
+// Enter on fields moves to next visible field.
+// Enter cannot activate top workflow tabs.
+document.addEventListener("keydown", function(e){
+  if(e.key !== "Enter") return;
+
+  const el = e.target;
+  const tag = (el && el.tagName ? el.tagName.toLowerCase() : "");
+  const currentStep = state.step;
+
+  if(tag === "textarea" && e.shiftKey) return;
+
+  // Block workflow tab keyboard activation completely.
+  if(el && el.closest && el.closest(".tabbar")){
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    state.step = currentStep;
+    save();
+    if(el.blur) el.blur();
+    return false;
+  }
+
+  // Rating buttons: set value directly, restore current card, move focus to comment if useful.
+  if(el && el.classList && el.classList.contains("rate")){
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    const card = el.closest(".comp-item");
+    const beforeTop = card ? card.getBoundingClientRect().top : null;
+    const key = el.getAttribute("data-key");
+    const val = el.getAttribute("data-val");
+
+    if(key && val){
+      state.ratings[key] = state.ratings[key] === val ? "" : val;
+      state.step = currentStep;
+      save();
+      render();
+
+      setTimeout(function(){
+        const buttons = Array.from(document.querySelectorAll('.rate[data-key="'+CSS.escape(key)+'"]'));
+        const newBtn = buttons.find(b => b.getAttribute("data-val") === val);
+        const newCard = newBtn ? newBtn.closest(".comp-item") : null;
+        const comment = newCard ? newCard.querySelector("input") : null;
+
+        if(newCard && beforeTop !== null){
+          const afterTop = newCard.getBoundingClientRect().top;
+          window.scrollBy(0, afterTop - beforeTop);
+        }
+
+        // Keep assessor moving: after selecting C/NYC/NA, go to the comment box.
+        if(comment){
+          comment.focus({preventScroll:true});
+        } else if(newBtn){
+          newBtn.focus({preventScroll:true});
+        }
+      }, 0);
+    }
+    return false;
+  }
+
+  // Text/comment fields: Enter moves to next visible text/comment field.
+  if(tag === "input" || tag === "textarea"){
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    const fields = Array.from(document.querySelectorAll(
+      "#screen-content input:not([disabled]), #screen-content textarea:not([disabled])"
+    )).filter(x => x.offsetParent !== null);
+
+    const idx = fields.indexOf(el);
+    if(idx >= 0 && idx < fields.length - 1){
+      fields[idx + 1].focus({preventScroll:true});
+      fields[idx + 1].scrollIntoView({block:"center", behavior:"smooth"});
+    } else {
+      el.blur();
+    }
+
+    state.step = currentStep;
+    save();
+    return false;
+  }
+
+  // Other buttons can activate normally, except they must not accidentally reset step.
+  if(tag === "button"){
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+
+    el.click();
+
+    if(!el.classList.contains("next-btn") && !el.classList.contains("back-btn")){
+      state.step = currentStep;
+      save();
+    }
+
+    return false;
+  }
+}, true);
+
+load();
+render();
+window.addEventListener('pagehide',function(){try{localStorage.removeItem('sclVocPixelV1');}catch(e){}});
+</script>
+</body>
+</html>
